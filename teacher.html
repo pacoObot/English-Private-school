@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delson PS - Portal do Docente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .grade-input:focus {
+            border-color: #e11d48;
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar Docente -->
+    <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200">
+        <div class="p-8">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-rose-200">
+                    D</div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight leading-none">DELSON<span
+                            class="text-rose-600">PS</span></h1>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Portal Docente</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-6 space-y-1 overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 mb-2 mt-4">Principal</p>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold bg-rose-600 text-white shadow-lg shadow-rose-200">
+                <i class="fas fa-th-large w-5"></i> Minhas Turmas
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-pen-nib w-5"></i> Lançar Notas
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-user-check w-5"></i> Chamada Rápida
+            </button>
+
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 mb-2 mt-6">Atividades</p>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-microphone-alt w-5"></i> Meus Debates
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-file-upload w-5"></i> Enviar Fichas
+            </button>
+        </nav>
+
+        <div class="p-6">
+            <div class="bg-slate-900 rounded-3xl p-4 text-white">
+                <p class="text-[9px] font-black text-slate-400 uppercase mb-2">Próxima Aula</p>
+                <p class="text-xs font-bold leading-tight">Inglês Avançado - B2</p>
+                <p class="text-[10px] text-rose-500 font-bold mt-1">Em 15 minutos</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header
+            class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 shrink-0">
+            <div class="flex flex-col">
+                <h2 class="text-lg font-black text-slate-800 leading-none">Olá, Prof. Nelson</h2>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Bem-vindo à sua área de
+                    trabalho</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-xs font-black text-slate-900">Nelson Manuel</p>
+                    <p class="text-[9px] text-emerald-600 font-bold uppercase">Instrutor Sénior</p>
+                </div>
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Nelson"
+                    class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200" alt="Avatar">
+            </div>
+        </header>
+
+        <!-- Viewport -->
+        <div class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-8 custom-scrollbar">
+
+            <!-- Lançamento de Notas (Seção Principal) -->
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                <div
+                    class="p-6 lg:p-8 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xl font-black text-slate-800">Lançamento de Notas</h3>
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Turma: Inglês para
+                            Negócios - Noite</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <select
+                            class="bg-slate-50 border-none text-[10px] font-black uppercase px-4 py-2 rounded-xl focus:ring-2 focus:ring-rose-500">
+                            <option>Teste de Frequência 1</option>
+                            <option>Trabalho de Grupo</option>
+                            <option>Exame Final</option>
+                        </select>
+                        <button
+                            class="bg-rose-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-rose-100">Salvar
+                            Tudo</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/50">
+                            <tr>
+                                <th class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    Estudante</th>
+                                <th
+                                    class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                    Média Atual</th>
+                                <th
+                                    class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                    Faltas</th>
+                                <th
+                                    class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                    Nota (0-20)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            <tr class="hover:bg-slate-50/30 transition-colors">
+                                <td class="px-8 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 font-bold text-[10px]">
+                                            AM</div>
+                                        <p class="text-sm font-bold text-slate-800">António Manuel</p>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-4 text-center">
+                                    <span class="text-sm font-black text-slate-700">14.5</span>
+                                </td>
+                                <td class="px-8 py-4 text-center">
+                                    <span class="text-xs font-bold text-rose-500">02</span>
+                                </td>
+                                <td class="px-8 py-4 text-right">
+                                    <input type="number" placeholder="00"
+                                        class="grade-input w-16 bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-center font-black text-slate-900 outline-none transition-all">
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/30 transition-colors">
+                                <td class="px-8 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 font-bold text-[10px]">
+                                            BC</div>
+                                        <p class="text-sm font-bold text-slate-800">Beatriz Costa</p>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-4 text-center">
+                                    <span class="text-sm font-black text-slate-700">18.0</span>
+                                </td>
+                                <td class="px-8 py-4 text-center">
+                                    <span class="text-xs font-bold text-emerald-500">00</span>
+                                </td>
+                                <td class="px-8 py-4 text-right">
+                                    <input type="number" placeholder="17"
+                                        class="grade-input w-16 bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-center font-black text-slate-900 outline-none transition-all">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Grid Inferior: Debates e Chamada -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Chamada de Presença -->
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-black">Chamada Rápida</h3>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Sala 04 - Aula em
+                                curso</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-users-viewfinder text-rose-500"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div
+                            class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <span class="text-sm font-bold">Carlos Alberto</span>
+                            <div class="flex gap-2">
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 flex items-center justify-center text-[10px] font-black">P</button>
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-slate-700 text-slate-400 flex items-center justify-center text-[10px] font-black">F</button>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <span class="text-sm font-bold">Daniela Santos</span>
+                            <div class="flex gap-2">
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-slate-700 text-slate-400 flex items-center justify-center text-[10px] font-black">P</button>
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-500 border border-rose-500/30 flex items-center justify-center text-[10px] font-black">F</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full mt-6 py-4 bg-rose-600 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-rose-900/40 transition-all hover:bg-rose-500">Finalizar
+                        Chamada</button>
+                </div>
+
+                <!-- Meus Debates e Atividades -->
+                <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Meus Debates
+                            Académicos</h3>
+                        <button class="text-[10px] font-black text-rose-600 uppercase">+ Novo</button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-5 bg-rose-50 border border-rose-100 rounded-[2rem]">
+                            <div class="flex justify-between items-start mb-2">
+                                <span
+                                    class="bg-white px-2 py-1 rounded-lg text-[9px] font-black text-rose-600 uppercase tracking-tighter">Próxima
+                                    Quinta</span>
+                                <i class="fas fa-star text-rose-300"></i>
+                            </div>
+                            <h4 class="text-sm font-black text-slate-900">Debate: A Evolução da Língua Inglesa</h4>
+                            <div class="flex items-center gap-4 mt-3">
+                                <div class="flex -space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200 border-2 border-white"></div>
+                                    <div class="w-6 h-6 rounded-full bg-slate-300 border-2 border-white"></div>
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-slate-400 border-2 border-white flex items-center justify-center text-[8px] font-bold">
+                                        +12</div>
+                                </div>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase">Confirmados</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 p-4 border border-slate-100 rounded-2xl">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs font-black text-slate-800">Ficha de Apoio #09.pdf</p>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase">Enviada ontem</p>
+                            </div>
+                            <button class="w-8 h-8 text-slate-400 hover:text-rose-600"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal de Sucesso (Exemplo de feedback) -->
+    <div id="successModal"
+        class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-[3rem] p-10 max-w-sm w-full text-center shadow-2xl">
+            <div
+                class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-2">Notas Lançadas!</h3>
+            <p class="text-sm text-slate-500 font-medium mb-8">As notas foram enviadas para a tela Delson para validação
+                final e publicação.</p>
+            <button onclick="document.getElementById('successModal').classList.add('hidden')"
+                class="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">Entendido</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

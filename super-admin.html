@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delson PS - Super Admin Master (Maputo)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .sidebar-link.active {
+            background-color: #1e3a8a;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.3);
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar Super Admin -->
+    <aside class="hidden lg:flex flex-col w-72 bg-slate-900 text-white shrink-0">
+        <div class="p-8">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-black shadow-lg shadow-red-900/40">
+                    PS</div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight leading-none">MASTER<span
+                            class="text-red-500">ADMIN</span></h1>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Delson PS Maputo</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-4 mb-2 mt-4">Gestão Total</p>
+            <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold sidebar-link active">
+                <i class="fas fa-chart-pie w-5"></i> Dashboard Central
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-user-plus w-5"></i> Registar Aluno
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-users-rectangle w-5"></i> Gestão de Turmas
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-id-badge w-5"></i> Gestão de Staff
+            </button>
+
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-4 mb-2 mt-8">Recursos & Dados
+            </p>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-book-bookmark w-5"></i> Biblioteca de Livros
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-file-invoice-dollar w-5"></i> Financeiro (MT)
+            </button>
+            <button
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+                <i class="fas fa-shield-halved w-5"></i> Logs de Auditoria
+            </button>
+        </nav>
+
+        <div class="p-6 bg-slate-950/50">
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=MaputoAdmin"
+                        class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700" alt="Avatar">
+                    <span
+                        class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                </div>
+                <div>
+                    <p class="text-xs font-black">Super Admin</p>
+                    <p class="text-[9px] text-red-500 font-bold uppercase">Maputo HQ</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
+            <div class="flex items-center gap-4">
+                <h2 class="text-lg font-black text-slate-800">Painel de Controlo Master</h2>
+                <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full">
+                    <i class="fas fa-location-dot text-blue-600 text-[10px]"></i>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase">Maputo, Moçambique</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" placeholder="Procurar aluno, staff ou log..."
+                        class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:ring-2 focus:ring-blue-900 outline-none w-64">
+                </div>
+                <button
+                    class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:text-blue-900 transition-all border border-slate-200 relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Viewport -->
+        <div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+
+            <!-- KPIs Financeiros e Operacionais (Meticais) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="metric-card bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <span class="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">+12
+                            Novo</span>
+                    </div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Estudantes</p>
+                    <h3 class="text-2xl font-black text-slate-800">1.452</h3>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-money-bill-trend-up"></i>
+                        </div>
+                        <span class="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">88%
+                            Pago</span>
+                    </div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Receita Mensal (MT)
+                    </p>
+                    <h3 class="text-2xl font-black text-slate-800">425.800<span
+                            class="text-sm ml-1 text-slate-400">MT</span></h3>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span class="text-[9px] font-black text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">v2.1</span>
+                    </div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Livros Ativos</p>
+                    <h3 class="text-2xl font-black text-slate-800">328</h3>
+                </div>
+                <div class="metric-card bg-blue-900 p-6 rounded-3xl shadow-xl shadow-blue-200 text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 bg-white/10 text-white rounded-xl flex items-center justify-center text-sm">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <p class="text-[10px] font-black text-blue-200 uppercase tracking-widest mb-1">Staff Online</p>
+                    <h3 class="text-2xl font-black italic">05 Admins</h3>
+                </div>
+            </div>
+
+            <!-- Formulário de Registo Rápido (Funcionalidade Super Admin) -->
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 card-shadow overflow-hidden">
+                <div class="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Registo de Novo Aluno
+                        </h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Adicione estudantes diretamente
+                            ao sistema</p>
+                    </div>
+                    <i class="fas fa-user-plus text-blue-900 opacity-20 text-2xl"></i>
+                </div>
+                <div class="p-8">
+                    <form class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Nome Completo</label>
+                            <input type="text" placeholder="Ex: Celso Manuel"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-900">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Curso / Nível</label>
+                            <select
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-900 appearance-none">
+                                <option>Inglês - Beginner A1</option>
+                                <option>Inglês - Intermediate B1</option>
+                                <option>Francês - Nível 1</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Mensalidade (MT)</label>
+                            <input type="number" value="2500"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-900 font-bold">
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit"
+                                class="w-full bg-red-600 hover:bg-red-700 text-white font-black text-[10px] uppercase tracking-widest py-4 rounded-xl shadow-lg shadow-red-900/20 transition-all">
+                                Confirmar Matrícula
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Gestão de Livros & Fichas -->
+                <div class="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden card-shadow">
+                    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Gestão de Livros
+                            (Maputo Library)</h3>
+                        <button
+                            class="bg-blue-900 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest">+
+                            Upload</button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div
+                            class="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all cursor-pointer">
+                            <div
+                                class="w-12 h-16 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 border border-blue-100">
+                                <i class="fas fa-file-pdf text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-800 leading-tight">Grammar Mastery - B1.pdf</p>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Autor: Delson PS • 24.5 MB
+                                </p>
+                                <div class="mt-2 flex gap-2">
+                                    <span
+                                        class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded uppercase tracking-tighter">Disponível</span>
+                                    <span
+                                        class="text-[8px] font-black bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-tighter">89
+                                        Matrículas Associadas</span>
+                                </div>
+                            </div>
+                            <button class="text-slate-300 hover:text-red-600"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                        <div
+                            class="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all cursor-pointer">
+                            <div
+                                class="w-12 h-16 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 border border-amber-100">
+                                <i class="fas fa-file-word text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-800 leading-tight">Exercícios de Vocabulário -
+                                    A2.docx</p>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Autor: Prof. Nelson • 1.2
+                                    MB</p>
+                                <div class="mt-2 flex gap-2">
+                                    <span
+                                        class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded uppercase tracking-tighter">Disponível</span>
+                                </div>
+                            </div>
+                            <button class="text-slate-300 hover:text-red-600"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auditoria de Logins e Alterações (Ações Críticas) -->
+                <div
+                    class="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden card-shadow flex flex-col">
+                    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Logs de Auditoria &
+                            Segurança</h3>
+                        <i class="fas fa-history text-slate-300"></i>
+                    </div>
+                    <div class="flex-1 overflow-y-auto max-h-[350px] p-6 space-y-4 custom-scrollbar">
+                        <div class="flex gap-4 p-3 bg-slate-50 rounded-2xl border-l-4 border-blue-900">
+                            <div
+                                class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 text-[10px] font-black shrink-0">
+                                DM</div>
+                            <div class="text-xs">
+                                <p class="text-slate-800 font-bold">Admin Delson efetuou Login</p>
+                                <p class="text-[10px] text-slate-400 mt-1">Maputo HQ • <span
+                                        class="font-mono italic">102.88.34.12</span></p>
+                                <p class="text-[9px] text-blue-900 font-black mt-1">HÁ 15 MINUTOS</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 p-3 bg-red-50 rounded-2xl border-l-4 border-red-600">
+                            <div
+                                class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-[10px] font-black shrink-0">
+                                !!</div>
+                            <div class="text-xs">
+                                <p class="text-red-700 font-bold">Alteração Crítica: Nota de Exame</p>
+                                <p class="text-slate-500 mt-1">Admin Nelson alterou nota de 12 para 17 (Aluno ID #290)
+                                </p>
+                                <p class="text-[9px] text-red-600 font-black mt-1">HÁ 2 HORAS</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 p-3 bg-slate-50 rounded-2xl border-l-4 border-slate-300">
+                            <div
+                                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 text-[10px] font-black shrink-0">
+                                S</div>
+                            <div class="text-xs">
+                                <p class="text-slate-800 font-bold">Sistema: Backup Concluído</p>
+                                <p class="text-slate-500 mt-1">Base de dados Maputo-Mirror sincronizada.</p>
+                                <p class="text-[9px] text-slate-400 font-black mt-1">HOJE, 04:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Gestão de Staff (Controlo de Acesso) -->
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 card-shadow overflow-hidden mb-10">
+                <div class="p-8 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-tighter">Equipa de Administração
+                            (Maputo)</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Gerencie permissões de acesso ao
+                            sistema</p>
+                    </div>
+                    <button
+                        class="bg-slate-900 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">+
+                        Novo Membro</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/50">
+                            <tr>
+                                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                                    Membro / Staff</th>
+                                <th
+                                    class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                    Nível de Acesso</th>
+                                <th
+                                    class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                    Última Atividade</th>
+                                <th
+                                    class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                    Acções</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition-all">
+                                <td class="px-8 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-9 h-9 bg-blue-900 rounded-xl flex items-center justify-center text-white font-bold text-xs uppercase">
+                                            DM</div>
+                                        <div>
+                                            <p class="text-sm font-black text-slate-800">Delson Manuel</p>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                                                delson@delsonps.co.mz</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    <span
+                                        class="bg-red-50 text-red-600 px-3 py-1 rounded-lg text-[9px] font-black uppercase">Administrador
+                                        Full</span>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    <span class="text-xs font-bold text-slate-600">Ativo Agora</span>
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button class="w-8 h-8 text-slate-300 hover:text-blue-900 transition-colors"><i
+                                                class="fas fa-user-edit"></i></button>
+                                        <button class="w-8 h-8 text-slate-300 hover:text-red-600 transition-colors"><i
+                                                class="fas fa-shield-slash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-all">
+                                <td class="px-8 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-9 h-9 bg-slate-200 rounded-xl flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
+                                            NM</div>
+                                        <div>
+                                            <p class="text-sm font-black text-slate-800">Nelson Manuel</p>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                                                nelson@delsonps.co.mz</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    <span
+                                        class="bg-blue-50 text-blue-900 px-3 py-1 rounded-lg text-[9px] font-black uppercase">Gestor
+                                        Pedagógico</span>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                    <span class="text-xs font-bold text-slate-400">Há 2 horas</span>
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button class="w-8 h-8 text-slate-300 hover:text-blue-900 transition-colors"><i
+                                                class="fas fa-user-edit"></i></button>
+                                        <button class="w-8 h-8 text-slate-300 hover:text-red-600 transition-colors"><i
+                                                class="fas fa-shield-slash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Flutuante de Alerta Financeiro (MT) -->
+    <div
+        class="fixed bottom-10 right-10 bg-slate-900 text-white p-6 rounded-[2rem] shadow-2xl border border-white/10 max-w-sm">
+        <div class="flex gap-4">
+            <div
+                class="w-12 h-12 bg-amber-500 text-slate-950 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div>
+                <p class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Resumo do Dia (Maputo)</p>
+                <p class="text-sm font-bold mt-1">Foram arrecadados <span class="text-emerald-400">85.400 MT</span> em
+                    matrículas hoje.</p>
+                <button class="mt-4 text-[9px] font-black uppercase border-b border-white/20 pb-1">Ver Detalhes do
+                    Caixa</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

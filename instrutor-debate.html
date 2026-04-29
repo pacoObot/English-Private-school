@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delson PS - Debate Master</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #e11d48;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .active-tab {
+            color: #e11d48;
+            border-bottom: 3px solid #e11d48;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-card-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden bg-slate-50">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static lg:w-64">
+        <div class="p-6">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-rose-200">
+                    <i class="fas fa-comments text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg leading-tight tracking-tight">DELSON<span
+                            class="text-rose-600">PS</span></h1>
+                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest">Debate Arena</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <button onclick="switchTab('sessions')" id="btn-sessions"
+                class="tab-btn active-tab w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all">
+                <i class="fas fa-calendar-check w-5"></i> Sessões de Debate
+            </button>
+            <button onclick="switchTab('students')" id="btn-students"
+                class="tab-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-user-graduate w-5"></i> Banco de Alunos
+            </button>
+            <button onclick="switchTab('history')" id="btn-history"
+                class="tab-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i class="fas fa-history w-5"></i> Histórico Geral
+            </button>
+        </nav>
+
+        <div class="p-6 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Instructor"
+                    class="w-10 h-10 rounded-full bg-rose-100" alt="Prof">
+                <div class="min-w-0">
+                    <p class="text-xs font-extrabold truncate uppercase">Instrutor Debate</p>
+                    <p class="text-[9px] text-emerald-500 font-bold uppercase">Online</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-hidden w-full relative">
+
+        <!-- Header -->
+        <header
+            class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 shrink-0">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden w-11 h-11 flex items-center justify-center rounded-xl bg-slate-50 text-slate-600 border border-slate-200">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 id="page-title" class="text-lg lg:text-xl font-extrabold text-slate-800">Sessões de Debate</h2>
+            </div>
+
+            <button onclick="openScheduleModal()"
+                class="bg-rose-600 text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-rose-200 flex items-center gap-2 hover:bg-rose-700 transition-all">
+                <i class="fas fa-plus"></i> <span class="hidden sm:inline">Novo Debate</span>
+            </button>
+        </header>
+
+        <!-- Dynamic Content Area -->
+        <div id="content-sessions" class="tab-content flex-1 overflow-y-auto p-4 lg:p-10 space-y-6">
+
+            <!-- Welcome Info -->
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl">
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-black mb-2">Próximo Debate Presencial</h3>
+                    <div class="flex flex-wrap gap-6 items-center mt-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i
+                                    class="fas fa-clock text-rose-400"></i></div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Horário</p>
+                                <p class="text-sm font-bold">Hoje, 19:30 - 21:00</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i
+                                    class="fas fa-users text-rose-400"></i></div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Vagas</p>
+                                <p class="text-sm font-bold">12 / 15 Inscritos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute right-[-20px] bottom-[-20px] text-white/5 text-9xl font-black rotate-12">
+                    DEBATE
+                </div>
+            </div>
+
+            <!-- List of Participating Students for Today -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between px-2">
+                    <h3 class="font-extrabold text-slate-400 uppercase text-[10px] tracking-widest">Alunos Presentes na
+                        Sessão</h3>
+                    <button class="text-rose-600 font-bold text-[10px] uppercase underline">Adicionar Aluno à
+                        Lista</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="session-student-list">
+                    <!-- Student Cards will be here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="content-students" class="tab-content hidden flex-1 overflow-y-auto p-4 lg:p-10">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6">
+                <h3 class="font-black text-xl mb-4">Banco Geral de Alunos</h3>
+                <div class="relative mb-6">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" placeholder="Procurar aluno por ID ou Nome..."
+                        class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 font-medium outline-none focus:ring-2 focus:ring-rose-500/20">
+                </div>
+                <!-- Table for all students -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-separate border-spacing-y-3">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                <th class="px-4">Aluno</th>
+                                <th class="px-4">Status</th>
+                                <th class="px-4">Média Debate</th>
+                                <th class="px-4 text-right">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-students-table">
+                            <!-- Rows loaded by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Agendamento -->
+    <div id="schedule-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('schedule-modal')"></div>
+        <div class="relative bg-white w-full max-w-md p-8 rounded-[2.5rem] shadow-2xl">
+            <h3 class="text-2xl font-black mb-6">Agendar Debate</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block">Tema do Debate</label>
+                    <input type="text" placeholder="Ex: Impacto da IA na Educação"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold outline-none focus:border-rose-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block">Data</label>
+                        <input type="date"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase mb-2 block">Capacidade</label>
+                        <input type="number" value="15"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold outline-none">
+                    </div>
+                </div>
+                <button onclick="closeModal('schedule-modal')"
+                    class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest mt-4">Criar
+                    Sessão</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Avaliação de Debate -->
+    <div id="eval-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onclick="closeModal('eval-modal')"></div>
+        <div
+            class="relative bg-white w-full max-w-xl h-[90vh] md:h-auto overflow-y-auto rounded-t-[2.5rem] md:rounded-[3rem] shadow-2xl flex flex-col">
+
+            <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div>
+                    <h3 class="text-xl font-extrabold text-slate-900">Avaliação de Fala</h3>
+                    <p class="text-[10px] font-black text-rose-600 uppercase tracking-widest mt-1"
+                        id="eval-student-name">Nome do Aluno</p>
+                </div>
+                <button onclick="closeModal('eval-modal')"
+                    class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400"><i
+                        class="fas fa-times"></i></button>
+            </div>
+
+            <div class="p-8 space-y-8">
+                <!-- Fluência -->
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fluência e
+                            Vocabulário</label>
+                        <span class="text-rose-600 font-black" id="val-fluency">5</span>
+                    </div>
+                    <input type="range" min="1" max="10" value="5"
+                        class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer custom-range"
+                        oninput="document.getElementById('val-fluency').innerText = this.value">
+                </div>
+
+                <!-- Argumentação -->
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Poder de
+                            Argumentação</label>
+                        <span class="text-rose-600 font-black" id="val-arg">5</span>
+                    </div>
+                    <input type="range" min="1" max="10" value="5"
+                        class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer custom-range"
+                        oninput="document.getElementById('val-arg').innerText = this.value">
+                </div>
+
+                <!-- Postura -->
+                <div class="space-y-4">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Postura e
+                        Engajamento</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="selectPosture(this)"
+                            class="posture-btn border-2 border-slate-100 p-3 rounded-2xl text-[9px] font-black text-slate-400 uppercase">Tímido</button>
+                        <button onclick="selectPosture(this)"
+                            class="posture-btn border-2 border-rose-500 bg-rose-50 p-3 rounded-2xl text-[9px] font-black text-rose-600 uppercase">Equilibrado</button>
+                        <button onclick="selectPosture(this)"
+                            class="posture-btn border-2 border-slate-100 p-3 rounded-2xl text-[9px] font-black text-slate-400 uppercase">Dominante</button>
+                    </div>
+                </div>
+
+                <!-- Notas -->
+                <div class="space-y-4">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Feedback
+                        Rápido</label>
+                    <textarea
+                        class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm font-medium h-24"
+                        placeholder="Ex: Melhorou muito na dicção, mas precisa ouvir mais os colegas."></textarea>
+                </div>
+            </div>
+
+            <div class="p-8 bg-slate-50 border-t border-slate-100">
+                <button onclick="saveEvaluation()"
+                    class="w-full bg-rose-600 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-rose-200 hover:scale-[1.02] transition-all">Salvar
+                    Avaliação</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados de Simulação
+        const students = [
+            { id: '442910', name: 'Alípio Paco', avatar: 'Alipio', status: 'Presente', score: 8.5 },
+            { id: '442915', name: 'Maria João', avatar: 'Maria', status: 'Presente', score: 7.2 },
+            { id: '442920', name: 'Delson Silva', avatar: 'Delson', status: 'Ausente', score: 9.0 },
+            { id: '442922', name: 'Ana Paula', avatar: 'Ana', status: 'Presente', score: 6.8 },
+            { id: '442925', name: 'Ricardo Santos', avatar: 'Ricardo', status: 'Inscrito', score: 7.5 }
+        ];
+
+        function init() {
+            renderSessionStudents();
+            renderAllStudents();
+        }
+
+        function renderSessionStudents() {
+            const container = document.getElementById('session-student-list');
+            container.innerHTML = students.filter(s => s.status === 'Presente').map(student => `
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${student.avatar}" class="w-12 h-12 rounded-2xl bg-slate-50 p-1">
+                        <div>
+                            <p class="text-sm font-extrabold text-slate-900">${student.name}</p>
+                            <p class="text-[9px] text-slate-400 font-bold">ID: ${student.id}</p>
+                        </div>
+                        <div class="ml-auto w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openEvalModal('${student.name}')" class="flex-1 bg-slate-900 text-white py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-rose-600 transition-all">Avaliar Fala</button>
+                        <button class="w-12 h-11 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:text-rose-600 transition-all"><i class="fas fa-info-circle"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAllStudents() {
+            const tbody = document.getElementById('all-students-table');
+            tbody.innerHTML = students.map(student => `
+                <tr class="bg-white border border-slate-100 rounded-2xl">
+                    <td class="p-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${student.avatar}" class="w-8 h-8 rounded-lg bg-slate-50">
+                            <span class="text-sm font-bold text-slate-700">${student.name}</span>
+                        </div>
+                    </td>
+                    <td class="p-4">
+                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-md ${student.status === 'Presente' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}">${student.status}</span>
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-rose-500 rounded-full" style="width: ${student.score * 10}%"></div>
+                            </div>
+                            <span class="text-xs font-black text-slate-900">${student.score}</span>
+                        </div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button class="text-slate-400 hover:text-rose-600"><i class="fas fa-plus-circle"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active-tab', 'bg-rose-600', 'text-white');
+                b.classList.add('text-slate-500');
+            });
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('text-slate-500');
+
+            const titles = { sessions: 'Sessões de Debate', students: 'Banco de Alunos', history: 'Histórico' };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        function openEvalModal(name) {
+            document.getElementById('eval-student-name').innerText = name;
+            document.getElementById('eval-modal').classList.remove('hidden');
+            document.getElementById('eval-modal').classList.add('flex');
+        }
+
+        function openScheduleModal() {
+            document.getElementById('schedule-modal').classList.remove('hidden');
+            document.getElementById('schedule-modal').classList.add('flex');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        function selectPosture(btn) {
+            document.querySelectorAll('.posture-btn').forEach(b => {
+                b.classList.remove('border-rose-500', 'bg-rose-50', 'text-rose-600');
+                b.classList.add('border-slate-100', 'text-slate-400');
+            });
+            btn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-600');
+            btn.classList.remove('border-slate-100', 'text-slate-400');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+
+        function saveEvaluation() {
+            // Lógica para salvar os dados
+            closeModal('eval-modal');
+            // Feedback visual de sucesso (opcional)
+        }
+
+        window.onload = init;
+    </script>
+</body>
+
+</html>

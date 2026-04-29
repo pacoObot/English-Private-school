@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delson PS - Modern Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .sidebar-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-item.active {
+            background-color: #1e3a8a;
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .menu-dot {
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Mobile Overlay */
+        #sidebar-overlay {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+
+            #sidebar-overlay.open {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-40 lg:static lg:w-64 lg:transform-none">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white">
+                    <i class="fas fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">DELSON<span class="text-red-600">PS</span></h1>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Language Academy</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 p-2">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4 custom-scroll overflow-y-auto">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard"
+                class="sidebar-item active w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium">
+                <i class="fas fa-th-large w-5"></i> Dashboard
+            </button>
+            <button onclick="switchTab('enroll')" id="btn-enroll"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-plus-circle w-5"></i> Inscrições
+            </button>
+            <button
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-book-open w-5"></i> Fichas de Estudo
+            </button>
+            <button
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-chart-line w-5"></i> Notas e Faltas
+            </button>
+            <button
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-wallet w-5"></i> Tesouraria
+            </button>
+
+            <div class="pt-6 pb-2">
+                <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Configurações</p>
+            </div>
+            <button
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-4 lg:py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-user-circle w-5"></i> Meu Perfil
+            </button>
+        </nav>
+
+        <!-- Suporte Card -->
+        <div class="p-4 mt-auto">
+            <div class="bg-slate-900 rounded-2xl p-4 relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-xs text-red-400 font-bold italic mb-1">Dúvidas?</p>
+                    <p class="text-[11px] text-slate-300 mb-3">Fale diretamente com seu tutor via WhatsApp.</p>
+                    <button
+                        class="w-full bg-white text-slate-900 text-[10px] font-bold py-2.5 rounded-lg hover:bg-slate-100 transition-colors uppercase tracking-tight">Suporte
+                        Rápido</button>
+                </div>
+                <i class="fab fa-whatsapp absolute -right-2 -bottom-2 text-slate-800 text-5xl opacity-50"></i>
+            </div>
+        </div>
+
+        <!-- User Profile Bottom -->
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alipio" alt="User"
+                    class="w-10 h-10 rounded-full bg-orange-100">
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold truncate uppercase">ALÍPIO PACO</p>
+                    <p class="text-[10px] text-slate-500">ID: 442910</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-[#F1F5F9] w-full">
+        <!-- Top Bar -->
+        <header
+            class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 id="page-title" class="text-lg lg:text-2xl font-bold truncate">Olá, Alípio! 👋</h2>
+                    <p class="hidden sm:block text-[10px] lg:text-xs text-slate-500">Rumo ao <span
+                            class="text-red-600 font-bold">C1 Advanced</span>.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 lg:gap-4">
+                <!-- Lang Toggle - Hidden on small mobile -->
+                <div class="hidden sm:flex bg-slate-100 p-1 rounded-xl gap-1">
+                    <button class="px-3 py-1.5 rounded-lg text-[10px] font-bold text-slate-400">EN</button>
+                    <button
+                        class="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-white text-slate-800 shadow-sm">PT</button>
+                </div>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 relative">
+                    <i class="far fa-bell"></i>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                </button>
+                <div class="flex items-center gap-3 pl-2 lg:pl-4 border-l border-slate-200">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alipio" alt="User"
+                        class="w-9 h-9 lg:w-10 lg:h-10 rounded-full border-2 border-red-100 p-0.5">
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Area -->
+        <div id="content-area" class="flex-1 overflow-y-auto p-4 lg:p-8 custom-scroll">
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="space-y-6 lg:space-y-8 animate-in fade-in duration-500">
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- Hero Card -->
+                    <div
+                        class="col-span-12 xl:col-span-8 bg-white rounded-[24px] lg:rounded-[32px] p-6 lg:p-8 shadow-sm border border-slate-100 flex flex-col lg:flex-row items-start lg:items-center gap-6 relative overflow-hidden">
+                        <div class="flex-1 z-10 w-full">
+                            <span
+                                class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full mb-4 uppercase tracking-widest">
+                                <span class="menu-dot"></span> Meta Semestral
+                            </span>
+                            <h3 class="text-2xl lg:text-4xl font-extrabold text-slate-900 leading-tight mb-6">
+                                Progresso Global de<br>
+                                <span class="italic text-slate-800">Fluência Corporativa</span>
+                            </h3>
+
+                            <div class="space-y-4 lg:space-y-6 mb-8">
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400">
+                                        <span>Speaking Skills</span>
+                                        <span class="text-blue-600">85%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-800 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400">
+                                        <span>Writing Mastery</span>
+                                        <span class="text-red-600">62%</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-red-600 rounded-full" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:flex gap-3">
+                                <button
+                                    class="w-full sm:w-auto px-6 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm shadow-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
+                                    <i class="fas fa-eye"></i> Ver Notas
+                                </button>
+                                <button
+                                    class="w-full sm:w-auto px-6 py-4 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+                                    <i class="fas fa-download"></i> Baixar Fichas
+                                </button>
+                            </div>
+                        </div>
+                        <div
+                            class="hidden lg:flex w-64 justify-center opacity-[0.03] absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <i class="fas fa-graduation-cap text-[320px]"></i>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Card -->
+                    <div
+                        class="col-span-12 xl:col-span-4 gradient-primary rounded-[24px] lg:rounded-[32px] p-6 lg:p-8 text-white relative overflow-hidden flex flex-col justify-between shadow-xl shadow-blue-100">
+                        <div class="relative z-10 flex justify-between items-start">
+                            <div
+                                class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                                <i class="fas fa-wallet text-xl"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-400/20 text-green-300 border border-green-400/30 text-[10px] font-bold rounded-full uppercase">Liquidado</span>
+                        </div>
+
+                        <div class="relative z-10 mt-8 lg:mt-0">
+                            <p class="text-[10px] font-bold text-blue-200 uppercase tracking-widest mb-1">Saldo em conta
+                            </p>
+                            <h4 class="text-3xl lg:text-4xl font-bold">28.350,50 <span
+                                    class="text-lg font-normal opacity-70">MT</span></h4>
+                        </div>
+
+                        <div
+                            class="relative z-10 mt-8 lg:mt-0 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div>
+                                <p class="text-[10px] text-blue-200 uppercase font-bold">Próxima Mensalidade</p>
+                                <p class="text-sm font-bold">05 de Maio, 2024</p>
+                            </div>
+                            <button
+                                class="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-6 py-3 rounded-xl text-[10px] font-bold transition-colors uppercase">Faturas</button>
+                        </div>
+
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                            <i class="far fa-clock text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Horas Aula</p>
+                            <p class="text-lg font-bold">124h</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="w-11 h-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-medal text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Testes</p>
+                            <p class="text-lg font-bold">12 Concluídos</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="w-11 h-11 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                            <i class="far fa-file-alt text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Fichas</p>
+                            <p class="text-lg font-bold">45 Baixadas</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+                            <i class="far fa-calendar-check text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Presença</p>
+                            <p class="text-lg font-bold">96.4%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enrollment View -->
+            <div id="view-enroll" class="hidden space-y-6 lg:space-y-8 animate-in slide-in-from-bottom-4 duration-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl lg:text-2xl font-bold">Cursos Disponíveis</h3>
+                        <p class="text-xs lg:text-sm text-slate-500">Explore novas áreas de conhecimento.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Course 1 -->
+                    <div
+                        class="bg-white rounded-[28px] p-6 lg:p-8 border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                        <div
+                            class="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-check-double text-2xl"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Português – Admissão UEM</h4>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Preparação intensiva para os exames de
+                            admissão com foco em gramática.</p>
+                        <button
+                            class="w-full py-4 bg-[#059669] text-white rounded-2xl font-bold text-sm shadow-lg shadow-green-50">
+                            Inscrever-me
+                        </button>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="bg-white rounded-[28px] p-6 lg:p-8 border border-slate-100 shadow-sm">
+                        <div
+                            class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-language text-2xl"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">English – Advanced C2</h4>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Domine o Inglês com o nosso curso de
+                            maior proficiência técnica.</p>
+                        <button
+                            class="w-full py-4 bg-[#1e3a8a] text-white rounded-2xl font-bold text-sm shadow-lg shadow-blue-50">
+                            Inscrever-me
+                        </button>
+                    </div>
+
+                    <div
+                        class="bg-slate-50 rounded-[28px] p-8 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center opacity-60">
+                        <i class="fas fa-plus-circle text-2xl text-slate-300 mb-2"></i>
+                        <p class="text-xs font-bold text-slate-400">Em breve novos cursos</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Floating Menu - Responsive Adjust -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 lg:gap-4 z-30">
+        <button
+            class="w-12 h-12 lg:w-14 lg:h-14 bg-white shadow-2xl border border-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:scale-110 active:scale-95 transition-all">
+            <i class="fas fa-magic text-sm lg:text-base"></i>
+        </button>
+        <button onclick="toggleSidebar()"
+            class="lg:hidden w-12 h-12 bg-white shadow-2xl border border-slate-100 rounded-full flex items-center justify-center text-blue-600 hover:scale-110 active:scale-95 transition-all">
+            <i class="fas fa-bars text-sm"></i>
+        </button>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function switchTab(tab) {
+            const dashboardView = document.getElementById('view-dashboard');
+            const enrollView = document.getElementById('view-enroll');
+            const btnDashboard = document.getElementById('btn-dashboard');
+            const btnEnroll = document.getElementById('btn-enroll');
+            const pageTitle = document.getElementById('page-title');
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+
+            if (tab === 'dashboard') {
+                dashboardView.classList.remove('hidden');
+                enrollView.classList.add('hidden');
+                btnDashboard.classList.add('active');
+                btnEnroll.classList.remove('active');
+                btnEnroll.classList.add('text-slate-600');
+                pageTitle.innerHTML = 'Olá, Alípio! 👋';
+            } else if (tab === 'enroll') {
+                dashboardView.classList.add('hidden');
+                enrollView.classList.remove('hidden');
+                btnEnroll.classList.add('active');
+                btnDashboard.classList.remove('active');
+                btnDashboard.classList.add('text-slate-600');
+                pageTitle.innerHTML = 'Bem-vindo! 👋';
+            }
+        }
+    </script>
+</body>
+
+</html>
