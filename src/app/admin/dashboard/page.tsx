@@ -8,21 +8,34 @@ import { DataTable } from "@/components/ui/DataTable";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ActionNotice } from "@/components/ui/ActionNotice";
+import { updateInvoiceStatusAction } from "@/features/admin/actions";
 import { adminNavigation } from "@/features/admin/nav";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminDashboardPage() {
-  const [studentCount, courseCount, classCount, staffCount, invoiceAggregate, latestEnrollments, auditLogs] = await Promise.all([
+type AdminDashboardPageProps = {
+  searchParams?: { status?: string };
+};
+
+export default async function AdminDashboardPage({ searchParams }: AdminDashboardPageProps) {
+  const [studentCount, courseCount, classCount, staffCount, paidAggregate, pendingAggregate, overdueAggregate, latestEnrollments, invoices, auditLogs] = await Promise.all([
     prisma.studentProfile.count(),
     prisma.course.count({ where: { isActive: true } }),
     prisma.classGroup.count(),
     prisma.user.count({ where: { role: { in: [Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] }, isActive: true } }),
     prisma.invoice.aggregate({ _sum: { amountMt: true }, where: { status: "PAID" } }),
+    prisma.invoice.aggregate({ _sum: { amountMt: true }, where: { status: "PENDING" } }),
+    prisma.invoice.aggregate({ _sum: { amountMt: true }, where: { status: "OVERDUE" } }),
     prisma.enrollment.findMany({
       take: 5,
       include: { student: { include: { user: true } }, course: true, classGroup: true },
+      orderBy: { createdAt: "desc" }
+    }),
+    prisma.invoice.findMany({
+      take: 6,
+      include: { student: { include: { user: true } }, enrollment: { include: { course: true } } },
       orderBy: { createdAt: "desc" }
     }),
     prisma.auditLog.findMany({ take: 3, orderBy: { createdAt: "desc" } })
@@ -38,11 +51,18 @@ export default async function AdminDashboardPage() {
       sidebarFooter={<AdminFooter />}
     >
       <div className="space-y-6">
+        <ActionNotice status={searchParams?.status} />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard label="Total Estudantes" value={String(studentCount)} hint="Real" icon={GraduationCap} tone="navy" />
-          <MetricCard label="Receita Paga" value={`${invoiceAggregate._sum.amountMt ?? 0} MT`} hint="MT" icon={Wallet} tone="rose" />
+          <MetricCard label="Receita Paga" value={`${paidAggregate._sum.amountMt ?? 0} MT`} hint="MT" icon={Wallet} tone="rose" />
           <MetricCard label="Cursos Ativos" value={String(courseCount)} hint="Ativos" icon={BookOpen} tone="dark" />
           <MetricCard label="Staff Ativo" value={String(staffCount)} icon={ShieldCheck} tone="light" />
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <MetricCard label="Faturas Pendentes" value={`${pendingAggregate._sum.amountMt ?? 0} MT`} hint="A receber" icon={FileText} tone="navy" />
+          <MetricCard label="Faturas Vencidas" value={`${overdueAggregate._sum.amountMt ?? 0} MT`} hint="OVERDUE" icon={Wallet} tone="rose" />
+          <MetricCard label="Turmas Ativas" value={String(classCount)} hint="Operacionais" icon={Users} tone="dark" />
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -79,6 +99,31 @@ export default async function AdminDashboardPage() {
             </div>
           </BentoCard>
         </div>
+
+        <BentoCard className="p-0">
+          <div className="flex items-center justify-between p-6">
+            <h3 className="font-black text-slate-800">Faturas Recentes</h3>
+            <StatusBadge tone="navy">{`${invoices.length} Itens`}</StatusBadge>
+          </div>
+          <DataTable
+            emptyMessage="Ainda nao existem faturas."
+            headers={["Referencia", "Aluno", "Valor", "Estado"]}
+            rows={invoices.map((invoice) => [
+              invoice.reference,
+              invoice.student.user.name,
+              `${invoice.amountMt} MT`,
+              <form key={invoice.id} action={updateInvoiceStatusAction} className="flex justify-end gap-2">
+                <input type="hidden" name="id" value={invoice.id} />
+                <select name="status" defaultValue={invoice.status} className="rounded-xl border border-slate-200 bg-white px-2 py-2 text-xs font-bold">
+                  {["PENDING", "PAID", "OVERDUE", "CANCELLED"].map((status) => (
+                    <option key={status} value={status}>{status}</option>
+                  ))}
+                </select>
+                <button className="rounded-xl bg-slate-900 px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">OK</button>
+              </form>
+            ])}
+          />
+        </BentoCard>
       </div>
     </DashboardLayout>
   );

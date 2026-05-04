@@ -1,6 +1,7 @@
 import { BookOpen, Download, Eye, MessageCircle, Wallet } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { BentoCard } from "@/components/ui/BentoCard";
+import { DataTable } from "@/components/ui/DataTable";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -72,6 +73,58 @@ export default async function StudentDashboardPage() {
         <MetricCard label="Fichas Novas" value="08" hint="+3" icon={Download} tone="rose" />
         <MetricCard label="Faltas" value={String(absences)} hint={gradeAverage ? `${gradeAverage.toFixed(1)}/20` : "Sem notas"} icon={Eye} tone="light" />
         <MetricCard label="Suporte" value="Online" hint="Tutor" icon={MessageCircle} tone="dark" />
+
+        <BentoCard className="p-0 xl:col-span-6">
+          <div className="flex items-center justify-between p-6">
+            <h3 className="font-black text-slate-800">Notas</h3>
+            <StatusBadge tone="navy">{gradeAverage ? `${gradeAverage.toFixed(1)}/20` : "Sem media"}</StatusBadge>
+          </div>
+          <DataTable
+            emptyMessage="Ainda nao existem notas lancadas."
+            headers={["Avaliacao", "Nota", "Data"]}
+            rows={(student?.grades ?? []).map((grade) => [grade.title, `${grade.score}/${grade.maxScore}`, grade.gradedAt.toLocaleDateString("pt-MZ")])}
+          />
+        </BentoCard>
+
+        <BentoCard className="p-0 xl:col-span-6">
+          <div className="flex items-center justify-between p-6">
+            <h3 className="font-black text-slate-800">Presencas</h3>
+            <StatusBadge tone={absences > 0 ? "warning" : "success"}>{`${absences} Faltas`}</StatusBadge>
+          </div>
+          <DataTable
+            emptyMessage="Ainda nao existem presencas marcadas."
+            headers={["Data", "Estado", "Notas"]}
+            rows={(student?.attendances ?? []).map((attendance) => [
+              attendance.lessonDate.toLocaleDateString("pt-MZ"),
+              attendance.status,
+              attendance.notes ?? "-"
+            ])}
+          />
+        </BentoCard>
+
+        <BentoCard className="p-0 xl:col-span-6">
+          <div className="flex items-center justify-between p-6">
+            <h3 className="font-black text-slate-800">Matriculas</h3>
+            <StatusBadge tone="navy">{`${activeCourses} Cursos`}</StatusBadge>
+          </div>
+          <DataTable
+            emptyMessage="Ainda nao existem matriculas."
+            headers={["Curso", "Turma", "Estado"]}
+            rows={(student?.enrollments ?? []).map((enrollment) => [enrollment.course.title, enrollment.classGroup.name, enrollment.status])}
+          />
+        </BentoCard>
+
+        <BentoCard className="p-0 xl:col-span-6">
+          <div className="flex items-center justify-between p-6">
+            <h3 className="font-black text-slate-800">Faturas</h3>
+            <StatusBadge tone={pendingAmount > 0 ? "warning" : "success"}>{`${pendingAmount} MT`}</StatusBadge>
+          </div>
+          <DataTable
+            emptyMessage="Ainda nao existem faturas."
+            headers={["Referencia", "Valor", "Estado"]}
+            rows={(student?.invoices ?? []).map((invoice) => [invoice.reference, `${invoice.amountMt} MT`, invoice.status])}
+          />
+        </BentoCard>
       </div>
     </DashboardLayout>
   );

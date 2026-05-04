@@ -5,13 +5,19 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { DataTable } from "@/components/ui/DataTable";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ActionNotice } from "@/components/ui/ActionNotice";
 import { getCurrentSession } from "@/features/auth/current-user";
+import { saveAttendanceAction, saveGradeAction } from "@/features/teacher/actions";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function TeacherDashboardPage() {
+type TeacherDashboardPageProps = {
+  searchParams?: { status?: string };
+};
+
+export default async function TeacherDashboardPage({ searchParams }: TeacherDashboardPageProps) {
   const session = await getCurrentSession();
   const teacher = session
     ? await prisma.teacherProfile.findFirst({
@@ -26,12 +32,15 @@ export default async function TeacherDashboardPage() {
       })
     : null;
   const currentClass = teacher?.classGroups[0];
+  const today = new Date().toISOString().slice(0, 10);
   const roster =
     currentClass?.enrollments.map((enrollment) => {
-      const grades = enrollment.student.grades;
+      const grades = enrollment.student.grades.filter((grade) => grade.classGroupId === currentClass.id);
       const average = grades.length ? grades.reduce((sum, grade) => sum + grade.score, 0) / grades.length : 0;
-      const absences = enrollment.student.attendances.filter((attendance) => attendance.status === "ABSENT").length;
+      const absences = enrollment.student.attendances.filter((attendance) => attendance.classGroupId === currentClass.id && attendance.status === "ABSENT").length;
       return {
+        id: enrollment.student.id,
+        classGroupId: currentClass.id,
         name: enrollment.student.user.name,
         average: average ? average.toFixed(1) : "-",
         absences: String(absences).padStart(2, "0")
@@ -48,6 +57,7 @@ export default async function TeacherDashboardPage() {
       sidebarFooter={<NextClass />}
     >
       <div className="space-y-6">
+        <ActionNotice status={searchParams?.status} />
         <BentoCard className="overflow-hidden p-0">
           <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/60 p-6 sm:flex-row sm:items-center sm:justify-between lg:p-8">
             <div>
@@ -75,11 +85,14 @@ export default async function TeacherDashboardPage() {
               </div>,
               student.average,
               <span key={`${student.name}-absences`} className="text-crimson">{student.absences}</span>,
-              <input
-                key={`${student.name}-grade`}
-                className="w-20 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center font-black outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100"
-                placeholder="00"
-              />
+              <form key={`${student.name}-grade`} action={saveGradeAction} className="grid justify-end gap-2 sm:flex">
+                <input type="hidden" name="studentId" value={student.id} />
+                <input type="hidden" name="classGroupId" value={student.classGroupId} />
+                <input name="title" className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100 sm:w-32" placeholder="Teste" required />
+                <input name="score" className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center font-black outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100 sm:w-20" placeholder="00" type="number" min={0} max={20} step="0.1" required />
+                <input type="hidden" name="maxScore" value="20" />
+                <button className="rounded-xl bg-crimson px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Salvar</button>
+              </form>
             ])}
           />
         </BentoCard>
@@ -94,17 +107,30 @@ export default async function TeacherDashboardPage() {
               <Users className="text-rose-400" />
             </div>
             <div className="space-y-3">
-              {(roster.length ? roster.map((student) => student.name) : ["Sem alunos atribuídos"]).map((name, index) => (
-                <div key={name} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <span className="text-sm font-bold">{name}</span>
-                  <div className="flex gap-2">
-                    <button className={index === 1 ? "h-9 w-9 rounded-xl bg-slate-700 text-xs font-black text-slate-400" : "h-9 w-9 rounded-xl border border-emerald-500/30 bg-emerald-500/20 text-xs font-black text-emerald-400"}>P</button>
-                    <button className={index === 1 ? "h-9 w-9 rounded-xl border border-rose-500/30 bg-rose-500/20 text-xs font-black text-rose-400" : "h-9 w-9 rounded-xl bg-slate-700 text-xs font-black text-slate-400"}>F</button>
-                  </div>
-                </div>
-              ))}
+              {roster.length ? (
+                roster.map((student) => (
+                  <form key={student.id} action={saveAttendanceAction} className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <input type="hidden" name="studentId" value={student.id} />
+                    <input type="hidden" name="classGroupId" value={student.classGroupId} />
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-bold">{student.name}</span>
+                      <input name="lessonDate" className="w-36 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-xs font-bold text-white" type="date" defaultValue={today} required />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                      {["PRESENT", "ABSENT", "LATE", "EXCUSED"].map((status) => (
+                        <label key={status} className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-[10px] font-black uppercase text-slate-200">
+                          <input name="status" type="radio" value={status} defaultChecked={status === "PRESENT"} />
+                          {status}
+                        </label>
+                      ))}
+                      <button className="rounded-xl bg-crimson px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
+                    </div>
+                  </form>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm font-bold text-slate-300">Sem alunos atribuídos.</div>
+              )}
             </div>
-            <PrimaryButton className="mt-6 w-full" tone="rose">Finalizar Chamada</PrimaryButton>
           </BentoCard>
 
           <BentoCard>

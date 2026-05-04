@@ -10,7 +10,7 @@ Sistema de gestao academica para uma escola privada de ingles. O produto pretend
 
 ## Estado geral
 
-O projeto esta na base inicial/sprint 1. Ja existe uma estrutura Next.js com App Router, TypeScript, Tailwind CSS, Prisma e PostgreSQL via Docker Compose. A interface inicial esta dividida por papeis e preparada para evoluir para funcionalidades reais.
+O projeto esta em entrega parcial validada do Sprint 3. Ja existe uma estrutura Next.js com App Router, TypeScript, Tailwind CSS, Prisma e PostgreSQL via Docker Compose. As areas admin, docente e estudante ja usam dados reais em parte dos fluxos academicos, com CRUDs administrativos, matriculas, faturas, notas e presencas operacionais.
 
 ## Publico-alvo
 
@@ -47,19 +47,19 @@ O projeto esta na base inicial/sprint 1. Ja existe uma estrutura Next.js com App
 
 ### Autenticacao
 
-Base em `src/features/auth`. O sprint inicial prepara a area, mas a autenticacao real ainda deve ser consolidada com sessao, protecao por role e recuperacao de senha.
+Base em `src/features/auth`. O login real, cookie de sessao e middleware por role ja existem; ainda faltam refinamentos como recuperacao de senha, politicas mais completas de seguranca e testes automatizados.
 
 ### Administracao
 
-Base em `src/features/admin`. Deve cobrir estudantes, turmas, cursos, staff, financeiro e auditoria.
+Base em `src/features/admin`. Ja cobre CRUD operacional de estudantes, turmas, cursos e staff, matriculas com fatura inicial, resumo financeiro e auditoria em acoes criticas.
 
 ### Estudante
 
-Base em `src/features/student`. Deve evoluir para inscricoes, cursos, fichas, notas, faltas e tesouraria.
+Base em `src/features/student`. O dashboard ja mostra matriculas, faturas, notas e faltas reais do estudante autenticado.
 
 ### Docente
 
-Base em `src/features/teacher`. Deve evoluir para turmas, lancamento de notas, chamada, fichas e debates.
+Base em `src/features/teacher`. O dashboard ja permite ao docente ver turma atribuida, lancar notas e marcar presencas/faltas.
 
 ### Debate
 
@@ -82,6 +82,18 @@ O schema atual modela:
 - `DebateSession`: sessoes de debate.
 - `DebateEvaluation`: avaliacao de debate por estudante.
 - `AuditLog`: auditoria.
+
+## QA responsivo
+
+O projeto inclui o comando `npm run qa:responsive`, que usa Chrome headless via DevTools Protocol para autenticar perfis seed por cookie de sessao, visitar rotas protegidas e capturar screenshots em `qa/screenshots`.
+
+Viewports validados:
+
+- 360px.
+- 390px.
+- 430px.
+- Tablet.
+- Desktop.
 
 Roles atuais:
 

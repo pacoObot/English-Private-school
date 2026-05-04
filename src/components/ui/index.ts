@@ -1,3 +1,4 @@
+export { ActionNotice } from "./ActionNotice";
 export { BentoCard } from "./BentoCard";
 export { DataTable } from "./DataTable";
 export { EmptyState } from "./EmptyState";
