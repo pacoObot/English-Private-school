@@ -1,123 +1,134 @@
-"use client";
-
-import type { ReactNode } from "react";
 import { CalendarClock, MessageSquarePlus, Mic2, Plus, SlidersHorizontal, Users } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { BentoCard } from "@/components/ui/BentoCard";
-import { DataTable } from "@/components/ui/DataTable";
-import { FormField } from "@/components/ui/FormField";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { StatusBadge } from "@/components/ui/StatusBadge";
-import { debateNav, debateStudents } from "@/lib/mock-data";
+import { ActionNotice, BentoCard, DataTable, FormField, PrimaryButton, SelectField, StatusBadge } from "@/components/ui";
+import { debateNav } from "@/lib/mock-data";
+import { prisma } from "@/lib/prisma";
+import { getCurrentSession } from "@/features/auth/current-user";
+import { DebateSessionStatus, Role } from "@/generated/prisma";
+import { createDebateSessionAction } from "@/features/debate/actions";
 
-export default function DebatePage() {
+export const dynamic = "force-dynamic";
+
+export default async function DebatePage({ searchParams }: { searchParams?: { status?: string } }) {
+  const session = await getCurrentSession();
+  if (!session) redirect("/login");
+
+  const isTeacherOrAdmin = ([Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] as Role[]).includes(session.role);
+
+  const students = await prisma.studentProfile.findMany({ include: { user: true } });
+
+  let sessions: any[] = [];
+  if (isTeacherOrAdmin) {
+    sessions = await prisma.debateSession.findMany({
+      include: { moderator: { include: { user: true } }, _count: { select: { participants: true, evaluations: true } } },
+      orderBy: { startsAt: "desc" }
+    });
+  } else {
+    const studentProfile = await prisma.studentProfile.findUnique({ where: { userId: session.userId } });
+    if (studentProfile) {
+      sessions = await prisma.debateSession.findMany({
+        where: {
+          OR: [
+            { moderatorId: studentProfile.id },
+            { participants: { some: { studentId: studentProfile.id } } }
+          ]
+        },
+        include: { moderator: { include: { user: true } }, _count: { select: { participants: true, evaluations: true } } },
+        orderBy: { startsAt: "desc" }
+      });
+    }
+  }
+
+  const nextSession = sessions.find((s) => s.status === DebateSessionStatus.SCHEDULED);
+
   return (
     <DashboardLayout
       navItems={debateNav}
-      title="Sessoes de Debate"
-      subtitle="Debate Instructor · avaliacao de fala"
+      title="Sessões de Debate"
+      subtitle="Debate Arena"
       context="Debate Arena"
-      headerAction={<PrimaryButton tone="rose"><Plus size={15} /> <span className="hidden sm:inline">Novo Debate</span></PrimaryButton>}
-      sidebarFooter={<InstructorFooter />}
     >
       <div className="space-y-6">
-        <BentoCard dark className="relative overflow-hidden">
-          <div className="relative z-10">
-            <h3 className="text-2xl font-black tracking-tight">Proximo Debate Presencial</h3>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:max-w-2xl">
-              <DebateInfo icon={<CalendarClock size={18} />} label="Horario" value="Hoje, 19:30 - 21:00" />
-              <DebateInfo icon={<Users size={18} />} label="Vagas" value="12 / 15 Inscritos" />
-            </div>
-          </div>
-          <div className="absolute -bottom-8 -right-4 rotate-12 text-7xl font-black text-white/5 sm:text-9xl">DEBATE</div>
-        </BentoCard>
-
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-          {debateStudents.map((student) => (
-            <BentoCard key={student.name}>
-              <div className="mb-5 flex items-start justify-between">
-                <div>
-                  <h3 className="font-black text-slate-900">{student.name}</h3>
-                  <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Sessao atual</p>
+        <ActionNotice status={searchParams?.status} />
+        
+        {nextSession && (
+          <BentoCard dark className="relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-2xl font-black tracking-tight">Próximo Debate: {nextSession.topic}</h3>
+                <Link href={`/debate/${nextSession.id}`}>
+                  <PrimaryButton tone="rose">Abrir Sessão</PrimaryButton>
+                </Link>
+              </div>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:max-w-2xl">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-rose-400"><CalendarClock size={18} /></div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Data/Hora</p>
+                    <p className="text-sm font-bold text-white">{nextSession.startsAt.toLocaleString("pt-PT")}</p>
+                  </div>
                 </div>
-                <StatusBadge tone="danger">Avaliar</StatusBadge>
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-rose-400"><Users size={18} /></div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Inscritos</p>
+                    <p className="text-sm font-bold text-white">{nextSession._count.participants} / {nextSession.capacity}</p>
+                  </div>
+                </div>
               </div>
-              <Score label="Fluencia" value={student.fluency} />
-              <Score label="Argumentacao" value={student.argument} />
-              <Score label="Postura" value={student.posture} />
-              <PrimaryButton className="mt-6 w-full" tone="dark">
-                <Mic2 size={15} /> Abrir Avaliacao
-              </PrimaryButton>
-            </BentoCard>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-          <BentoCard>
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="font-black text-slate-800">Agendar Debate</h3>
-              <MessageSquarePlus className="text-crimson" />
             </div>
-            <form className="space-y-4">
-              <FormField label="Tema do Debate" placeholder="Ex: Impacto da IA na Educacao" />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <FormField label="Data" type="date" />
-                <FormField label="Capacidade" defaultValue="15" />
-              </div>
-              <PrimaryButton className="w-full" tone="rose" type="button">Criar Sessao</PrimaryButton>
-            </form>
+            <div className="absolute -bottom-8 -right-4 rotate-12 text-7xl font-black text-white/5 sm:text-9xl">DEBATE</div>
           </BentoCard>
+        )}
 
-          <BentoCard className="p-0">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
+          {isTeacherOrAdmin && (
+            <BentoCard className="xl:col-span-4">
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="font-black text-slate-800">Agendar Debate</h3>
+                <MessageSquarePlus className="text-crimson" />
+              </div>
+              <form action={createDebateSessionAction} className="space-y-4">
+                <FormField name="topic" label="Tema do Debate" placeholder="Ex: Impacto da IA na Educacao" required />
+                <FormField name="startsAt" label="Data e Hora" type="datetime-local" required />
+                <FormField name="capacity" label="Capacidade" type="number" defaultValue="15" required />
+                <FormField name="location" label="Local" placeholder="Sala 04" />
+                <SelectField 
+                  name="moderatorId" 
+                  label="Gestor do Debate (Aluno)" 
+                  options={[
+                    { label: "Sem Moderador Aluno", value: "" },
+                    ...students.map(s => ({ label: `${s.user.name} (${s.studentNumber})`, value: s.id }))
+                  ]} 
+                />
+                <PrimaryButton className="w-full" tone="rose" type="submit">Criar Sessão</PrimaryButton>
+              </form>
+            </BentoCard>
+          )}
+
+          <BentoCard className={`p-0 ${isTeacherOrAdmin ? "xl:col-span-8" : "xl:col-span-12"}`}>
             <div className="flex items-center justify-between p-6">
-              <h3 className="font-black text-slate-800">Historico</h3>
+              <h3 className="font-black text-slate-800">Histórico de Sessões</h3>
               <SlidersHorizontal size={18} className="text-slate-400" />
             </div>
             <DataTable
-              headers={["Aluno", "Fluencia", "Argumentacao", "Postura"]}
-              rows={debateStudents.map((student) => [student.name, student.fluency, student.argument, student.posture])}
+              emptyMessage="Nenhuma sessão de debate encontrada."
+              headers={["Tema", "Data", "Moderador", "Estado", "Ações"]}
+              rows={sessions.map((s) => [
+                s.topic,
+                s.startsAt.toLocaleDateString("pt-PT"),
+                s.moderator?.user.name ?? "Professor",
+                <StatusBadge key={s.id} tone={s.status === "ACTIVE" ? "danger" : s.status === "CLOSED" ? "navy" : "success"}>{s.status}</StatusBadge>,
+                <Link key={`${s.id}-link`} href={`/debate/${s.id}`}>
+                  <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700">Ver / Avaliar</button>
+                </Link>
+              ])}
             />
           </BentoCard>
         </div>
       </div>
     </DashboardLayout>
-  );
-}
-
-function DebateInfo({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4">
-      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-rose-400">{icon}</div>
-      <div>
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
-        <p className="text-sm font-bold text-white">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function Score({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="mt-4">
-      <div className="mb-2 flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-        <span>{label}</span>
-        <span className="text-crimson">{value}/10</span>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-        <div className="h-full rounded-full bg-crimson" style={{ width: `${value * 10}%` }} />
-      </div>
-    </div>
-  );
-}
-
-function InstructorFooter() {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
-      <div className="h-10 w-10 rounded-full bg-rose-100" />
-      <div>
-        <p className="text-xs font-black uppercase text-slate-800">Instrutor Debate</p>
-        <p className="text-[9px] font-bold uppercase text-emerald-500">Online</p>
-      </div>
-    </div>
   );
 }

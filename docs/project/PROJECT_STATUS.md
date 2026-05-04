@@ -1,62 +1,53 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-04-30 14:14 SAST
+Ultima atualizacao: 2026-05-04
 
 ## Resumo atual
 
-O projeto Delson PS Academic esta com a entrega parcial do Sprint 3 validada tecnicamente e com QA responsivo autenticado executado. A base Next.js, Prisma, Tailwind e PostgreSQL continua preservada, com Server Actions para operacoes academicas reais.
-
-Nesta atualizacao foi executado QA autenticado mobile-first nas rotas admin, docente e estudante em 360px, 390px, 430px, tablet e desktop. Foram capturadas screenshots em `qa/screenshots`, nao foi detectado overflow horizontal, e foi criado o script `npm run qa:responsive` para repetir a verificacao.
+O projeto Delson PS Academic concluiu o Sprint 4, que entregou a API REST v1 para integração UNIEXE, a Debate Arena real (com papéis contextuais de moderador), e o Dashboard de Desempenho com logs de auditoria visíveis. A infraestrutura base foi validada com testes unitários usando Jest.
 
 ## Estado por area
 
 | Area | Estado | Observacoes |
 | --- | --- | --- |
-| Estrutura Next.js | Em progresso | App Router e rotas principais existentes. |
-| UI responsiva | Validado parcialmente | QA autenticado passou sem overflow em 360px, 390px, 430px, tablet e desktop para rotas admin, docente e estudante. |
-| Prisma/PostgreSQL | Em progresso | Schema, migration e seed existem. |
-| Autenticacao | Parcial | Login e middleware por role existem; Server Actions do Sprint 3 validam role no servidor. |
-| Admin | Em progresso | CRUD de alunos, staff, cursos e turmas; matriculas; faturas e resumo financeiro. |
-| Estudante | Em progresso | Dashboard mostra dados reais de matriculas, faturas, notas e presencas. |
-| Docente | Em progresso | Docente ve turma atribuida, lanca notas e marca presencas/faltas com auditoria. |
-| Debate | Inicial | Rota existe; avaliacao real ainda pendente. |
-| Testes | Parcial | `npx tsc --noEmit`, `npm run lint`, `npm run build` e `npm run qa:responsive` passaram. Ainda nao ha testes automatizados especificos. |
-| Documentacao de continuidade | Ativo | `AGENTS.md`, `.agents/agents.md`, `PROJECT_OVERVIEW.md`, `PROJECT_STATUS.md` e `TASK_LOG.md` criados. |
-| UNIEXE | Inicial | Contrato inicial criado com entidades exportaveis e principios de seguranca. |
+| Estrutura Next.js | Concluido | App Router e rotas principais completas. |
+| UI responsiva | Validado | QA autenticado sem overflow em multiplos viewports. |
+| Prisma/PostgreSQL | Validado | Schema suporta turmas, avaliações, finanças e Debate Arena. |
+| Autenticacao | Concluido | Login, middleware e `api-auth` para API REST configurados. |
+| Admin | Concluido | CRUD completo + Dashboard expandido com métricas globais e auditoria (`/admin/logs`). |
+| Estudante | Concluido | Dashboard mostra dados reais, incluindo métricas da Debate Arena. |
+| Docente | Concluido | Lançamento de notas, presenças e avaliação de debates. |
+| Debate | Concluido | Sessões reais, Gestor de Debate contextual, fluxo de avaliação protegido por RBAC. |
+| Testes | Parcial | Jest configurado; testes unitários base para API e Auth concluídos. |
+| Documentacao | Ativo | Documentos do projeto e API Spec atualizados. |
+| UNIEXE | Preparado | `docs/api-spec.md` gerado. Endpoints de leitura (`/api/v1`) finalizados. |
 
 ## Ultima tarefa concluida
 
-QA autenticado responsivo do Sprint 3:
+Sprint 4 — Integração UNIEXE + Debate Arena Real + Qualidade:
 
-- Criado `scripts/qa-responsive.mjs` para login por cookie de sessao e captura via Chrome headless/CDP.
-- Adicionado script `npm run qa:responsive`.
-- Validadas 35 combinacoes de rota e viewport: admin dashboard, alunos, staff, cursos, turmas, docente dashboard e estudante dashboard.
-- Capturadas screenshots autenticadas em `qa/screenshots`.
-- Corrigido artefacto local de migration vazia que impedia `npx prisma migrate deploy`.
+- Schema Prisma expandido: `DebateParticipant`, enum `DebateSessionStatus`, `moderatorId`.
+- Debate Arena refatorada de Server Components com dados reais e form de avaliação.
+- Papel de "Gestor de Debate" implementado contextualmente sem criar nova Role.
+- API REST v1 criada em `src/app/api/v1/` cobrindo estudantes, matrículas, faturas, turmas, notas, assiduidade e debates.
+- Dashboard admin expandido com médias, taxas de frequência e auditoria recente.
+- Página dedicada de Logs de Auditoria (`/admin/logs`).
+- Dashboard de estudante atualizado com métricas reais de "Debate Skills".
+- Configuração do Jest e criação de testes (`auth.test.ts`, `students.test.ts`, `debates.test.ts`).
 
 ## Validacoes desta tarefa
 
-- `npm run prisma:generate` passou.
-- `npx prisma migrate deploy` passou depois de remover a pasta vazia local `prisma/migrations/20260429120000_sprint3_academic_ops`.
-- `npm run prisma:seed` passou.
-- `npx tsc --noEmit` passou.
-- `npm run lint` passou sem warnings ou erros.
-- `npm run build` passou.
-- `npm run qa:responsive` passou com 35 verificacoes e `overflowResults: []`.
-- Servidor dev iniciado em `http://localhost:3000`.
+- `npm run prisma:generate`, `migrate`, `seed`
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm test` passou (testes unitários)
+- `npm run build` passou
 
 ## Pendencias conhecidas
 
-- Melhorar UX dos formularios inline, especialmente em listas longas.
-- Criar testes automatizados para Server Actions academicas.
-- Tratar erros de unicidade do Prisma com mensagens mais especificas.
-- Criar pagina financeira dedicada se o volume de faturas crescer.
-- Persistir mensalidade em campo proprio de matricula se o Prisma Client/local DB forem migrados para este novo contrato; nesta entrega, a mensalidade fica refletida em `Invoice.amountMt`.
-- Definir confirmacao explicita para remocao de turmas sem matriculas.
-- Implementar exportacao real UNIEXE quando houver endpoint e credenciais.
-- Criar testes automatizados.
-- Atualizar READMEs de features conforme cada modulo ganhar comportamento real.
+- Implementar testes E2E se o projeto continuar a escalar.
+- Sincronizar financeiramente com a UNIEXE quando as credenciais existirem.
 
 ## Proxima acao recomendada
 
-Criar testes automatizados focados nas Server Actions academicas e refinar mensagens de erro de unicidade do Prisma nos formularios admin.
+Preparar repositório para deploy em produção, revisão final de segurança, e entrega oficial para consumo da UNIEXE.

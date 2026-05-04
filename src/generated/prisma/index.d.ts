@@ -69,6 +69,11 @@ export type Invoice = $Result.DefaultSelection<Prisma.$InvoicePayload>
  */
 export type DebateSession = $Result.DefaultSelection<Prisma.$DebateSessionPayload>
 /**
+ * Model DebateParticipant
+ * 
+ */
+export type DebateParticipant = $Result.DefaultSelection<Prisma.$DebateParticipantPayload>
+/**
  * Model DebateEvaluation
  * 
  */
@@ -122,6 +127,15 @@ export const InvoiceStatus: {
 
 export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
 
+
+export const DebateSessionStatus: {
+  SCHEDULED: 'SCHEDULED',
+  ACTIVE: 'ACTIVE',
+  CLOSED: 'CLOSED'
+};
+
+export type DebateSessionStatus = (typeof DebateSessionStatus)[keyof typeof DebateSessionStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -139,6 +153,10 @@ export const AttendanceStatus: typeof $Enums.AttendanceStatus
 export type InvoiceStatus = $Enums.InvoiceStatus
 
 export const InvoiceStatus: typeof $Enums.InvoiceStatus
+
+export type DebateSessionStatus = $Enums.DebateSessionStatus
+
+export const DebateSessionStatus: typeof $Enums.DebateSessionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -372,6 +390,16 @@ export class PrismaClient<
     * ```
     */
   get debateSession(): Prisma.DebateSessionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.debateParticipant`: Exposes CRUD operations for the **DebateParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DebateParticipants
+    * const debateParticipants = await prisma.debateParticipant.findMany()
+    * ```
+    */
+  get debateParticipant(): Prisma.DebateParticipantDelegate<ExtArgs>;
 
   /**
    * `prisma.debateEvaluation`: Exposes CRUD operations for the **DebateEvaluation** model.
@@ -844,6 +872,7 @@ export namespace Prisma {
     StudyMaterial: 'StudyMaterial',
     Invoice: 'Invoice',
     DebateSession: 'DebateSession',
+    DebateParticipant: 'DebateParticipant',
     DebateEvaluation: 'DebateEvaluation',
     AuditLog: 'AuditLog'
   };
@@ -861,7 +890,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "debateSession" | "debateEvaluation" | "auditLog"
+      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "debateSession" | "debateParticipant" | "debateEvaluation" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1635,6 +1664,76 @@ export namespace Prisma {
           }
         }
       }
+      DebateParticipant: {
+        payload: Prisma.$DebateParticipantPayload<ExtArgs>
+        fields: Prisma.DebateParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DebateParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DebateParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.DebateParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DebateParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.DebateParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.DebateParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.DebateParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DebateParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.DebateParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          update: {
+            args: Prisma.DebateParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.DebateParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DebateParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DebateParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.DebateParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDebateParticipant>
+          }
+          groupBy: {
+            args: Prisma.DebateParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DebateParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DebateParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<DebateParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
       DebateEvaluation: {
         payload: Prisma.$DebateEvaluationPayload<ExtArgs>
         fields: Prisma.DebateEvaluationFieldRefs
@@ -1972,6 +2071,8 @@ export namespace Prisma {
     grades: number
     invoices: number
     debateEvaluations: number
+    moderatedDebates: number
+    debateParticipations: number
   }
 
   export type StudentProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1980,6 +2081,8 @@ export namespace Prisma {
     grades?: boolean | StudentProfileCountOutputTypeCountGradesArgs
     invoices?: boolean | StudentProfileCountOutputTypeCountInvoicesArgs
     debateEvaluations?: boolean | StudentProfileCountOutputTypeCountDebateEvaluationsArgs
+    moderatedDebates?: boolean | StudentProfileCountOutputTypeCountModeratedDebatesArgs
+    debateParticipations?: boolean | StudentProfileCountOutputTypeCountDebateParticipationsArgs
   }
 
   // Custom InputTypes
@@ -2026,6 +2129,20 @@ export namespace Prisma {
    */
   export type StudentProfileCountOutputTypeCountDebateEvaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DebateEvaluationWhereInput
+  }
+
+  /**
+   * StudentProfileCountOutputType without action
+   */
+  export type StudentProfileCountOutputTypeCountModeratedDebatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateSessionWhereInput
+  }
+
+  /**
+   * StudentProfileCountOutputType without action
+   */
+  export type StudentProfileCountOutputTypeCountDebateParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateParticipantWhereInput
   }
 
 
@@ -2204,10 +2321,12 @@ export namespace Prisma {
 
   export type DebateSessionCountOutputType = {
     evaluations: number
+    participants: number
   }
 
   export type DebateSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | DebateSessionCountOutputTypeCountEvaluationsArgs
+    participants?: boolean | DebateSessionCountOutputTypeCountParticipantsArgs
   }
 
   // Custom InputTypes
@@ -2226,6 +2345,13 @@ export namespace Prisma {
    */
   export type DebateSessionCountOutputTypeCountEvaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DebateEvaluationWhereInput
+  }
+
+  /**
+   * DebateSessionCountOutputType without action
+   */
+  export type DebateSessionCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateParticipantWhereInput
   }
 
 
@@ -3461,6 +3587,8 @@ export namespace Prisma {
     grades?: boolean | StudentProfile$gradesArgs<ExtArgs>
     invoices?: boolean | StudentProfile$invoicesArgs<ExtArgs>
     debateEvaluations?: boolean | StudentProfile$debateEvaluationsArgs<ExtArgs>
+    moderatedDebates?: boolean | StudentProfile$moderatedDebatesArgs<ExtArgs>
+    debateParticipations?: boolean | StudentProfile$debateParticipationsArgs<ExtArgs>
     _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentProfile"]>
 
@@ -3494,6 +3622,8 @@ export namespace Prisma {
     grades?: boolean | StudentProfile$gradesArgs<ExtArgs>
     invoices?: boolean | StudentProfile$invoicesArgs<ExtArgs>
     debateEvaluations?: boolean | StudentProfile$debateEvaluationsArgs<ExtArgs>
+    moderatedDebates?: boolean | StudentProfile$moderatedDebatesArgs<ExtArgs>
+    debateParticipations?: boolean | StudentProfile$debateParticipationsArgs<ExtArgs>
     _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3509,6 +3639,8 @@ export namespace Prisma {
       grades: Prisma.$GradePayload<ExtArgs>[]
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
       debateEvaluations: Prisma.$DebateEvaluationPayload<ExtArgs>[]
+      moderatedDebates: Prisma.$DebateSessionPayload<ExtArgs>[]
+      debateParticipations: Prisma.$DebateParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3889,6 +4021,8 @@ export namespace Prisma {
     grades<T extends StudentProfile$gradesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$gradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findMany"> | Null>
     invoices<T extends StudentProfile$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany"> | Null>
     debateEvaluations<T extends StudentProfile$debateEvaluationsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$debateEvaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findMany"> | Null>
+    moderatedDebates<T extends StudentProfile$moderatedDebatesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$moderatedDebatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    debateParticipations<T extends StudentProfile$debateParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$debateParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4341,6 +4475,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DebateEvaluationScalarFieldEnum | DebateEvaluationScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile.moderatedDebates
+   */
+  export type StudentProfile$moderatedDebatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateSession
+     */
+    select?: DebateSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionInclude<ExtArgs> | null
+    where?: DebateSessionWhereInput
+    orderBy?: DebateSessionOrderByWithRelationInput | DebateSessionOrderByWithRelationInput[]
+    cursor?: DebateSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateSessionScalarFieldEnum | DebateSessionScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile.debateParticipations
+   */
+  export type StudentProfile$debateParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    where?: DebateParticipantWhereInput
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    cursor?: DebateParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
   }
 
   /**
@@ -12584,6 +12758,8 @@ export namespace Prisma {
     startsAt: Date | null
     capacity: number | null
     location: string | null
+    status: $Enums.DebateSessionStatus | null
+    moderatorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -12594,6 +12770,8 @@ export namespace Prisma {
     startsAt: Date | null
     capacity: number | null
     location: string | null
+    status: $Enums.DebateSessionStatus | null
+    moderatorId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -12604,6 +12782,8 @@ export namespace Prisma {
     startsAt: number
     capacity: number
     location: number
+    status: number
+    moderatorId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -12624,6 +12804,8 @@ export namespace Prisma {
     startsAt?: true
     capacity?: true
     location?: true
+    status?: true
+    moderatorId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -12634,6 +12816,8 @@ export namespace Prisma {
     startsAt?: true
     capacity?: true
     location?: true
+    status?: true
+    moderatorId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -12644,6 +12828,8 @@ export namespace Prisma {
     startsAt?: true
     capacity?: true
     location?: true
+    status?: true
+    moderatorId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -12741,6 +12927,8 @@ export namespace Prisma {
     startsAt: Date
     capacity: number
     location: string | null
+    status: $Enums.DebateSessionStatus
+    moderatorId: string | null
     createdAt: Date
     updatedAt: Date
     _count: DebateSessionCountAggregateOutputType | null
@@ -12770,9 +12958,13 @@ export namespace Prisma {
     startsAt?: boolean
     capacity?: boolean
     location?: boolean
+    status?: boolean
+    moderatorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
     evaluations?: boolean | DebateSession$evaluationsArgs<ExtArgs>
+    participants?: boolean | DebateSession$participantsArgs<ExtArgs>
     _count?: boolean | DebateSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debateSession"]>
 
@@ -12782,8 +12974,11 @@ export namespace Prisma {
     startsAt?: boolean
     capacity?: boolean
     location?: boolean
+    status?: boolean
+    moderatorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
   }, ExtArgs["result"]["debateSession"]>
 
   export type DebateSessionSelectScalar = {
@@ -12792,20 +12987,28 @@ export namespace Prisma {
     startsAt?: boolean
     capacity?: boolean
     location?: boolean
+    status?: boolean
+    moderatorId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type DebateSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
     evaluations?: boolean | DebateSession$evaluationsArgs<ExtArgs>
+    participants?: boolean | DebateSession$participantsArgs<ExtArgs>
     _count?: boolean | DebateSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type DebateSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DebateSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
+  }
 
   export type $DebateSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DebateSession"
     objects: {
+      moderator: Prisma.$StudentProfilePayload<ExtArgs> | null
       evaluations: Prisma.$DebateEvaluationPayload<ExtArgs>[]
+      participants: Prisma.$DebateParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12813,6 +13016,8 @@ export namespace Prisma {
       startsAt: Date
       capacity: number
       location: string | null
+      status: $Enums.DebateSessionStatus
+      moderatorId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["debateSession"]>
@@ -13179,7 +13384,9 @@ export namespace Prisma {
    */
   export interface Prisma__DebateSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    moderator<T extends DebateSession$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$moderatorArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     evaluations<T extends DebateSession$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findMany"> | Null>
+    participants<T extends DebateSession$participantsArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13214,6 +13421,8 @@ export namespace Prisma {
     readonly startsAt: FieldRef<"DebateSession", 'DateTime'>
     readonly capacity: FieldRef<"DebateSession", 'Int'>
     readonly location: FieldRef<"DebateSession", 'String'>
+    readonly status: FieldRef<"DebateSession", 'DebateSessionStatus'>
+    readonly moderatorId: FieldRef<"DebateSession", 'String'>
     readonly createdAt: FieldRef<"DebateSession", 'DateTime'>
     readonly updatedAt: FieldRef<"DebateSession", 'DateTime'>
   }
@@ -13437,6 +13646,10 @@ export namespace Prisma {
      */
     data: DebateSessionCreateManyInput | DebateSessionCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13530,6 +13743,21 @@ export namespace Prisma {
   }
 
   /**
+   * DebateSession.moderator
+   */
+  export type DebateSession$moderatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    where?: StudentProfileWhereInput
+  }
+
+  /**
    * DebateSession.evaluations
    */
   export type DebateSession$evaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13550,6 +13778,26 @@ export namespace Prisma {
   }
 
   /**
+   * DebateSession.participants
+   */
+  export type DebateSession$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    where?: DebateParticipantWhereInput
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    cursor?: DebateParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
+  }
+
+  /**
    * DebateSession without action
    */
   export type DebateSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13561,6 +13809,933 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DebateSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DebateParticipant
+   */
+
+  export type AggregateDebateParticipant = {
+    _count: DebateParticipantCountAggregateOutputType | null
+    _min: DebateParticipantMinAggregateOutputType | null
+    _max: DebateParticipantMaxAggregateOutputType | null
+  }
+
+  export type DebateParticipantMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    studentId: string | null
+    joinedAt: Date | null
+  }
+
+  export type DebateParticipantMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    studentId: string | null
+    joinedAt: Date | null
+  }
+
+  export type DebateParticipantCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    studentId: number
+    joinedAt: number
+    _all: number
+  }
+
+
+  export type DebateParticipantMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    studentId?: true
+    joinedAt?: true
+  }
+
+  export type DebateParticipantMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    studentId?: true
+    joinedAt?: true
+  }
+
+  export type DebateParticipantCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    studentId?: true
+    joinedAt?: true
+    _all?: true
+  }
+
+  export type DebateParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DebateParticipant to aggregate.
+     */
+    where?: DebateParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateParticipants to fetch.
+     */
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DebateParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DebateParticipants
+    **/
+    _count?: true | DebateParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DebateParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DebateParticipantMaxAggregateInputType
+  }
+
+  export type GetDebateParticipantAggregateType<T extends DebateParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateDebateParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDebateParticipant[P]>
+      : GetScalarType<T[P], AggregateDebateParticipant[P]>
+  }
+
+
+
+
+  export type DebateParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateParticipantWhereInput
+    orderBy?: DebateParticipantOrderByWithAggregationInput | DebateParticipantOrderByWithAggregationInput[]
+    by: DebateParticipantScalarFieldEnum[] | DebateParticipantScalarFieldEnum
+    having?: DebateParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DebateParticipantCountAggregateInputType | true
+    _min?: DebateParticipantMinAggregateInputType
+    _max?: DebateParticipantMaxAggregateInputType
+  }
+
+  export type DebateParticipantGroupByOutputType = {
+    id: string
+    sessionId: string
+    studentId: string
+    joinedAt: Date
+    _count: DebateParticipantCountAggregateOutputType | null
+    _min: DebateParticipantMinAggregateOutputType | null
+    _max: DebateParticipantMaxAggregateOutputType | null
+  }
+
+  type GetDebateParticipantGroupByPayload<T extends DebateParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DebateParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DebateParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DebateParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], DebateParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DebateParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    studentId?: boolean
+    joinedAt?: boolean
+    session?: boolean | DebateSessionDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debateParticipant"]>
+
+  export type DebateParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    studentId?: boolean
+    joinedAt?: boolean
+    session?: boolean | DebateSessionDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debateParticipant"]>
+
+  export type DebateParticipantSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    studentId?: boolean
+    joinedAt?: boolean
+  }
+
+  export type DebateParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | DebateSessionDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }
+  export type DebateParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | DebateSessionDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $DebateParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DebateParticipant"
+    objects: {
+      session: Prisma.$DebateSessionPayload<ExtArgs>
+      student: Prisma.$StudentProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      studentId: string
+      joinedAt: Date
+    }, ExtArgs["result"]["debateParticipant"]>
+    composites: {}
+  }
+
+  type DebateParticipantGetPayload<S extends boolean | null | undefined | DebateParticipantDefaultArgs> = $Result.GetResult<Prisma.$DebateParticipantPayload, S>
+
+  type DebateParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DebateParticipantFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DebateParticipantCountAggregateInputType | true
+    }
+
+  export interface DebateParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DebateParticipant'], meta: { name: 'DebateParticipant' } }
+    /**
+     * Find zero or one DebateParticipant that matches the filter.
+     * @param {DebateParticipantFindUniqueArgs} args - Arguments to find a DebateParticipant
+     * @example
+     * // Get one DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DebateParticipantFindUniqueArgs>(args: SelectSubset<T, DebateParticipantFindUniqueArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DebateParticipant that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DebateParticipantFindUniqueOrThrowArgs} args - Arguments to find a DebateParticipant
+     * @example
+     * // Get one DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DebateParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, DebateParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DebateParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantFindFirstArgs} args - Arguments to find a DebateParticipant
+     * @example
+     * // Get one DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DebateParticipantFindFirstArgs>(args?: SelectSubset<T, DebateParticipantFindFirstArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DebateParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantFindFirstOrThrowArgs} args - Arguments to find a DebateParticipant
+     * @example
+     * // Get one DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DebateParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, DebateParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DebateParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DebateParticipants
+     * const debateParticipants = await prisma.debateParticipant.findMany()
+     * 
+     * // Get first 10 DebateParticipants
+     * const debateParticipants = await prisma.debateParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const debateParticipantWithIdOnly = await prisma.debateParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DebateParticipantFindManyArgs>(args?: SelectSubset<T, DebateParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DebateParticipant.
+     * @param {DebateParticipantCreateArgs} args - Arguments to create a DebateParticipant.
+     * @example
+     * // Create one DebateParticipant
+     * const DebateParticipant = await prisma.debateParticipant.create({
+     *   data: {
+     *     // ... data to create a DebateParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends DebateParticipantCreateArgs>(args: SelectSubset<T, DebateParticipantCreateArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DebateParticipants.
+     * @param {DebateParticipantCreateManyArgs} args - Arguments to create many DebateParticipants.
+     * @example
+     * // Create many DebateParticipants
+     * const debateParticipant = await prisma.debateParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DebateParticipantCreateManyArgs>(args?: SelectSubset<T, DebateParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DebateParticipants and returns the data saved in the database.
+     * @param {DebateParticipantCreateManyAndReturnArgs} args - Arguments to create many DebateParticipants.
+     * @example
+     * // Create many DebateParticipants
+     * const debateParticipant = await prisma.debateParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DebateParticipants and only return the `id`
+     * const debateParticipantWithIdOnly = await prisma.debateParticipant.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DebateParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, DebateParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DebateParticipant.
+     * @param {DebateParticipantDeleteArgs} args - Arguments to delete one DebateParticipant.
+     * @example
+     * // Delete one DebateParticipant
+     * const DebateParticipant = await prisma.debateParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one DebateParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DebateParticipantDeleteArgs>(args: SelectSubset<T, DebateParticipantDeleteArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DebateParticipant.
+     * @param {DebateParticipantUpdateArgs} args - Arguments to update one DebateParticipant.
+     * @example
+     * // Update one DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DebateParticipantUpdateArgs>(args: SelectSubset<T, DebateParticipantUpdateArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DebateParticipants.
+     * @param {DebateParticipantDeleteManyArgs} args - Arguments to filter DebateParticipants to delete.
+     * @example
+     * // Delete a few DebateParticipants
+     * const { count } = await prisma.debateParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DebateParticipantDeleteManyArgs>(args?: SelectSubset<T, DebateParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DebateParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DebateParticipants
+     * const debateParticipant = await prisma.debateParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DebateParticipantUpdateManyArgs>(args: SelectSubset<T, DebateParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DebateParticipant.
+     * @param {DebateParticipantUpsertArgs} args - Arguments to update or create a DebateParticipant.
+     * @example
+     * // Update or create a DebateParticipant
+     * const debateParticipant = await prisma.debateParticipant.upsert({
+     *   create: {
+     *     // ... data to create a DebateParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DebateParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DebateParticipantUpsertArgs>(args: SelectSubset<T, DebateParticipantUpsertArgs<ExtArgs>>): Prisma__DebateParticipantClient<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DebateParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantCountArgs} args - Arguments to filter DebateParticipants to count.
+     * @example
+     * // Count the number of DebateParticipants
+     * const count = await prisma.debateParticipant.count({
+     *   where: {
+     *     // ... the filter for the DebateParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends DebateParticipantCountArgs>(
+      args?: Subset<T, DebateParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DebateParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DebateParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DebateParticipantAggregateArgs>(args: Subset<T, DebateParticipantAggregateArgs>): Prisma.PrismaPromise<GetDebateParticipantAggregateType<T>>
+
+    /**
+     * Group by DebateParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DebateParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DebateParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: DebateParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DebateParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDebateParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DebateParticipant model
+   */
+  readonly fields: DebateParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DebateParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DebateParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends DebateSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DebateSessionDefaultArgs<ExtArgs>>): Prisma__DebateSessionClient<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DebateParticipant model
+   */ 
+  interface DebateParticipantFieldRefs {
+    readonly id: FieldRef<"DebateParticipant", 'String'>
+    readonly sessionId: FieldRef<"DebateParticipant", 'String'>
+    readonly studentId: FieldRef<"DebateParticipant", 'String'>
+    readonly joinedAt: FieldRef<"DebateParticipant", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DebateParticipant findUnique
+   */
+  export type DebateParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateParticipant to fetch.
+     */
+    where: DebateParticipantWhereUniqueInput
+  }
+
+  /**
+   * DebateParticipant findUniqueOrThrow
+   */
+  export type DebateParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateParticipant to fetch.
+     */
+    where: DebateParticipantWhereUniqueInput
+  }
+
+  /**
+   * DebateParticipant findFirst
+   */
+  export type DebateParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateParticipant to fetch.
+     */
+    where?: DebateParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateParticipants to fetch.
+     */
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DebateParticipants.
+     */
+    cursor?: DebateParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DebateParticipants.
+     */
+    distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * DebateParticipant findFirstOrThrow
+   */
+  export type DebateParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateParticipant to fetch.
+     */
+    where?: DebateParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateParticipants to fetch.
+     */
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DebateParticipants.
+     */
+    cursor?: DebateParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DebateParticipants.
+     */
+    distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * DebateParticipant findMany
+   */
+  export type DebateParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateParticipants to fetch.
+     */
+    where?: DebateParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateParticipants to fetch.
+     */
+    orderBy?: DebateParticipantOrderByWithRelationInput | DebateParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DebateParticipants.
+     */
+    cursor?: DebateParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateParticipants.
+     */
+    skip?: number
+    distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * DebateParticipant create
+   */
+  export type DebateParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DebateParticipant.
+     */
+    data: XOR<DebateParticipantCreateInput, DebateParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * DebateParticipant createMany
+   */
+  export type DebateParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DebateParticipants.
+     */
+    data: DebateParticipantCreateManyInput | DebateParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DebateParticipant createManyAndReturn
+   */
+  export type DebateParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DebateParticipants.
+     */
+    data: DebateParticipantCreateManyInput | DebateParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DebateParticipant update
+   */
+  export type DebateParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DebateParticipant.
+     */
+    data: XOR<DebateParticipantUpdateInput, DebateParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which DebateParticipant to update.
+     */
+    where: DebateParticipantWhereUniqueInput
+  }
+
+  /**
+   * DebateParticipant updateMany
+   */
+  export type DebateParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DebateParticipants.
+     */
+    data: XOR<DebateParticipantUpdateManyMutationInput, DebateParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which DebateParticipants to update
+     */
+    where?: DebateParticipantWhereInput
+  }
+
+  /**
+   * DebateParticipant upsert
+   */
+  export type DebateParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DebateParticipant to update in case it exists.
+     */
+    where: DebateParticipantWhereUniqueInput
+    /**
+     * In case the DebateParticipant found by the `where` argument doesn't exist, create a new DebateParticipant with this data.
+     */
+    create: XOR<DebateParticipantCreateInput, DebateParticipantUncheckedCreateInput>
+    /**
+     * In case the DebateParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DebateParticipantUpdateInput, DebateParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * DebateParticipant delete
+   */
+  export type DebateParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which DebateParticipant to delete.
+     */
+    where: DebateParticipantWhereUniqueInput
+  }
+
+  /**
+   * DebateParticipant deleteMany
+   */
+  export type DebateParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DebateParticipants to delete
+     */
+    where?: DebateParticipantWhereInput
+  }
+
+  /**
+   * DebateParticipant without action
+   */
+  export type DebateParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateParticipant
+     */
+    select?: DebateParticipantSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateParticipantInclude<ExtArgs> | null
   }
 
 
@@ -13592,6 +14767,7 @@ export namespace Prisma {
     id: string | null
     sessionId: string | null
     studentId: string | null
+    evaluatorId: string | null
     fluency: number | null
     argumentation: number | null
     posture: number | null
@@ -13605,6 +14781,7 @@ export namespace Prisma {
     id: string | null
     sessionId: string | null
     studentId: string | null
+    evaluatorId: string | null
     fluency: number | null
     argumentation: number | null
     posture: number | null
@@ -13618,6 +14795,7 @@ export namespace Prisma {
     id: number
     sessionId: number
     studentId: number
+    evaluatorId: number
     fluency: number
     argumentation: number
     posture: number
@@ -13645,6 +14823,7 @@ export namespace Prisma {
     id?: true
     sessionId?: true
     studentId?: true
+    evaluatorId?: true
     fluency?: true
     argumentation?: true
     posture?: true
@@ -13658,6 +14837,7 @@ export namespace Prisma {
     id?: true
     sessionId?: true
     studentId?: true
+    evaluatorId?: true
     fluency?: true
     argumentation?: true
     posture?: true
@@ -13671,6 +14851,7 @@ export namespace Prisma {
     id?: true
     sessionId?: true
     studentId?: true
+    evaluatorId?: true
     fluency?: true
     argumentation?: true
     posture?: true
@@ -13771,6 +14952,7 @@ export namespace Prisma {
     id: string
     sessionId: string
     studentId: string
+    evaluatorId: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -13803,6 +14985,7 @@ export namespace Prisma {
     id?: boolean
     sessionId?: boolean
     studentId?: boolean
+    evaluatorId?: boolean
     fluency?: boolean
     argumentation?: boolean
     posture?: boolean
@@ -13818,6 +15001,7 @@ export namespace Prisma {
     id?: boolean
     sessionId?: boolean
     studentId?: boolean
+    evaluatorId?: boolean
     fluency?: boolean
     argumentation?: boolean
     posture?: boolean
@@ -13833,6 +15017,7 @@ export namespace Prisma {
     id?: boolean
     sessionId?: boolean
     studentId?: boolean
+    evaluatorId?: boolean
     fluency?: boolean
     argumentation?: boolean
     posture?: boolean
@@ -13861,6 +15046,7 @@ export namespace Prisma {
       id: string
       sessionId: string
       studentId: string
+      evaluatorId: string | null
       fluency: number
       argumentation: number
       posture: number
@@ -14266,6 +15452,7 @@ export namespace Prisma {
     readonly id: FieldRef<"DebateEvaluation", 'String'>
     readonly sessionId: FieldRef<"DebateEvaluation", 'String'>
     readonly studentId: FieldRef<"DebateEvaluation", 'String'>
+    readonly evaluatorId: FieldRef<"DebateEvaluation", 'String'>
     readonly fluency: FieldRef<"DebateEvaluation", 'Int'>
     readonly argumentation: FieldRef<"DebateEvaluation", 'Int'>
     readonly posture: FieldRef<"DebateEvaluation", 'Int'>
@@ -15752,6 +16939,8 @@ export namespace Prisma {
     startsAt: 'startsAt',
     capacity: 'capacity',
     location: 'location',
+    status: 'status',
+    moderatorId: 'moderatorId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -15759,10 +16948,21 @@ export namespace Prisma {
   export type DebateSessionScalarFieldEnum = (typeof DebateSessionScalarFieldEnum)[keyof typeof DebateSessionScalarFieldEnum]
 
 
+  export const DebateParticipantScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    studentId: 'studentId',
+    joinedAt: 'joinedAt'
+  };
+
+  export type DebateParticipantScalarFieldEnum = (typeof DebateParticipantScalarFieldEnum)[keyof typeof DebateParticipantScalarFieldEnum]
+
+
   export const DebateEvaluationScalarFieldEnum: {
     id: 'id',
     sessionId: 'sessionId',
     studentId: 'studentId',
+    evaluatorId: 'evaluatorId',
     fluency: 'fluency',
     argumentation: 'argumentation',
     posture: 'posture',
@@ -15955,6 +17155,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DebateSessionStatus'
+   */
+  export type EnumDebateSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebateSessionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DebateSessionStatus[]'
+   */
+  export type ListEnumDebateSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebateSessionStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -16063,6 +17277,8 @@ export namespace Prisma {
     grades?: GradeListRelationFilter
     invoices?: InvoiceListRelationFilter
     debateEvaluations?: DebateEvaluationListRelationFilter
+    moderatedDebates?: DebateSessionListRelationFilter
+    debateParticipations?: DebateParticipantListRelationFilter
   }
 
   export type StudentProfileOrderByWithRelationInput = {
@@ -16080,6 +17296,8 @@ export namespace Prisma {
     grades?: GradeOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
     debateEvaluations?: DebateEvaluationOrderByRelationAggregateInput
+    moderatedDebates?: DebateSessionOrderByRelationAggregateInput
+    debateParticipations?: DebateParticipantOrderByRelationAggregateInput
   }
 
   export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -16100,6 +17318,8 @@ export namespace Prisma {
     grades?: GradeListRelationFilter
     invoices?: InvoiceListRelationFilter
     debateEvaluations?: DebateEvaluationListRelationFilter
+    moderatedDebates?: DebateSessionListRelationFilter
+    debateParticipations?: DebateParticipantListRelationFilter
   }, "id" | "userId" | "studentNumber">
 
   export type StudentProfileOrderByWithAggregationInput = {
@@ -16780,9 +18000,13 @@ export namespace Prisma {
     startsAt?: DateTimeFilter<"DebateSession"> | Date | string
     capacity?: IntFilter<"DebateSession"> | number
     location?: StringNullableFilter<"DebateSession"> | string | null
+    status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
+    moderatorId?: StringNullableFilter<"DebateSession"> | string | null
     createdAt?: DateTimeFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
+    moderator?: XOR<StudentProfileNullableRelationFilter, StudentProfileWhereInput> | null
     evaluations?: DebateEvaluationListRelationFilter
+    participants?: DebateParticipantListRelationFilter
   }
 
   export type DebateSessionOrderByWithRelationInput = {
@@ -16791,9 +18015,13 @@ export namespace Prisma {
     startsAt?: SortOrder
     capacity?: SortOrder
     location?: SortOrderInput | SortOrder
+    status?: SortOrder
+    moderatorId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    moderator?: StudentProfileOrderByWithRelationInput
     evaluations?: DebateEvaluationOrderByRelationAggregateInput
+    participants?: DebateParticipantOrderByRelationAggregateInput
   }
 
   export type DebateSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -16805,9 +18033,13 @@ export namespace Prisma {
     startsAt?: DateTimeFilter<"DebateSession"> | Date | string
     capacity?: IntFilter<"DebateSession"> | number
     location?: StringNullableFilter<"DebateSession"> | string | null
+    status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
+    moderatorId?: StringNullableFilter<"DebateSession"> | string | null
     createdAt?: DateTimeFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
+    moderator?: XOR<StudentProfileNullableRelationFilter, StudentProfileWhereInput> | null
     evaluations?: DebateEvaluationListRelationFilter
+    participants?: DebateParticipantListRelationFilter
   }, "id">
 
   export type DebateSessionOrderByWithAggregationInput = {
@@ -16816,6 +18048,8 @@ export namespace Prisma {
     startsAt?: SortOrder
     capacity?: SortOrder
     location?: SortOrderInput | SortOrder
+    status?: SortOrder
+    moderatorId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DebateSessionCountOrderByAggregateInput
@@ -16834,8 +18068,64 @@ export namespace Prisma {
     startsAt?: DateTimeWithAggregatesFilter<"DebateSession"> | Date | string
     capacity?: IntWithAggregatesFilter<"DebateSession"> | number
     location?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
+    status?: EnumDebateSessionStatusWithAggregatesFilter<"DebateSession"> | $Enums.DebateSessionStatus
+    moderatorId?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DebateSession"> | Date | string
+  }
+
+  export type DebateParticipantWhereInput = {
+    AND?: DebateParticipantWhereInput | DebateParticipantWhereInput[]
+    OR?: DebateParticipantWhereInput[]
+    NOT?: DebateParticipantWhereInput | DebateParticipantWhereInput[]
+    id?: StringFilter<"DebateParticipant"> | string
+    sessionId?: StringFilter<"DebateParticipant"> | string
+    studentId?: StringFilter<"DebateParticipant"> | string
+    joinedAt?: DateTimeFilter<"DebateParticipant"> | Date | string
+    session?: XOR<DebateSessionRelationFilter, DebateSessionWhereInput>
+    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+  }
+
+  export type DebateParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    studentId?: SortOrder
+    joinedAt?: SortOrder
+    session?: DebateSessionOrderByWithRelationInput
+    student?: StudentProfileOrderByWithRelationInput
+  }
+
+  export type DebateParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_studentId?: DebateParticipantSessionIdStudentIdCompoundUniqueInput
+    AND?: DebateParticipantWhereInput | DebateParticipantWhereInput[]
+    OR?: DebateParticipantWhereInput[]
+    NOT?: DebateParticipantWhereInput | DebateParticipantWhereInput[]
+    sessionId?: StringFilter<"DebateParticipant"> | string
+    studentId?: StringFilter<"DebateParticipant"> | string
+    joinedAt?: DateTimeFilter<"DebateParticipant"> | Date | string
+    session?: XOR<DebateSessionRelationFilter, DebateSessionWhereInput>
+    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+  }, "id" | "sessionId_studentId">
+
+  export type DebateParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    studentId?: SortOrder
+    joinedAt?: SortOrder
+    _count?: DebateParticipantCountOrderByAggregateInput
+    _max?: DebateParticipantMaxOrderByAggregateInput
+    _min?: DebateParticipantMinOrderByAggregateInput
+  }
+
+  export type DebateParticipantScalarWhereWithAggregatesInput = {
+    AND?: DebateParticipantScalarWhereWithAggregatesInput | DebateParticipantScalarWhereWithAggregatesInput[]
+    OR?: DebateParticipantScalarWhereWithAggregatesInput[]
+    NOT?: DebateParticipantScalarWhereWithAggregatesInput | DebateParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DebateParticipant"> | string
+    sessionId?: StringWithAggregatesFilter<"DebateParticipant"> | string
+    studentId?: StringWithAggregatesFilter<"DebateParticipant"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"DebateParticipant"> | Date | string
   }
 
   export type DebateEvaluationWhereInput = {
@@ -16845,6 +18135,7 @@ export namespace Prisma {
     id?: StringFilter<"DebateEvaluation"> | string
     sessionId?: StringFilter<"DebateEvaluation"> | string
     studentId?: StringFilter<"DebateEvaluation"> | string
+    evaluatorId?: StringNullableFilter<"DebateEvaluation"> | string | null
     fluency?: IntFilter<"DebateEvaluation"> | number
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
@@ -16860,6 +18151,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     studentId?: SortOrder
+    evaluatorId?: SortOrderInput | SortOrder
     fluency?: SortOrder
     argumentation?: SortOrder
     posture?: SortOrder
@@ -16879,6 +18171,7 @@ export namespace Prisma {
     NOT?: DebateEvaluationWhereInput | DebateEvaluationWhereInput[]
     sessionId?: StringFilter<"DebateEvaluation"> | string
     studentId?: StringFilter<"DebateEvaluation"> | string
+    evaluatorId?: StringNullableFilter<"DebateEvaluation"> | string | null
     fluency?: IntFilter<"DebateEvaluation"> | number
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
@@ -16894,6 +18187,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     studentId?: SortOrder
+    evaluatorId?: SortOrderInput | SortOrder
     fluency?: SortOrder
     argumentation?: SortOrder
     posture?: SortOrder
@@ -16915,6 +18209,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"DebateEvaluation"> | string
     sessionId?: StringWithAggregatesFilter<"DebateEvaluation"> | string
     studentId?: StringWithAggregatesFilter<"DebateEvaluation"> | string
+    evaluatorId?: StringNullableWithAggregatesFilter<"DebateEvaluation"> | string | null
     fluency?: IntWithAggregatesFilter<"DebateEvaluation"> | number
     argumentation?: IntWithAggregatesFilter<"DebateEvaluation"> | number
     posture?: IntWithAggregatesFilter<"DebateEvaluation"> | number
@@ -17104,6 +18399,8 @@ export namespace Prisma {
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateInput = {
@@ -17120,6 +18417,8 @@ export namespace Prisma {
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUpdateInput = {
@@ -17136,6 +18435,8 @@ export namespace Prisma {
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateInput = {
@@ -17152,6 +18453,8 @@ export namespace Prisma {
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileCreateManyInput = {
@@ -17872,9 +19175,12 @@ export namespace Prisma {
     startsAt: Date | string
     capacity: number
     location?: string | null
+    status?: $Enums.DebateSessionStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    moderator?: StudentProfileCreateNestedOneWithoutModeratedDebatesInput
     evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
   }
 
   export type DebateSessionUncheckedCreateInput = {
@@ -17883,9 +19189,12 @@ export namespace Prisma {
     startsAt: Date | string
     capacity: number
     location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DebateSessionUpdateInput = {
@@ -17894,9 +19203,12 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: StudentProfileUpdateOneWithoutModeratedDebatesNestedInput
     evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateInput = {
@@ -17905,9 +19217,12 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type DebateSessionCreateManyInput = {
@@ -17916,6 +19231,8 @@ export namespace Prisma {
     startsAt: Date | string
     capacity: number
     location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17926,6 +19243,7 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17936,12 +19254,62 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DebateParticipantCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    session: DebateSessionCreateNestedOneWithoutParticipantsInput
+    student: StudentProfileCreateNestedOneWithoutDebateParticipationsInput
+  }
+
+  export type DebateParticipantUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    studentId: string
+    joinedAt?: Date | string
+  }
+
+  export type DebateParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: DebateSessionUpdateOneRequiredWithoutParticipantsNestedInput
+    student?: StudentProfileUpdateOneRequiredWithoutDebateParticipationsNestedInput
+  }
+
+  export type DebateParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantCreateManyInput = {
+    id?: string
+    sessionId: string
+    studentId: string
+    joinedAt?: Date | string
+  }
+
+  export type DebateParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DebateEvaluationCreateInput = {
     id?: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -17957,6 +19325,7 @@ export namespace Prisma {
     id?: string
     sessionId: string
     studentId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -17968,6 +19337,7 @@ export namespace Prisma {
 
   export type DebateEvaluationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -17983,6 +19353,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -17996,6 +19367,7 @@ export namespace Prisma {
     id?: string
     sessionId: string
     studentId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -18007,6 +19379,7 @@ export namespace Prisma {
 
   export type DebateEvaluationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -18020,6 +19393,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -18322,6 +19696,18 @@ export namespace Prisma {
     none?: DebateEvaluationWhereInput
   }
 
+  export type DebateSessionListRelationFilter = {
+    every?: DebateSessionWhereInput
+    some?: DebateSessionWhereInput
+    none?: DebateSessionWhereInput
+  }
+
+  export type DebateParticipantListRelationFilter = {
+    every?: DebateParticipantWhereInput
+    some?: DebateParticipantWhereInput
+    none?: DebateParticipantWhereInput
+  }
+
   export type EnrollmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -18339,6 +19725,14 @@ export namespace Prisma {
   }
 
   export type DebateEvaluationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DebateSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DebateParticipantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18858,12 +20252,21 @@ export namespace Prisma {
     _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
   }
 
+  export type EnumDebateSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DebateSessionStatus | EnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDebateSessionStatusFilter<$PrismaModel> | $Enums.DebateSessionStatus
+  }
+
   export type DebateSessionCountOrderByAggregateInput = {
     id?: SortOrder
     topic?: SortOrder
     startsAt?: SortOrder
     capacity?: SortOrder
     location?: SortOrder
+    status?: SortOrder
+    moderatorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18878,6 +20281,8 @@ export namespace Prisma {
     startsAt?: SortOrder
     capacity?: SortOrder
     location?: SortOrder
+    status?: SortOrder
+    moderatorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18888,6 +20293,8 @@ export namespace Prisma {
     startsAt?: SortOrder
     capacity?: SortOrder
     location?: SortOrder
+    status?: SortOrder
+    moderatorId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18896,9 +20303,45 @@ export namespace Prisma {
     capacity?: SortOrder
   }
 
+  export type EnumDebateSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DebateSessionStatus | EnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDebateSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.DebateSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDebateSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumDebateSessionStatusFilter<$PrismaModel>
+  }
+
   export type DebateSessionRelationFilter = {
     is?: DebateSessionWhereInput
     isNot?: DebateSessionWhereInput
+  }
+
+  export type DebateParticipantSessionIdStudentIdCompoundUniqueInput = {
+    sessionId: string
+    studentId: string
+  }
+
+  export type DebateParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    studentId?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type DebateParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    studentId?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type DebateParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    studentId?: SortOrder
+    joinedAt?: SortOrder
   }
 
   export type DebateEvaluationSessionIdStudentIdCompoundUniqueInput = {
@@ -18910,6 +20353,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     studentId?: SortOrder
+    evaluatorId?: SortOrder
     fluency?: SortOrder
     argumentation?: SortOrder
     posture?: SortOrder
@@ -18929,6 +20373,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     studentId?: SortOrder
+    evaluatorId?: SortOrder
     fluency?: SortOrder
     argumentation?: SortOrder
     posture?: SortOrder
@@ -18942,6 +20387,7 @@ export namespace Prisma {
     id?: SortOrder
     sessionId?: SortOrder
     studentId?: SortOrder
+    evaluatorId?: SortOrder
     fluency?: SortOrder
     argumentation?: SortOrder
     posture?: SortOrder
@@ -19207,6 +20653,20 @@ export namespace Prisma {
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
   }
 
+  export type DebateSessionCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput> | DebateSessionCreateWithoutModeratorInput[] | DebateSessionUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorInput | DebateSessionCreateOrConnectWithoutModeratorInput[]
+    createMany?: DebateSessionCreateManyModeratorInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
+  export type DebateParticipantCreateNestedManyWithoutStudentInput = {
+    create?: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput> | DebateParticipantCreateWithoutStudentInput[] | DebateParticipantUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutStudentInput | DebateParticipantCreateOrConnectWithoutStudentInput[]
+    createMany?: DebateParticipantCreateManyStudentInputEnvelope
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -19240,6 +20700,20 @@ export namespace Prisma {
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutStudentInput | DebateEvaluationCreateOrConnectWithoutStudentInput[]
     createMany?: DebateEvaluationCreateManyStudentInputEnvelope
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
+  }
+
+  export type DebateSessionUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput> | DebateSessionCreateWithoutModeratorInput[] | DebateSessionUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorInput | DebateSessionCreateOrConnectWithoutModeratorInput[]
+    createMany?: DebateSessionCreateManyModeratorInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
+  export type DebateParticipantUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput> | DebateParticipantCreateWithoutStudentInput[] | DebateParticipantUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutStudentInput | DebateParticipantCreateOrConnectWithoutStudentInput[]
+    createMany?: DebateParticipantCreateManyStudentInputEnvelope
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutStudentProfileNestedInput = {
@@ -19320,6 +20794,34 @@ export namespace Prisma {
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
   }
 
+  export type DebateSessionUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput> | DebateSessionCreateWithoutModeratorInput[] | DebateSessionUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorInput | DebateSessionCreateOrConnectWithoutModeratorInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutModeratorInput | DebateSessionUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: DebateSessionCreateManyModeratorInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutModeratorInput | DebateSessionUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutModeratorInput | DebateSessionUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
+  export type DebateParticipantUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput> | DebateParticipantCreateWithoutStudentInput[] | DebateParticipantUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutStudentInput | DebateParticipantCreateOrConnectWithoutStudentInput[]
+    upsert?: DebateParticipantUpsertWithWhereUniqueWithoutStudentInput | DebateParticipantUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: DebateParticipantCreateManyStudentInputEnvelope
+    set?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    disconnect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    delete?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    update?: DebateParticipantUpdateWithWhereUniqueWithoutStudentInput | DebateParticipantUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: DebateParticipantUpdateManyWithWhereWithoutStudentInput | DebateParticipantUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<EnrollmentCreateWithoutStudentInput, EnrollmentUncheckedCreateWithoutStudentInput> | EnrollmentCreateWithoutStudentInput[] | EnrollmentUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutStudentInput | EnrollmentCreateOrConnectWithoutStudentInput[]
@@ -19388,6 +20890,34 @@ export namespace Prisma {
     update?: DebateEvaluationUpdateWithWhereUniqueWithoutStudentInput | DebateEvaluationUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: DebateEvaluationUpdateManyWithWhereWithoutStudentInput | DebateEvaluationUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
+  }
+
+  export type DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput> | DebateSessionCreateWithoutModeratorInput[] | DebateSessionUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorInput | DebateSessionCreateOrConnectWithoutModeratorInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutModeratorInput | DebateSessionUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: DebateSessionCreateManyModeratorInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutModeratorInput | DebateSessionUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutModeratorInput | DebateSessionUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
+  export type DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput> | DebateParticipantCreateWithoutStudentInput[] | DebateParticipantUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutStudentInput | DebateParticipantCreateOrConnectWithoutStudentInput[]
+    upsert?: DebateParticipantUpsertWithWhereUniqueWithoutStudentInput | DebateParticipantUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: DebateParticipantCreateManyStudentInputEnvelope
+    set?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    disconnect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    delete?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    update?: DebateParticipantUpdateWithWhereUniqueWithoutStudentInput | DebateParticipantUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: DebateParticipantUpdateManyWithWhereWithoutStudentInput | DebateParticipantUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTeacherProfileInput = {
@@ -20002,6 +21532,12 @@ export namespace Prisma {
     update?: XOR<XOR<EnrollmentUpdateToOneWithWhereWithoutInvoicesInput, EnrollmentUpdateWithoutInvoicesInput>, EnrollmentUncheckedUpdateWithoutInvoicesInput>
   }
 
+  export type StudentProfileCreateNestedOneWithoutModeratedDebatesInput = {
+    create?: XOR<StudentProfileCreateWithoutModeratedDebatesInput, StudentProfileUncheckedCreateWithoutModeratedDebatesInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutModeratedDebatesInput
+    connect?: StudentProfileWhereUniqueInput
+  }
+
   export type DebateEvaluationCreateNestedManyWithoutSessionInput = {
     create?: XOR<DebateEvaluationCreateWithoutSessionInput, DebateEvaluationUncheckedCreateWithoutSessionInput> | DebateEvaluationCreateWithoutSessionInput[] | DebateEvaluationUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutSessionInput | DebateEvaluationCreateOrConnectWithoutSessionInput[]
@@ -20009,11 +21545,39 @@ export namespace Prisma {
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
   }
 
+  export type DebateParticipantCreateNestedManyWithoutSessionInput = {
+    create?: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput> | DebateParticipantCreateWithoutSessionInput[] | DebateParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutSessionInput | DebateParticipantCreateOrConnectWithoutSessionInput[]
+    createMany?: DebateParticipantCreateManySessionInputEnvelope
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+  }
+
   export type DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput = {
     create?: XOR<DebateEvaluationCreateWithoutSessionInput, DebateEvaluationUncheckedCreateWithoutSessionInput> | DebateEvaluationCreateWithoutSessionInput[] | DebateEvaluationUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutSessionInput | DebateEvaluationCreateOrConnectWithoutSessionInput[]
     createMany?: DebateEvaluationCreateManySessionInputEnvelope
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
+  }
+
+  export type DebateParticipantUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput> | DebateParticipantCreateWithoutSessionInput[] | DebateParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutSessionInput | DebateParticipantCreateOrConnectWithoutSessionInput[]
+    createMany?: DebateParticipantCreateManySessionInputEnvelope
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+  }
+
+  export type EnumDebateSessionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DebateSessionStatus
+  }
+
+  export type StudentProfileUpdateOneWithoutModeratedDebatesNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutModeratedDebatesInput, StudentProfileUncheckedCreateWithoutModeratedDebatesInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutModeratedDebatesInput
+    upsert?: StudentProfileUpsertWithoutModeratedDebatesInput
+    disconnect?: StudentProfileWhereInput | boolean
+    delete?: StudentProfileWhereInput | boolean
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutModeratedDebatesInput, StudentProfileUpdateWithoutModeratedDebatesInput>, StudentProfileUncheckedUpdateWithoutModeratedDebatesInput>
   }
 
   export type DebateEvaluationUpdateManyWithoutSessionNestedInput = {
@@ -20030,6 +21594,20 @@ export namespace Prisma {
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
   }
 
+  export type DebateParticipantUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput> | DebateParticipantCreateWithoutSessionInput[] | DebateParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutSessionInput | DebateParticipantCreateOrConnectWithoutSessionInput[]
+    upsert?: DebateParticipantUpsertWithWhereUniqueWithoutSessionInput | DebateParticipantUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: DebateParticipantCreateManySessionInputEnvelope
+    set?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    disconnect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    delete?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    update?: DebateParticipantUpdateWithWhereUniqueWithoutSessionInput | DebateParticipantUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: DebateParticipantUpdateManyWithWhereWithoutSessionInput | DebateParticipantUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+  }
+
   export type DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput = {
     create?: XOR<DebateEvaluationCreateWithoutSessionInput, DebateEvaluationUncheckedCreateWithoutSessionInput> | DebateEvaluationCreateWithoutSessionInput[] | DebateEvaluationUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutSessionInput | DebateEvaluationCreateOrConnectWithoutSessionInput[]
@@ -20042,6 +21620,48 @@ export namespace Prisma {
     update?: DebateEvaluationUpdateWithWhereUniqueWithoutSessionInput | DebateEvaluationUpdateWithWhereUniqueWithoutSessionInput[]
     updateMany?: DebateEvaluationUpdateManyWithWhereWithoutSessionInput | DebateEvaluationUpdateManyWithWhereWithoutSessionInput[]
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
+  }
+
+  export type DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput> | DebateParticipantCreateWithoutSessionInput[] | DebateParticipantUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: DebateParticipantCreateOrConnectWithoutSessionInput | DebateParticipantCreateOrConnectWithoutSessionInput[]
+    upsert?: DebateParticipantUpsertWithWhereUniqueWithoutSessionInput | DebateParticipantUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: DebateParticipantCreateManySessionInputEnvelope
+    set?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    disconnect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    delete?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+    update?: DebateParticipantUpdateWithWhereUniqueWithoutSessionInput | DebateParticipantUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: DebateParticipantUpdateManyWithWhereWithoutSessionInput | DebateParticipantUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+  }
+
+  export type DebateSessionCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<DebateSessionCreateWithoutParticipantsInput, DebateSessionUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutParticipantsInput
+    connect?: DebateSessionWhereUniqueInput
+  }
+
+  export type StudentProfileCreateNestedOneWithoutDebateParticipationsInput = {
+    create?: XOR<StudentProfileCreateWithoutDebateParticipationsInput, StudentProfileUncheckedCreateWithoutDebateParticipationsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutDebateParticipationsInput
+    connect?: StudentProfileWhereUniqueInput
+  }
+
+  export type DebateSessionUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutParticipantsInput, DebateSessionUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutParticipantsInput
+    upsert?: DebateSessionUpsertWithoutParticipantsInput
+    connect?: DebateSessionWhereUniqueInput
+    update?: XOR<XOR<DebateSessionUpdateToOneWithWhereWithoutParticipantsInput, DebateSessionUpdateWithoutParticipantsInput>, DebateSessionUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type StudentProfileUpdateOneRequiredWithoutDebateParticipationsNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutDebateParticipationsInput, StudentProfileUncheckedCreateWithoutDebateParticipationsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutDebateParticipationsInput
+    upsert?: StudentProfileUpsertWithoutDebateParticipationsInput
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutDebateParticipationsInput, StudentProfileUpdateWithoutDebateParticipationsInput>, StudentProfileUncheckedUpdateWithoutDebateParticipationsInput>
   }
 
   export type DebateSessionCreateNestedOneWithoutEvaluationsInput = {
@@ -20345,6 +21965,23 @@ export namespace Prisma {
     _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
     _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
   }
+
+  export type NestedEnumDebateSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DebateSessionStatus | EnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDebateSessionStatusFilter<$PrismaModel> | $Enums.DebateSessionStatus
+  }
+
+  export type NestedEnumDebateSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DebateSessionStatus | EnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DebateSessionStatus[] | ListEnumDebateSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDebateSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.DebateSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDebateSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumDebateSessionStatusFilter<$PrismaModel>
+  }
   export type NestedJsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -20381,6 +22018,8 @@ export namespace Prisma {
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutUserInput = {
@@ -20396,6 +22035,8 @@ export namespace Prisma {
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutUserInput = {
@@ -20484,6 +22125,8 @@ export namespace Prisma {
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutUserInput = {
@@ -20499,6 +22142,8 @@ export namespace Prisma {
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type TeacherProfileUpsertWithoutUserInput = {
@@ -20729,6 +22374,7 @@ export namespace Prisma {
 
   export type DebateEvaluationCreateWithoutStudentInput = {
     id?: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -20742,6 +22388,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedCreateWithoutStudentInput = {
     id?: string
     sessionId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -20758,6 +22405,64 @@ export namespace Prisma {
 
   export type DebateEvaluationCreateManyStudentInputEnvelope = {
     data: DebateEvaluationCreateManyStudentInput | DebateEvaluationCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateSessionCreateWithoutModeratorInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutModeratorInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type DebateSessionCreateManyModeratorInputEnvelope = {
+    data: DebateSessionCreateManyModeratorInput | DebateSessionCreateManyModeratorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateParticipantCreateWithoutStudentInput = {
+    id?: string
+    joinedAt?: Date | string
+    session: DebateSessionCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type DebateParticipantUncheckedCreateWithoutStudentInput = {
+    id?: string
+    sessionId: string
+    joinedAt?: Date | string
+  }
+
+  export type DebateParticipantCreateOrConnectWithoutStudentInput = {
+    where: DebateParticipantWhereUniqueInput
+    create: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput>
+  }
+
+  export type DebateParticipantCreateManyStudentInputEnvelope = {
+    data: DebateParticipantCreateManyStudentInput | DebateParticipantCreateManyStudentInput[]
     skipDuplicates?: boolean
   }
 
@@ -20947,6 +22652,7 @@ export namespace Prisma {
     id?: StringFilter<"DebateEvaluation"> | string
     sessionId?: StringFilter<"DebateEvaluation"> | string
     studentId?: StringFilter<"DebateEvaluation"> | string
+    evaluatorId?: StringNullableFilter<"DebateEvaluation"> | string | null
     fluency?: IntFilter<"DebateEvaluation"> | number
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
@@ -20954,6 +22660,63 @@ export namespace Prisma {
     evaluatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
     createdAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
     updatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
+  }
+
+  export type DebateSessionUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: DebateSessionWhereUniqueInput
+    update: XOR<DebateSessionUpdateWithoutModeratorInput, DebateSessionUncheckedUpdateWithoutModeratorInput>
+    create: XOR<DebateSessionCreateWithoutModeratorInput, DebateSessionUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type DebateSessionUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: DebateSessionWhereUniqueInput
+    data: XOR<DebateSessionUpdateWithoutModeratorInput, DebateSessionUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type DebateSessionUpdateManyWithWhereWithoutModeratorInput = {
+    where: DebateSessionScalarWhereInput
+    data: XOR<DebateSessionUpdateManyMutationInput, DebateSessionUncheckedUpdateManyWithoutModeratorInput>
+  }
+
+  export type DebateSessionScalarWhereInput = {
+    AND?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+    OR?: DebateSessionScalarWhereInput[]
+    NOT?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+    id?: StringFilter<"DebateSession"> | string
+    topic?: StringFilter<"DebateSession"> | string
+    startsAt?: DateTimeFilter<"DebateSession"> | Date | string
+    capacity?: IntFilter<"DebateSession"> | number
+    location?: StringNullableFilter<"DebateSession"> | string | null
+    status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
+    moderatorId?: StringNullableFilter<"DebateSession"> | string | null
+    createdAt?: DateTimeFilter<"DebateSession"> | Date | string
+    updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
+  }
+
+  export type DebateParticipantUpsertWithWhereUniqueWithoutStudentInput = {
+    where: DebateParticipantWhereUniqueInput
+    update: XOR<DebateParticipantUpdateWithoutStudentInput, DebateParticipantUncheckedUpdateWithoutStudentInput>
+    create: XOR<DebateParticipantCreateWithoutStudentInput, DebateParticipantUncheckedCreateWithoutStudentInput>
+  }
+
+  export type DebateParticipantUpdateWithWhereUniqueWithoutStudentInput = {
+    where: DebateParticipantWhereUniqueInput
+    data: XOR<DebateParticipantUpdateWithoutStudentInput, DebateParticipantUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type DebateParticipantUpdateManyWithWhereWithoutStudentInput = {
+    where: DebateParticipantScalarWhereInput
+    data: XOR<DebateParticipantUpdateManyMutationInput, DebateParticipantUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type DebateParticipantScalarWhereInput = {
+    AND?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+    OR?: DebateParticipantScalarWhereInput[]
+    NOT?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+    id?: StringFilter<"DebateParticipant"> | string
+    sessionId?: StringFilter<"DebateParticipant"> | string
+    studentId?: StringFilter<"DebateParticipant"> | string
+    joinedAt?: DateTimeFilter<"DebateParticipant"> | Date | string
   }
 
   export type UserCreateWithoutTeacherProfileInput = {
@@ -21600,6 +23363,8 @@ export namespace Prisma {
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutEnrollmentsInput = {
@@ -21615,6 +23380,8 @@ export namespace Prisma {
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutEnrollmentsInput = {
@@ -21746,6 +23513,8 @@ export namespace Prisma {
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutEnrollmentsInput = {
@@ -21761,6 +23530,8 @@ export namespace Prisma {
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithoutEnrollmentsInput = {
@@ -21870,6 +23641,8 @@ export namespace Prisma {
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutAttendancesInput = {
@@ -21885,6 +23658,8 @@ export namespace Prisma {
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutAttendancesInput = {
@@ -21951,6 +23726,8 @@ export namespace Prisma {
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutAttendancesInput = {
@@ -21966,6 +23743,8 @@ export namespace Prisma {
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassGroupUpsertWithoutAttendancesInput = {
@@ -22022,6 +23801,8 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutGradesInput = {
@@ -22037,6 +23818,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutGradesInput = {
@@ -22103,6 +23886,8 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutGradesInput = {
@@ -22118,6 +23903,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ClassGroupUpsertWithoutGradesInput = {
@@ -22302,6 +24089,8 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutInvoicesInput = {
@@ -22317,6 +24106,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutInvoicesInput = {
@@ -22375,6 +24166,8 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutInvoicesInput = {
@@ -22390,6 +24183,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type EnrollmentUpsertWithoutInvoicesInput = {
@@ -22425,8 +24220,48 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StudentProfileCreateWithoutModeratedDebatesInput = {
+    id?: string
+    studentNumber: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutStudentProfileInput
+    enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    grades?: GradeCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentProfileUncheckedCreateWithoutModeratedDebatesInput = {
+    id?: string
+    userId: string
+    studentNumber: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentProfileCreateOrConnectWithoutModeratedDebatesInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutModeratedDebatesInput, StudentProfileUncheckedCreateWithoutModeratedDebatesInput>
+  }
+
   export type DebateEvaluationCreateWithoutSessionInput = {
     id?: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -22440,6 +24275,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedCreateWithoutSessionInput = {
     id?: string
     studentId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -22459,6 +24295,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DebateParticipantCreateWithoutSessionInput = {
+    id?: string
+    joinedAt?: Date | string
+    student: StudentProfileCreateNestedOneWithoutDebateParticipationsInput
+  }
+
+  export type DebateParticipantUncheckedCreateWithoutSessionInput = {
+    id?: string
+    studentId: string
+    joinedAt?: Date | string
+  }
+
+  export type DebateParticipantCreateOrConnectWithoutSessionInput = {
+    where: DebateParticipantWhereUniqueInput
+    create: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput>
+  }
+
+  export type DebateParticipantCreateManySessionInputEnvelope = {
+    data: DebateParticipantCreateManySessionInput | DebateParticipantCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StudentProfileUpsertWithoutModeratedDebatesInput = {
+    update: XOR<StudentProfileUpdateWithoutModeratedDebatesInput, StudentProfileUncheckedUpdateWithoutModeratedDebatesInput>
+    create: XOR<StudentProfileCreateWithoutModeratedDebatesInput, StudentProfileUncheckedCreateWithoutModeratedDebatesInput>
+    where?: StudentProfileWhereInput
+  }
+
+  export type StudentProfileUpdateToOneWithWhereWithoutModeratedDebatesInput = {
+    where?: StudentProfileWhereInput
+    data: XOR<StudentProfileUpdateWithoutModeratedDebatesInput, StudentProfileUncheckedUpdateWithoutModeratedDebatesInput>
+  }
+
+  export type StudentProfileUpdateWithoutModeratedDebatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    grades?: GradeUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutModeratedDebatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
   export type DebateEvaluationUpsertWithWhereUniqueWithoutSessionInput = {
     where: DebateEvaluationWhereUniqueInput
     update: XOR<DebateEvaluationUpdateWithoutSessionInput, DebateEvaluationUncheckedUpdateWithoutSessionInput>
@@ -22475,14 +24378,185 @@ export namespace Prisma {
     data: XOR<DebateEvaluationUpdateManyMutationInput, DebateEvaluationUncheckedUpdateManyWithoutSessionInput>
   }
 
+  export type DebateParticipantUpsertWithWhereUniqueWithoutSessionInput = {
+    where: DebateParticipantWhereUniqueInput
+    update: XOR<DebateParticipantUpdateWithoutSessionInput, DebateParticipantUncheckedUpdateWithoutSessionInput>
+    create: XOR<DebateParticipantCreateWithoutSessionInput, DebateParticipantUncheckedCreateWithoutSessionInput>
+  }
+
+  export type DebateParticipantUpdateWithWhereUniqueWithoutSessionInput = {
+    where: DebateParticipantWhereUniqueInput
+    data: XOR<DebateParticipantUpdateWithoutSessionInput, DebateParticipantUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type DebateParticipantUpdateManyWithWhereWithoutSessionInput = {
+    where: DebateParticipantScalarWhereInput
+    data: XOR<DebateParticipantUpdateManyMutationInput, DebateParticipantUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type DebateSessionCreateWithoutParticipantsInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    moderator?: StudentProfileCreateNestedOneWithoutModeratedDebatesInput
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutParticipantsInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutParticipantsInput, DebateSessionUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type StudentProfileCreateWithoutDebateParticipationsInput = {
+    id?: string
+    studentNumber: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutStudentProfileInput
+    enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    grades?: GradeCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+  }
+
+  export type StudentProfileUncheckedCreateWithoutDebateParticipationsInput = {
+    id?: string
+    userId: string
+    studentNumber: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type StudentProfileCreateOrConnectWithoutDebateParticipationsInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutDebateParticipationsInput, StudentProfileUncheckedCreateWithoutDebateParticipationsInput>
+  }
+
+  export type DebateSessionUpsertWithoutParticipantsInput = {
+    update: XOR<DebateSessionUpdateWithoutParticipantsInput, DebateSessionUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<DebateSessionCreateWithoutParticipantsInput, DebateSessionUncheckedCreateWithoutParticipantsInput>
+    where?: DebateSessionWhereInput
+  }
+
+  export type DebateSessionUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: DebateSessionWhereInput
+    data: XOR<DebateSessionUpdateWithoutParticipantsInput, DebateSessionUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type DebateSessionUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: StudentProfileUpdateOneWithoutModeratedDebatesNestedInput
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type StudentProfileUpsertWithoutDebateParticipationsInput = {
+    update: XOR<StudentProfileUpdateWithoutDebateParticipationsInput, StudentProfileUncheckedUpdateWithoutDebateParticipationsInput>
+    create: XOR<StudentProfileCreateWithoutDebateParticipationsInput, StudentProfileUncheckedCreateWithoutDebateParticipationsInput>
+    where?: StudentProfileWhereInput
+  }
+
+  export type StudentProfileUpdateToOneWithWhereWithoutDebateParticipationsInput = {
+    where?: StudentProfileWhereInput
+    data: XOR<StudentProfileUpdateWithoutDebateParticipationsInput, StudentProfileUncheckedUpdateWithoutDebateParticipationsInput>
+  }
+
+  export type StudentProfileUpdateWithoutDebateParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    grades?: GradeUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutDebateParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
   export type DebateSessionCreateWithoutEvaluationsInput = {
     id?: string
     topic: string
     startsAt: Date | string
     capacity: number
     location?: string | null
+    status?: $Enums.DebateSessionStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    moderator?: StudentProfileCreateNestedOneWithoutModeratedDebatesInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
   }
 
   export type DebateSessionUncheckedCreateWithoutEvaluationsInput = {
@@ -22491,8 +24565,11 @@ export namespace Prisma {
     startsAt: Date | string
     capacity: number
     location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type DebateSessionCreateOrConnectWithoutEvaluationsInput = {
@@ -22513,6 +24590,8 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutDebateEvaluationsInput = {
@@ -22528,6 +24607,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutDebateEvaluationsInput = {
@@ -22552,8 +24633,11 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: StudentProfileUpdateOneWithoutModeratedDebatesNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateWithoutEvaluationsInput = {
@@ -22562,8 +24646,11 @@ export namespace Prisma {
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type StudentProfileUpsertWithoutDebateEvaluationsInput = {
@@ -22590,6 +24677,8 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutDebateEvaluationsInput = {
@@ -22605,6 +24694,8 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -22766,6 +24857,7 @@ export namespace Prisma {
   export type DebateEvaluationCreateManyStudentInput = {
     id?: string
     sessionId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -22773,6 +24865,23 @@ export namespace Prisma {
     evaluatedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type DebateSessionCreateManyModeratorInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateParticipantCreateManyStudentInput = {
+    id?: string
+    sessionId: string
+    joinedAt?: Date | string
   }
 
   export type EnrollmentUpdateWithoutStudentInput = {
@@ -22911,6 +25020,7 @@ export namespace Prisma {
 
   export type DebateEvaluationUpdateWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -22924,6 +25034,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedUpdateWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -22936,6 +25047,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedUpdateManyWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -22943,6 +25055,61 @@ export namespace Prisma {
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateSessionUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: DebateSessionUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type DebateParticipantUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClassGroupCreateManyTeacherInput = {
@@ -23364,6 +25531,7 @@ export namespace Prisma {
   export type DebateEvaluationCreateManySessionInput = {
     id?: string
     studentId: string
+    evaluatorId?: string | null
     fluency: number
     argumentation: number
     posture: number
@@ -23373,8 +25541,15 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type DebateParticipantCreateManySessionInput = {
+    id?: string
+    studentId: string
+    joinedAt?: Date | string
+  }
+
   export type DebateEvaluationUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -23388,6 +25563,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -23400,6 +25576,7 @@ export namespace Prisma {
   export type DebateEvaluationUncheckedUpdateManyWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: NullableStringFieldUpdateOperationsInput | string | null
     fluency?: IntFieldUpdateOperationsInput | number
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
@@ -23407,6 +25584,24 @@ export namespace Prisma {
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneRequiredWithoutDebateParticipationsNestedInput
+  }
+
+  export type DebateParticipantUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateParticipantUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
@@ -23486,6 +25681,10 @@ export namespace Prisma {
      * @deprecated Use DebateSessionDefaultArgs instead
      */
     export type DebateSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateSessionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DebateParticipantDefaultArgs instead
+     */
+    export type DebateParticipantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateParticipantDefaultArgs<ExtArgs>
     /**
      * @deprecated Use DebateEvaluationDefaultArgs instead
      */

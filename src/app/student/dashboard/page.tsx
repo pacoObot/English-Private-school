@@ -1,4 +1,4 @@
-import { BookOpen, Download, Eye, MessageCircle, Wallet } from "lucide-react";
+import { BookOpen, Download, Eye, MessageCircle, Mic2, Wallet } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { DataTable } from "@/components/ui/DataTable";
@@ -20,7 +20,8 @@ export default async function StudentDashboardPage() {
           enrollments: { include: { course: true, classGroup: true } },
           invoices: true,
           attendances: true,
-          grades: true
+          grades: true,
+          debateEvaluations: true
         }
       })
     : null;
@@ -28,6 +29,9 @@ export default async function StudentDashboardPage() {
   const pendingAmount = student?.invoices.filter((invoice) => invoice.status === "PENDING").reduce((sum, invoice) => sum + invoice.amountMt, 0) ?? 0;
   const absences = student?.attendances.filter((attendance) => attendance.status === "ABSENT").length ?? 0;
   const gradeAverage = student?.grades.length ? student.grades.reduce((sum, grade) => sum + grade.score, 0) / student.grades.length : 0;
+  
+  const debateEvals = student?.debateEvaluations ?? [];
+  const debateAvg = debateEvals.length > 0 ? debateEvals.reduce((sum, ev) => sum + ev.fluency + ev.argumentation + ev.posture, 0) / (debateEvals.length * 3) : 0;
 
   return (
     <DashboardLayout
@@ -70,7 +74,7 @@ export default async function StudentDashboardPage() {
         </BentoCard>
 
         <MetricCard label="Cursos Ativos" value={String(activeCourses)} hint={student?.level ?? "Nivel"} icon={BookOpen} tone="navy" />
-        <MetricCard label="Fichas Novas" value="08" hint="+3" icon={Download} tone="rose" />
+        <MetricCard label="Debate Skills" value={`${debateAvg.toFixed(1)}/10`} hint={`${debateEvals.length} sessões`} icon={Mic2} tone="rose" />
         <MetricCard label="Faltas" value={String(absences)} hint={gradeAverage ? `${gradeAverage.toFixed(1)}/20` : "Sem notas"} icon={Eye} tone="light" />
         <MetricCard label="Suporte" value="Online" hint="Tutor" icon={MessageCircle} tone="dark" />
 

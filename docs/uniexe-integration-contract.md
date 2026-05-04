@@ -9,9 +9,11 @@ Definir o primeiro contrato de dados exportaveis do Delson PS Academic para uma 
 ## Principios
 
 - A exportacao deve usar dados persistidos no Prisma.
+- O ponto principal de extração de dados para a UNIEXE é a **API REST v1** (`/api/v1/...`).
 - Nenhum segredo, hash de palavra-passe ou dado interno de sessao deve ser exportado.
 - Cada exportacao deve registrar `AuditLog`.
 - Operacoes de envio para a UNIEXE devem ser idempotentes sempre que possivel.
+- A especificação completa da API pode ser encontrada em `docs/api-spec.md`.
 - Campos sensiveis devem passar por revisao antes de qualquer ambiente de producao.
 
 ## Entidades exportaveis

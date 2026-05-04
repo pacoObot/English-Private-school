@@ -1,18 +1,19 @@
 # Project State
 
 ## Current Context
-- **Active Phase**: Phase 3 (Wrapping up)
-- **Last Milestone**: Sprint 3 Responsive QA validated.
-- **Next Milestone**: Phase 4 initialization (Testing & Refinement).
+- **Active Phase**: Phase 4 Completed (Debate Arena + API v1 + Quality)
+- **Last Milestone**: Sprint 4 - Integração UNIEXE + Debate Arena Real + Qualidade.
+- **Next Milestone**: Preparar lançamento de produção.
 
 ## Recent Decisions
-- **Mobile-First Validation**: Use `npm run qa:responsive` to prevent horizontal overflow in all new UI changes.
-- **Continuity**: Updates to `PROJECT_STATUS.md` and `TASK_LOG.md` are mandatory.
+- **API v1**: Implementada com paginação e RBAC unificado.
+- **Debate Arena**: Papel de Gestor de Debate atribuído de forma contextual (por sessão) para não quebrar hierarquia global de roles.
+- **Testes**: Jest configurado para testes unitários de API e Autenticação.
 
 ## Active Blockers
-- **UNIEXE**: Missing credentials/endpoint for real integration.
+- **UNIEXE**: Aguardando endpoint externo para integração final de sincronismo (API de leitura já exposta localmente).
 
 ## Key Metrics
-- **Viewport Support**: 5 viewports validated (360px to Desktop).
-- **Build Status**: Passing.
-- **Lint Status**: Passing.
+- **Test Status**: Passando (Jest API unit tests).
+- **Build Status**: Passando.
+- **Lint Status**: Passando.

@@ -245,14 +245,24 @@ exports.Prisma.DebateSessionScalarFieldEnum = {
   startsAt: 'startsAt',
   capacity: 'capacity',
   location: 'location',
+  status: 'status',
+  moderatorId: 'moderatorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DebateParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  studentId: 'studentId',
+  joinedAt: 'joinedAt'
 };
 
 exports.Prisma.DebateEvaluationScalarFieldEnum = {
   id: 'id',
   sessionId: 'sessionId',
   studentId: 'studentId',
+  evaluatorId: 'evaluatorId',
   fluency: 'fluency',
   argumentation: 'argumentation',
   posture: 'posture',
@@ -326,6 +336,12 @@ exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.DebateSessionStatus = exports.$Enums.DebateSessionStatus = {
+  SCHEDULED: 'SCHEDULED',
+  ACTIVE: 'ACTIVE',
+  CLOSED: 'CLOSED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   StudentProfile: 'StudentProfile',
@@ -338,6 +354,7 @@ exports.Prisma.ModelName = {
   StudyMaterial: 'StudyMaterial',
   Invoice: 'Invoice',
   DebateSession: 'DebateSession',
+  DebateParticipant: 'DebateParticipant',
   DebateEvaluation: 'DebateEvaluation',
   AuditLog: 'AuditLog'
 };

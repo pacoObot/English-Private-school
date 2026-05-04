@@ -36,6 +36,12 @@ enum InvoiceStatus {
   CANCELLED
 }
 
+enum DebateSessionStatus {
+  SCHEDULED
+  ACTIVE
+  CLOSED
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -62,12 +68,14 @@ model StudentProfile {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  enrollments       Enrollment[]
-  attendances       Attendance[]
-  grades            Grade[]
-  invoices          Invoice[]
-  debateEvaluations DebateEvaluation[]
+  user                 User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollments          Enrollment[]
+  attendances          Attendance[]
+  grades               Grade[]
+  invoices             Invoice[]
+  debateEvaluations    DebateEvaluation[]
+  moderatedDebates     DebateSession[]     @relation("SessionModerator")
+  debateParticipations DebateParticipant[]
 }
 
 model TeacherProfile {
@@ -216,21 +224,39 @@ model Invoice {
 }
 
 model DebateSession {
-  id        String   @id @default(cuid())
-  topic     String
-  startsAt  DateTime
-  capacity  Int
-  location  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String              @id @default(cuid())
+  topic       String
+  startsAt    DateTime
+  capacity    Int
+  location    String?
+  status      DebateSessionStatus @default(SCHEDULED)
+  moderatorId String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
-  evaluations DebateEvaluation[]
+  moderator    StudentProfile?     @relation("SessionModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
+  evaluations  DebateEvaluation[]
+  participants DebateParticipant[]
+}
+
+model DebateParticipant {
+  id        String   @id @default(cuid())
+  sessionId String
+  studentId String
+  joinedAt  DateTime @default(now())
+
+  session DebateSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, studentId])
+  @@index([studentId])
 }
 
 model DebateEvaluation {
   id            String   @id @default(cuid())
   sessionId     String
   studentId     String
+  evaluatorId   String?
   fluency       Int
   argumentation Int
   posture       Int

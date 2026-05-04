@@ -1,4 +1,4 @@
-import { AttendanceStatus, InvoiceStatus, PrismaClient, Role } from "../src/generated/prisma";
+import { AttendanceStatus, InvoiceStatus, PrismaClient, Role, DebateSessionStatus } from "../src/generated/prisma";
 import { hashPassword } from "../src/features/auth/password";
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -27,6 +27,7 @@ async function main() {
 
   await prisma.auditLog.deleteMany();
   await prisma.debateEvaluation.deleteMany();
+  await prisma.debateParticipant.deleteMany();
   await prisma.debateSession.deleteMany();
   await prisma.invoice.deleteMany();
   await prisma.grade.deleteMany();
@@ -84,6 +85,23 @@ async function main() {
           studentNumber: "STU-TEST-442910",
           level: "B2 Upper Intermediate",
           guardianName: "Teste Encarregado"
+        }
+      }
+    },
+    include: { studentProfile: true }
+  });
+
+  const student2 = await prisma.user.create({
+    data: {
+      name: "Teste Aluno Participante",
+      email: "participante.teste@delsonps.local",
+      passwordHash,
+      role: Role.STUDENT,
+      studentProfile: {
+        create: {
+          studentNumber: "STU-TEST-555555",
+          level: "B2 Upper Intermediate",
+          guardianName: "Teste Encarregado 2"
         }
       }
     },
@@ -172,20 +190,32 @@ async function main() {
       topic: "Teste - Impacto da IA na Educacao",
       startsAt: new Date("2026-05-02T17:30:00.000Z"),
       capacity: 15,
-      location: "Sala 04"
+      location: "Sala 04",
+      status: DebateSessionStatus.SCHEDULED,
+      moderatorId: student.studentProfile.id
     }
   });
 
-  await prisma.debateEvaluation.create({
-    data: {
-      sessionId: debate.id,
-      studentId: student.studentProfile.id,
-      fluency: 8,
-      argumentation: 7,
-      posture: 9,
-      feedback: "Dados ficticios de teste para avaliacao de fala."
-    }
-  });
+  if (student2.studentProfile) {
+    await prisma.debateParticipant.create({
+      data: {
+        sessionId: debate.id,
+        studentId: student2.studentProfile.id
+      }
+    });
+
+    await prisma.debateEvaluation.create({
+      data: {
+        sessionId: debate.id,
+        studentId: student2.studentProfile.id,
+        evaluatorId: teacher.id,
+        fluency: 8,
+        argumentation: 7,
+        posture: 9,
+        feedback: "Dados ficticios de teste para avaliacao de fala."
+      }
+    });
+  }
 
   await prisma.auditLog.create({
     data: {

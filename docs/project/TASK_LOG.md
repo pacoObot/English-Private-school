@@ -1,5 +1,31 @@
 # Historico de Tarefas
 
+## 2026-05-04 - Sprint 4: Integração UNIEXE, Debate Arena e Qualidade
+
+Resumo:
+- Adicionado modelo `DebateParticipant` e atualizados `DebateSession` e `DebateEvaluation` no Prisma schema.
+- Implementado papel de **Gestor de Debate** atribuído contextualmente por sessão, mantendo a integridade do RBAC.
+- Criada a camada **API REST v1** em `src/app/api/v1` com suporte a paginação e validação de `requireApiAuth` para todas as entidades críticas (students, classes, enrollments, invoices, grades, attendance, debates).
+- Criada nova documentação técnica `docs/api-spec.md` especificando os endpoints v1.
+- Expandido o `Admin Dashboard` com métricas calculadas (taxa de presença, média global, média de debates) e atalho para `Logs de Auditoria`.
+- Criada página `/admin/logs` para visualização em tabela dos `AuditLog` persistidos com paginação.
+- Atualizada UI de `Debate Arena` com dados reais, actions protegidas no servidor, permitindo que professores ou moderadores avaliem alunos sem poderem avaliar a si próprios.
+- Configurado o ambiente de testes com `Jest` e implementados testes unitários básicos para o módulo de Auth e rotas da API v1 (verificando blocos 401/403 e sucesso com mocks do Prisma).
+
+Validacoes:
+- `npx prisma migrate dev` e `npx prisma db seed` aplicados com sucesso.
+- `npx tsc --noEmit` passou.
+- `npm run lint` passou.
+- `npm test` passou para todos os suites Jest (auth, api/students, api/debates).
+- `npm run build` passou com exit code 0.
+
+Pendencias:
+- Setup de Testes E2E (Playwright) preterido temporariamente devido ao escopo do sprint, mantido no backlog.
+- Integração real UNIEXE pendente de credenciais.
+
+Proxima acao:
+- Preparar entrega e deploy final do sistema ou iniciar desenvolvimento Mobile dedicado se exigido.
+
 ## 2026-04-30 14:14 SAST - QA responsivo autenticado do Sprint 3
 
 Resumo:
