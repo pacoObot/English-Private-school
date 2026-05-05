@@ -29,7 +29,7 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
     prisma.invoice.aggregate({ _sum: { amountMt: true }, where: { status: "PAID" } }),
     prisma.invoice.aggregate({ _sum: { amountMt: true }, where: { status: "PENDING" } }),
     prisma.enrollment.findMany({ take: 5, include: { student: { include: { user: true } }, course: true, classGroup: true }, orderBy: { createdAt: "desc" } }),
-    prisma.invoice.findMany({ take: 6, include: { student: { include: { user: true } }, enrollment: { include: { course: true } } }, orderBy: { createdAt: "desc" } }),
+    prisma.invoice.findMany({ take: 6, include: { student: { include: { user: true } }, enrollment: { include: { course: true } }, receipt: true }, orderBy: { createdAt: "desc" } }),
     prisma.auditLog.findMany({ take: 3, orderBy: { createdAt: "desc" } }),
     prisma.grade.findMany({ select: { score: true } }),
     prisma.debateEvaluation.aggregate({ _avg: { fluency: true, argumentation: true, posture: true } }),
@@ -78,6 +78,34 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
             <DataTable
               headers={["Aluno", "Curso", "Turma"]}
               rows={latestEnrollments.map((e) => [e.student.user.name, e.course.title, e.classGroup.name])}
+            />
+          </BentoCard>
+
+          <BentoCard className="p-0">
+            <div className="flex items-center justify-between p-6">
+              <h3 className="font-black text-slate-800">Faturas Recentes</h3>
+              <StatusBadge tone="danger">{`${pendingAggregate._sum.amountMt ?? 0} MT Pendente`}</StatusBadge>
+            </div>
+            <DataTable
+              headers={["Aluno", "Valor", "Estado", "Ação"]}
+              rows={invoices.map((inv: any) => [
+                inv.student.user.name,
+                `${inv.amountMt} MT`,
+                <StatusBadge key={inv.id} tone={inv.status === "PAID" ? "success" : inv.status === "PENDING" ? "warning" : "danger"}>{inv.status}</StatusBadge>,
+                <div key={`${inv.id}-actions`} className="flex gap-2">
+                  {inv.status === "PAID" ? (
+                    <Link href={`/admin/receipts/${inv.receipt?.id}`} className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700 flex items-center gap-1 hover:bg-slate-50">
+                      <FileText size={12} /> Recibo
+                    </Link>
+                  ) : (
+                    <form action={updateInvoiceStatusAction}>
+                      <input type="hidden" name="id" value={inv.id} />
+                      <input type="hidden" name="status" value="PAID" />
+                      <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Pagar</PrimaryButton>
+                    </form>
+                  )}
+                </div>
+              ])}
             />
           </BentoCard>
 

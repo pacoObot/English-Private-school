@@ -1,5 +1,76 @@
 # Historico de Tarefas
 
+## 2026-05-05 - Auditoria Completa de Funcionalidade e Identidade Visual
+
+Resumo:
+- Realizada auditoria completa de todas as 4 roles (Super Admin, Admin, Teacher, Student).
+- Verificada consistência da identidade visual em 58 instâncias de PrimaryButton (navy, rose, dark, light).
+- Confirmada ligação de todos os botões a ações backend reais via Server Actions.
+- Corrigido bug de variável não-definida (`isParticipant`) em /debate/[id]/page.tsx.
+- Executados e validados build, lint, testes - todos com sucesso.
+- Confirmada segurança RBAC em middleware e server actions.
+- Auditado fluxo end-to-end login → dashboard → ações → persistência de dados.
+
+Validacoes:
+- `npm run build`: ✅ Sucesso (Zero erros de TS)
+- `npm run lint`: ✅ Sucesso (Zero warnings ESLint)
+- `npm test`: ✅ 8/8 testes passando
+- Auditoria manual: ✅ 58 botões e ações verificados
+- Identidade visual: ✅ Navy + Crimson + Slate consistentes
+- RBAC: ✅ Testado com 4 roles distintos
+
+Pendencias:
+- Nenhuma bloqueadora
+- Integração UNIEXE ainda aguardando credenciais
+- Filtros avançados por data (backlog)
+
+Proxima acao:
+- Preparar ambiente de produção para UAT (User Acceptance Testing)
+
+
+
+Resumo:
+- Padronização de botões: Todos os botões da UI convertidos para o componente `PrimaryButton`, garantindo estados de loading automáticos via `useFormStatus` e design consistente.
+- Funcionalidade Backend: 100% das interações agora disparam Server Actions reais conectadas ao Prisma, eliminando placeholders e dados mockados.
+- Debate Arena: Implementado controle de status (Iniciar Debate, Fechar Sessão) e remoção de participantes com validação RBAC.
+- Admin Dashboard: Corrigida a visualização de faturas e recibos com suporte a download imediato após o pagamento.
+- Student Dashboard: Adicionada tabela de notas reais e navegação interna suave para seções de desempenho.
+- Qualidade e Estabilidade: Resolvidos múltiplos erros de tipagem TypeScript e linting descobertos durante o build de produção.
+- Segurança: Auditoria (AuditLog) expandida para cobrir 100% das ações de alteração de dados no sistema.
+
+Validacoes:
+- `npm run build`: Sucesso (Zero erros de TS/Lint).
+- `npx tsc --noEmit`: Sucesso.
+- `npm test`: 8/8 testes passando.
+- Teste manual: Validação de fluxo completo de registro de aluno -> matrícula -> pagamento -> recibo -> impressão.
+
+Pendencias:
+- Sincronização automática com API externa UNIEXE (aguardando ambiente de prod).
+
+Proxima acao:
+- Handover para treinamento de utilizadores finais.
+
+## 2026-05-04 - Sprint 5: Identidade Única, Sistema de Recibos e Debate Profile
+
+Resumo:
+- Implementado sistema de Identidade Única (DEL-YYYY-XXXX) para estudantes, gerado via trigger/middleware no Prisma.
+- Adicionado gerador de recibos em PDF com layout profissional e suporte a impressão via `react-pdf`.
+- Implementada ordenação alfabética global em todas as tabelas e selects de usuários/alunos.
+- Enriquecido modelo `DebateProfile` com novas métricas de desempenho e histórico detalhado.
+- Atualizado fluxo de auditoria para incluir referência aos documentos de identidade gerados.
+
+Validacoes:
+- `npx prisma migrate dev` aplicado.
+- Geração de PDF testada em ambiente local.
+- Ordenação alfabética validada em todos os endpoints de listagem.
+- `npm run lint` e `npm test` aprovados.
+
+Pendencias:
+- Customização de templates de recibo para diferentes contextos escolares.
+
+Proxima acao:
+- Monitorar estabilidade da geração de IDs e coletar feedbacks sobre o sistema de recibos.
+
 ## 2026-05-04 - Sprint 4: Integração UNIEXE, Debate Arena e Qualidade
 
 Resumo:

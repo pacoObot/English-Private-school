@@ -122,7 +122,7 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
                 s.moderator?.user.name ?? "Professor",
                 <StatusBadge key={s.id} tone={s.status === "ACTIVE" ? "danger" : s.status === "CLOSED" ? "navy" : "success"}>{s.status}</StatusBadge>,
                 <Link key={`${s.id}-link`} href={`/debate/${s.id}`}>
-                  <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700">Ver / Avaliar</button>
+                  <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]">Ver / Avaliar</PrimaryButton>
                 </Link>
               ])}
             />

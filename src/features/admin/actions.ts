@@ -7,6 +7,7 @@ import { getCurrentSession } from "@/features/auth/current-user";
 import { routeForRole } from "@/features/auth/session";
 import { hashPassword } from "@/features/auth/password";
 import { prisma } from "@/lib/prisma";
+import { generateStudentCode } from "@/lib/id-generators";
 
 const DEFAULT_PASSWORD = "Delson@2026";
 const adminRoles: Role[] = [Role.SUPER_ADMIN, Role.ADMIN];
@@ -100,6 +101,8 @@ export async function createStudentAction(formData: FormData) {
   }
 
   try {
+    const studentCode = await generateStudentCode();
+    
     const user = await prisma.user.create({
       data: {
         name,
@@ -109,6 +112,7 @@ export async function createStudentAction(formData: FormData) {
         studentProfile: {
           create: {
             studentNumber,
+            studentCode,
             level,
             phone: phone || null,
             guardianName: guardianName || null
@@ -118,7 +122,7 @@ export async function createStudentAction(formData: FormData) {
       include: { studentProfile: true }
     });
 
-    await audit(session.userId, "student_created", "StudentProfile", user.studentProfile?.id, { email, studentNumber });
+    await audit(session.userId, "student_created", "StudentProfile", user.studentProfile?.id, { email, studentNumber, studentCode });
     revalidatePath("/admin/students");
     revalidatePath("/admin/dashboard");
     redirectBack("/admin/students", "created");

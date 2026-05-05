@@ -15,10 +15,10 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
   const [classes, courses, teachers] = await Promise.all([
     prisma.classGroup.findMany({
       include: { course: true, teacher: { include: { user: true } }, enrollments: true },
-      orderBy: { createdAt: "desc" }
+      orderBy: { name: "asc" }
     }),
     prisma.course.findMany({ where: { isActive: true }, orderBy: { title: "asc" } }),
-    prisma.teacherProfile.findMany({ where: { user: { isActive: true } }, include: { user: true }, orderBy: { createdAt: "desc" } })
+    prisma.teacherProfile.findMany({ where: { user: { isActive: true } }, include: { user: true }, orderBy: { user: { name: "asc" } } })
   ]);
 
   const teacherOptions = [{ label: "Sem docente definido", value: "" }, ...teachers.map((teacher) => ({ label: teacher.user.name, value: teacher.id }))];
@@ -66,15 +66,15 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
                       <option key={teacher.value} value={teacher.value}>{teacher.label}</option>
                     ))}
                   </select>
-                  <button className="rounded-xl bg-navy px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
+                  <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Guardar</PrimaryButton>
                 </form>,
                 `${classGroup.course.title} · ${classGroup.schedule}`,
                 classGroup.teacher?.user.name ?? "Por definir",
                 <form key={`${classGroup.id}-active`} action={setClassGroupActiveAction} className="flex justify-end">
                   <input type="hidden" name="id" value={classGroup.id} />
-                  <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700" type="submit">
+                  <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]" type="submit">
                     Remover
-                  </button>
+                  </PrimaryButton>
                 </form>
               ])}
             />

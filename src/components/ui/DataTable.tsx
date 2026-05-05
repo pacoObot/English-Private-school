@@ -44,7 +44,7 @@ export function DataTable({ headers, rows, emptyMessage = "Sem dados para aprese
             {row.map((cell, cellIndex) => (
               <div key={cellIndex} className="flex items-start justify-between gap-4 border-b border-slate-100 py-3 last:border-0">
                 <span className="max-w-[42%] text-[10px] font-black uppercase tracking-widest text-slate-400">{headers[cellIndex]}</span>
-                <span className="min-w-0 flex-1 text-right text-sm font-bold text-slate-700">{cell}</span>
+                <div className="min-w-0 flex-1 text-right text-sm font-bold text-slate-700">{cell}</div>
               </div>
             ))}
           </div>

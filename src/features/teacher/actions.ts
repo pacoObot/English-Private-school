@@ -132,3 +132,91 @@ export async function saveAttendanceAction(formData: FormData) {
   revalidatePath("/student/dashboard");
   redirectBack("saved");
 }
+
+export async function saveAllGradesAction(formData: FormData) {
+  const classGroupId = text(formData, "classGroupId");
+  const title = text(formData, "title") || "Avaliacao Geral";
+  const studentIds = formData.getAll("studentId") as string[];
+  const scores = formData.getAll("score") as string[];
+
+  if (!classGroupId || studentIds.length === 0 || studentIds.length !== scores.length) {
+    redirectBack("error");
+  }
+
+  const session = await requireTeacherOrAdmin(classGroupId);
+
+  // Process all in a transaction
+  await prisma.$transaction(
+    studentIds.map((studentId, index) => {
+      const score = Number.parseFloat(scores[index]);
+      if (!Number.isFinite(score) || score < 0) {
+        // Return a dummy operation if score is invalid to keep the array length and structure consistent for transaction
+        return prisma.auditLog.create({ 
+          data: { 
+            actorId: session.userId, 
+            action: "grade_skip", 
+            entity: "Grade", 
+            metadata: { studentId, reason: "invalid_score" } 
+          } 
+        });
+      }
+
+      return prisma.grade.create({
+        data: {
+          studentId,
+          classGroupId,
+          title,
+          score,
+          maxScore: 20
+        }
+      });
+    })
+  );
+
+  revalidatePath("/teacher/dashboard");
+  revalidatePath("/student/dashboard");
+  redirectBack("saved");
+}
+
+export async function saveAllAttendanceAction(formData: FormData) {
+  const classGroupId = text(formData, "classGroupId");
+  const lessonDateValue = text(formData, "lessonDate");
+  const studentIds = formData.getAll("studentId") as string[];
+  
+  if (!classGroupId || !lessonDateValue || studentIds.length === 0) {
+    redirectBack("error");
+  }
+
+  const session = await requireTeacherOrAdmin(classGroupId);
+  const lessonDate = new Date(`${lessonDateValue}T00:00:00.000Z`);
+
+  await prisma.$transaction(
+    studentIds.map((studentId) => {
+      const status = formData.get(`status_${studentId}`) as AttendanceStatus;
+      if (!status) return prisma.auditLog.create({ data: { actorId: session.userId, action: "attendance_skip", entity: "Attendance", metadata: { studentId } } });
+
+      return prisma.attendance.upsert({
+        where: {
+          studentId_classGroupId_lessonDate: {
+            studentId,
+            classGroupId,
+            lessonDate
+          }
+        },
+        create: {
+          studentId,
+          classGroupId,
+          lessonDate,
+          status
+        },
+        update: {
+          status
+        }
+      });
+    })
+  );
+
+  revalidatePath("/teacher/dashboard");
+  revalidatePath("/student/dashboard");
+  redirectBack("saved");
+}

@@ -7,7 +7,7 @@ import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ActionNotice } from "@/components/ui/ActionNotice";
 import { getCurrentSession } from "@/features/auth/current-user";
-import { saveAttendanceAction, saveGradeAction } from "@/features/teacher/actions";
+import { saveAttendanceAction, saveGradeAction, saveAllGradesAction, saveAllAttendanceAction } from "@/features/teacher/actions";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 
@@ -53,49 +53,51 @@ export default async function TeacherDashboardPage({ searchParams }: TeacherDash
       title={`Ola, ${session?.name.split(" ")[0] ?? "Docente"}`}
       subtitle="Bem-vindo a sua area de trabalho."
       context="Portal Docente"
-      headerAction={<PrimaryButton className="hidden sm:inline-flex" tone="rose"><Save size={15} /> Salvar</PrimaryButton>}
+      headerAction={<PrimaryButton form="grades-form" className="hidden sm:inline-flex" tone="rose" type="submit"><Save size={15} /> Salvar</PrimaryButton>}
       sidebarFooter={<NextClass />}
     >
       <div className="space-y-6">
         <ActionNotice status={searchParams?.status} />
-        <BentoCard className="overflow-hidden p-0">
-          <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/60 p-6 sm:flex-row sm:items-center sm:justify-between lg:p-8">
-            <div>
-              <h3 className="text-xl font-black text-slate-800">Lancamento de Notas</h3>
-              <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-400">
-                Turma: {currentClass?.name ?? "Sem turma atribuida"}
-              </p>
+        <form id="grades-form" action={saveAllGradesAction}>
+          <input type="hidden" name="classGroupId" value={currentClass?.id} />
+          <BentoCard className="overflow-hidden p-0">
+            <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/60 p-6 sm:flex-row sm:items-center sm:justify-between lg:p-8">
+              <div>
+                <h3 className="text-xl font-black text-slate-800">Lancamento de Notas</h3>
+                <div className="mt-2 flex items-center gap-3">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                    Turma: {currentClass?.name ?? "Sem turma atribuida"}
+                  </p>
+                  <input name="title" className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-black uppercase outline-none focus:border-crimson" placeholder="Título da Avaliação" defaultValue="Teste de Unidade" required />
+                </div>
+              </div>
+              <PrimaryButton tone="rose" type="submit">
+                <Save size={15} /> Salvar Tudo
+              </PrimaryButton>
             </div>
-            <PrimaryButton tone="rose">
-              <Save size={15} /> Salvar Tudo
-            </PrimaryButton>
-          </div>
-          <DataTable
-            headers={["Estudante", "Media Atual", "Faltas", "Nota (0-20)"]}
-            rows={roster.map((student) => [
-              <div key={student.name} className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-[10px] font-black text-navy">
-                  {student.name
-                    .split(" ")
-                    .map((part) => part[0])
-                    .join("")
-                    .slice(0, 2)}
-                </span>
-                {student.name}
-              </div>,
-              student.average,
-              <span key={`${student.name}-absences`} className="text-crimson">{student.absences}</span>,
-              <form key={`${student.name}-grade`} action={saveGradeAction} className="grid justify-end gap-2 sm:flex">
-                <input type="hidden" name="studentId" value={student.id} />
-                <input type="hidden" name="classGroupId" value={student.classGroupId} />
-                <input name="title" className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100 sm:w-32" placeholder="Teste" required />
-                <input name="score" className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center font-black outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100 sm:w-20" placeholder="00" type="number" min={0} max={20} step="0.1" required />
-                <input type="hidden" name="maxScore" value="20" />
-                <button className="rounded-xl bg-crimson px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Salvar</button>
-              </form>
-            ])}
-          />
-        </BentoCard>
+            <DataTable
+              headers={["Estudante", "Media Atual", "Faltas", "Nota (0-20)"]}
+              rows={roster.map((student) => [
+                <div key={student.name} className="flex items-center gap-3">
+                  <input type="hidden" name="studentId" value={student.id} />
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-[10px] font-black text-navy">
+                    {student.name
+                      .split(" ")
+                      .map((part) => part[0])
+                      .join("")
+                      .slice(0, 2)}
+                  </span>
+                  {student.name}
+                </div>,
+                student.average,
+                <span key={`${student.name}-absences`} className="text-crimson">{student.absences}</span>,
+                <div key={`${student.name}-grade`} className="flex justify-end">
+                   <input name="score" className="w-20 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center font-black outline-none focus:border-crimson focus:ring-4 focus:ring-rose-100" placeholder="00" type="number" min={0} max={20} step="0.1" />
+                </div>
+              ])}
+            />
+          </BentoCard>
+        </form>
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           <BentoCard dark>
@@ -108,25 +110,31 @@ export default async function TeacherDashboardPage({ searchParams }: TeacherDash
             </div>
             <div className="space-y-3">
               {roster.length ? (
-                roster.map((student) => (
-                  <form key={student.id} action={saveAttendanceAction} className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <input type="hidden" name="studentId" value={student.id} />
-                    <input type="hidden" name="classGroupId" value={student.classGroupId} />
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-bold">{student.name}</span>
-                      <input name="lessonDate" className="w-36 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-xs font-bold text-white" type="date" defaultValue={today} required />
+                <form action={saveAllAttendanceAction} className="space-y-3">
+                  <input type="hidden" name="classGroupId" value={currentClass?.id} />
+                  <div className="flex items-center justify-between p-2 mb-4">
+                     <p className="text-[10px] font-black uppercase text-slate-400">Data da Aula</p>
+                     <input name="lessonDate" className="w-36 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-xs font-bold text-white outline-none focus:border-rose-500" type="date" defaultValue={today} required />
+                  </div>
+                  
+                  {roster.map((student) => (
+                    <div key={student.id} className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                      <input type="hidden" name="studentId" value={student.id} />
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm font-bold">{student.name}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                        {["PRESENT", "ABSENT", "LATE", "EXCUSED"].map((status) => (
+                          <label key={status} className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-[10px] font-black uppercase text-slate-200 cursor-pointer hover:bg-slate-700 transition-all">
+                            <input name={`status_${student.id}`} type="radio" value={status} defaultChecked={status === "PRESENT"} />
+                            {status}
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-                      {["PRESENT", "ABSENT", "LATE", "EXCUSED"].map((status) => (
-                        <label key={status} className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-800 px-3 py-2 text-[10px] font-black uppercase text-slate-200">
-                          <input name="status" type="radio" value={status} defaultChecked={status === "PRESENT"} />
-                          {status}
-                        </label>
-                      ))}
-                      <button className="rounded-xl bg-crimson px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
-                    </div>
-                  </form>
-                ))
+                  ))}
+                  <PrimaryButton tone="rose" className="w-full mt-4" type="submit">Guardar Chamada</PrimaryButton>
+                </form>
               ) : (
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm font-bold text-slate-300">Sem alunos atribuídos.</div>
               )}

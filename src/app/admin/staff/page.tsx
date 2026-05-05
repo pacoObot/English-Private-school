@@ -16,7 +16,7 @@ export default async function StaffPage({ searchParams }: StaffPageProps) {
   const staff = await prisma.user.findMany({
     where: { role: { in: [Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] } },
     include: { teacherProfile: true },
-    orderBy: { createdAt: "desc" }
+    orderBy: { name: "asc" }
   });
 
   return (
@@ -65,16 +65,16 @@ export default async function StaffPage({ searchParams }: StaffPageProps) {
                       <input name="specialty" defaultValue={person.teacherProfile.specialty} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
                     </>
                   ) : null}
-                  <button className="rounded-xl bg-navy px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
+                  <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Guardar</PrimaryButton>
                 </form>,
                 person.role,
                 person.teacherProfile?.specialty ?? "Administracao",
                 <form key={`${person.id}-active`} action={setStaffActiveAction} className="flex justify-end">
                   <input type="hidden" name="id" value={person.id} />
                   <input type="hidden" name="isActive" value={person.isActive ? "false" : "true"} />
-                  <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700" type="submit">
+                  <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]" type="submit">
                     {person.isActive ? "Desativar" : "Ativar"}
-                  </button>
+                  </PrimaryButton>
                 </form>
               ])}
             />

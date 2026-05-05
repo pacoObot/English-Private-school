@@ -62,6 +62,7 @@ model StudentProfile {
   id            String   @id @default(cuid())
   userId        String   @unique
   studentNumber String   @unique
+  studentCode   String   @unique
   level         String
   phone         String?
   guardianName  String?
@@ -73,6 +74,7 @@ model StudentProfile {
   attendances          Attendance[]
   grades               Grade[]
   invoices             Invoice[]
+  receipts             Receipt[]
   debateEvaluations    DebateEvaluation[]
   moderatedDebates     DebateSession[]     @relation("SessionModerator")
   debateParticipations DebateParticipant[]
@@ -217,10 +219,29 @@ model Invoice {
 
   student    StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
   enrollment Enrollment?    @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
+  receipt    Receipt?
 
   @@index([studentId])
   @@index([enrollmentId])
   @@index([status])
+}
+
+model Receipt {
+  id            String   @id @default(cuid())
+  invoiceId     String   @unique
+  studentId     String
+  amountMt      Float
+  issuedAt      DateTime @default(now())
+  issuedBy      String
+  receiptNumber String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  invoice Invoice        @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([receiptNumber])
 }
 
 model DebateSession {

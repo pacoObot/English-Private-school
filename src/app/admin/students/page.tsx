@@ -16,13 +16,13 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
   const [students, courses, classes, enrollments] = await Promise.all([
     prisma.studentProfile.findMany({
       include: { user: true },
-      orderBy: { createdAt: "desc" }
+      orderBy: { user: { name: "asc" } }
     }),
     prisma.course.findMany({ where: { isActive: true }, orderBy: { title: "asc" } }),
     prisma.classGroup.findMany({ include: { course: true }, orderBy: { name: "asc" } }),
     prisma.enrollment.findMany({
       include: { student: { include: { user: true } }, course: true, classGroup: true, invoices: true },
-      orderBy: { createdAt: "desc" }
+      orderBy: { student: { user: { name: "asc" } } }
     })
   ]);
 
@@ -83,7 +83,7 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
                       <option key={status} value={status}>{status}</option>
                     ))}
                   </select>
-                  <button className="rounded-xl bg-slate-900 px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">OK</button>
+                  <PrimaryButton tone="dark" className="px-3 min-h-10 py-2 text-[10px]" type="submit">OK</PrimaryButton>
                 </form>
               ])}
             />
@@ -97,28 +97,31 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
           </div>
           <DataTable
             emptyMessage="Ainda nao existem alunos."
-            headers={["Aluno", "Contacto", "Dados Academicos", "Acoes"]}
+            headers={["Identidade", "Contacto", "Dados Academicos", "Acoes"]}
             rows={students.map((student) => [
-              <form key={`${student.id}-identity`} action={updateStudentAction} className="grid w-full min-w-full sm:min-w-56 gap-2">
-                <input type="hidden" name="id" value={student.id} />
-                <input type="hidden" name="userId" value={student.userId} />
-                <input name="name" defaultValue={student.user.name} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-                <input name="email" defaultValue={student.user.email} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" type="email" required />
-                <input name="studentNumber" defaultValue={student.studentNumber} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-                <input name="level" defaultValue={student.level} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
-                <input name="phone" defaultValue={student.phone ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Telefone" />
-                <input name="guardianName" defaultValue={student.guardianName ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Encarregado" />
-                <button className="rounded-xl bg-navy px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
-              </form>,
+              <div key={`${student.id}-identity`} className="grid w-full min-w-full sm:min-w-56 gap-2">
+                <p className="text-[10px] font-black text-rose-600 uppercase tracking-widest">{student.studentCode}</p>
+                <form action={updateStudentAction} className="grid gap-2">
+                  <input type="hidden" name="id" value={student.id} />
+                  <input type="hidden" name="userId" value={student.userId} />
+                  <input name="name" defaultValue={student.user.name} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+                  <input name="email" defaultValue={student.user.email} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" type="email" required />
+                  <input name="studentNumber" defaultValue={student.studentNumber} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+                  <input name="level" defaultValue={student.level} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
+                  <input name="phone" defaultValue={student.phone ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Telefone" />
+                  <input name="guardianName" defaultValue={student.guardianName ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Encarregado" />
+                  <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Guardar</PrimaryButton>
+                </form>
+              </div>,
               student.phone ?? "-",
               `${student.studentNumber} · ${student.level}`,
               <form key={`${student.id}-active`} action={setStudentActiveAction} className="flex justify-end">
                 <input type="hidden" name="id" value={student.id} />
                 <input type="hidden" name="userId" value={student.userId} />
                 <input type="hidden" name="isActive" value={student.user.isActive ? "false" : "true"} />
-                <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700" type="submit">
+                <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]" type="submit">
                   {student.user.isActive ? "Desativar" : "Ativar"}
-                </button>
+                </PrimaryButton>
               </form>
             ])}
           />

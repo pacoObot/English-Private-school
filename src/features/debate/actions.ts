@@ -220,3 +220,32 @@ export async function evaluateDebateParticipantAction(formData: FormData) {
   revalidatePath(`/debate/${sessionId}`);
   redirectBack(`/debate/${sessionId}`, "evaluated");
 }
+
+export async function updateDebateSessionStatusAction(formData: FormData) {
+  const session = await requireTeacherOrAdmin();
+  const id = text(formData, "id");
+  const status = text(formData, "status") as DebateSessionStatus;
+
+  if (!id || !Object.values(DebateSessionStatus).includes(status)) {
+    redirectBack(`/debate/${id}`, "error");
+  }
+
+  const debate = await prisma.debateSession.update({
+    where: { id },
+    data: { status }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "debate_status_updated",
+      entity: "DebateSession",
+      entityId: id,
+      metadata: { status }
+    }
+  });
+
+  revalidatePath("/debate");
+  revalidatePath(`/debate/${id}`);
+  redirectBack(`/debate/${id}`, "updated");
+}

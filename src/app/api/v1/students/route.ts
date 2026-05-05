@@ -4,6 +4,7 @@ import { requireApiAuth } from "@/lib/api-auth";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { Role } from "@/generated/prisma";
 import { hashPassword } from "@/features/auth/password";
+import { generateStudentCode } from "@/lib/id-generators";
 
 export async function GET(request: NextRequest) {
   const { error } = await requireApiAuth([Role.SUPER_ADMIN, Role.ADMIN]);
@@ -43,6 +44,8 @@ export async function POST(request: NextRequest) {
       return errorResponse("Missing required fields", 400);
     }
 
+    const studentCode = await generateStudentCode();
+
     const user = await prisma.user.create({
       data: {
         name,
@@ -52,6 +55,7 @@ export async function POST(request: NextRequest) {
         studentProfile: {
           create: {
             studentNumber,
+            studentCode,
             level,
             phone: phone || null,
             guardianName: guardianName || null

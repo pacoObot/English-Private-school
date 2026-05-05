@@ -64,6 +64,11 @@ export type StudyMaterial = $Result.DefaultSelection<Prisma.$StudyMaterialPayloa
  */
 export type Invoice = $Result.DefaultSelection<Prisma.$InvoicePayload>
 /**
+ * Model Receipt
+ * 
+ */
+export type Receipt = $Result.DefaultSelection<Prisma.$ReceiptPayload>
+/**
  * Model DebateSession
  * 
  */
@@ -380,6 +385,16 @@ export class PrismaClient<
     * ```
     */
   get invoice(): Prisma.InvoiceDelegate<ExtArgs>;
+
+  /**
+   * `prisma.receipt`: Exposes CRUD operations for the **Receipt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Receipts
+    * const receipts = await prisma.receipt.findMany()
+    * ```
+    */
+  get receipt(): Prisma.ReceiptDelegate<ExtArgs>;
 
   /**
    * `prisma.debateSession`: Exposes CRUD operations for the **DebateSession** model.
@@ -871,6 +886,7 @@ export namespace Prisma {
     Grade: 'Grade',
     StudyMaterial: 'StudyMaterial',
     Invoice: 'Invoice',
+    Receipt: 'Receipt',
     DebateSession: 'DebateSession',
     DebateParticipant: 'DebateParticipant',
     DebateEvaluation: 'DebateEvaluation',
@@ -890,7 +906,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "debateSession" | "debateParticipant" | "debateEvaluation" | "auditLog"
+      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "receipt" | "debateSession" | "debateParticipant" | "debateEvaluation" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1594,6 +1610,76 @@ export namespace Prisma {
           }
         }
       }
+      Receipt: {
+        payload: Prisma.$ReceiptPayload<ExtArgs>
+        fields: Prisma.ReceiptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReceiptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReceiptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          findFirst: {
+            args: Prisma.ReceiptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReceiptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          findMany: {
+            args: Prisma.ReceiptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>[]
+          }
+          create: {
+            args: Prisma.ReceiptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          createMany: {
+            args: Prisma.ReceiptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReceiptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>[]
+          }
+          delete: {
+            args: Prisma.ReceiptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          update: {
+            args: Prisma.ReceiptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReceiptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReceiptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ReceiptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReceiptPayload>
+          }
+          aggregate: {
+            args: Prisma.ReceiptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReceipt>
+          }
+          groupBy: {
+            args: Prisma.ReceiptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReceiptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReceiptCountArgs<ExtArgs>
+            result: $Utils.Optional<ReceiptCountAggregateOutputType> | number
+          }
+        }
+      }
       DebateSession: {
         payload: Prisma.$DebateSessionPayload<ExtArgs>
         fields: Prisma.DebateSessionFieldRefs
@@ -2070,6 +2156,7 @@ export namespace Prisma {
     attendances: number
     grades: number
     invoices: number
+    receipts: number
     debateEvaluations: number
     moderatedDebates: number
     debateParticipations: number
@@ -2080,6 +2167,7 @@ export namespace Prisma {
     attendances?: boolean | StudentProfileCountOutputTypeCountAttendancesArgs
     grades?: boolean | StudentProfileCountOutputTypeCountGradesArgs
     invoices?: boolean | StudentProfileCountOutputTypeCountInvoicesArgs
+    receipts?: boolean | StudentProfileCountOutputTypeCountReceiptsArgs
     debateEvaluations?: boolean | StudentProfileCountOutputTypeCountDebateEvaluationsArgs
     moderatedDebates?: boolean | StudentProfileCountOutputTypeCountModeratedDebatesArgs
     debateParticipations?: boolean | StudentProfileCountOutputTypeCountDebateParticipationsArgs
@@ -2122,6 +2210,13 @@ export namespace Prisma {
    */
   export type StudentProfileCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvoiceWhereInput
+  }
+
+  /**
+   * StudentProfileCountOutputType without action
+   */
+  export type StudentProfileCountOutputTypeCountReceiptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceiptWhereInput
   }
 
   /**
@@ -3407,6 +3502,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     studentNumber: string | null
+    studentCode: string | null
     level: string | null
     phone: string | null
     guardianName: string | null
@@ -3418,6 +3514,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     studentNumber: string | null
+    studentCode: string | null
     level: string | null
     phone: string | null
     guardianName: string | null
@@ -3429,6 +3526,7 @@ export namespace Prisma {
     id: number
     userId: number
     studentNumber: number
+    studentCode: number
     level: number
     phone: number
     guardianName: number
@@ -3442,6 +3540,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     studentNumber?: true
+    studentCode?: true
     level?: true
     phone?: true
     guardianName?: true
@@ -3453,6 +3552,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     studentNumber?: true
+    studentCode?: true
     level?: true
     phone?: true
     guardianName?: true
@@ -3464,6 +3564,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     studentNumber?: true
+    studentCode?: true
     level?: true
     phone?: true
     guardianName?: true
@@ -3548,6 +3649,7 @@ export namespace Prisma {
     id: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone: string | null
     guardianName: string | null
@@ -3576,6 +3678,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     studentNumber?: boolean
+    studentCode?: boolean
     level?: boolean
     phone?: boolean
     guardianName?: boolean
@@ -3586,6 +3689,7 @@ export namespace Prisma {
     attendances?: boolean | StudentProfile$attendancesArgs<ExtArgs>
     grades?: boolean | StudentProfile$gradesArgs<ExtArgs>
     invoices?: boolean | StudentProfile$invoicesArgs<ExtArgs>
+    receipts?: boolean | StudentProfile$receiptsArgs<ExtArgs>
     debateEvaluations?: boolean | StudentProfile$debateEvaluationsArgs<ExtArgs>
     moderatedDebates?: boolean | StudentProfile$moderatedDebatesArgs<ExtArgs>
     debateParticipations?: boolean | StudentProfile$debateParticipationsArgs<ExtArgs>
@@ -3596,6 +3700,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     studentNumber?: boolean
+    studentCode?: boolean
     level?: boolean
     phone?: boolean
     guardianName?: boolean
@@ -3608,6 +3713,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     studentNumber?: boolean
+    studentCode?: boolean
     level?: boolean
     phone?: boolean
     guardianName?: boolean
@@ -3621,6 +3727,7 @@ export namespace Prisma {
     attendances?: boolean | StudentProfile$attendancesArgs<ExtArgs>
     grades?: boolean | StudentProfile$gradesArgs<ExtArgs>
     invoices?: boolean | StudentProfile$invoicesArgs<ExtArgs>
+    receipts?: boolean | StudentProfile$receiptsArgs<ExtArgs>
     debateEvaluations?: boolean | StudentProfile$debateEvaluationsArgs<ExtArgs>
     moderatedDebates?: boolean | StudentProfile$moderatedDebatesArgs<ExtArgs>
     debateParticipations?: boolean | StudentProfile$debateParticipationsArgs<ExtArgs>
@@ -3638,6 +3745,7 @@ export namespace Prisma {
       attendances: Prisma.$AttendancePayload<ExtArgs>[]
       grades: Prisma.$GradePayload<ExtArgs>[]
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
+      receipts: Prisma.$ReceiptPayload<ExtArgs>[]
       debateEvaluations: Prisma.$DebateEvaluationPayload<ExtArgs>[]
       moderatedDebates: Prisma.$DebateSessionPayload<ExtArgs>[]
       debateParticipations: Prisma.$DebateParticipantPayload<ExtArgs>[]
@@ -3646,6 +3754,7 @@ export namespace Prisma {
       id: string
       userId: string
       studentNumber: string
+      studentCode: string
       level: string
       phone: string | null
       guardianName: string | null
@@ -4020,6 +4129,7 @@ export namespace Prisma {
     attendances<T extends StudentProfile$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany"> | Null>
     grades<T extends StudentProfile$gradesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$gradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findMany"> | Null>
     invoices<T extends StudentProfile$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany"> | Null>
+    receipts<T extends StudentProfile$receiptsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$receiptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findMany"> | Null>
     debateEvaluations<T extends StudentProfile$debateEvaluationsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$debateEvaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findMany"> | Null>
     moderatedDebates<T extends StudentProfile$moderatedDebatesArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$moderatedDebatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findMany"> | Null>
     debateParticipations<T extends StudentProfile$debateParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$debateParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findMany"> | Null>
@@ -4055,6 +4165,7 @@ export namespace Prisma {
     readonly id: FieldRef<"StudentProfile", 'String'>
     readonly userId: FieldRef<"StudentProfile", 'String'>
     readonly studentNumber: FieldRef<"StudentProfile", 'String'>
+    readonly studentCode: FieldRef<"StudentProfile", 'String'>
     readonly level: FieldRef<"StudentProfile", 'String'>
     readonly phone: FieldRef<"StudentProfile", 'String'>
     readonly guardianName: FieldRef<"StudentProfile", 'String'>
@@ -4455,6 +4566,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InvoiceScalarFieldEnum | InvoiceScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile.receipts
+   */
+  export type StudentProfile$receiptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    where?: ReceiptWhereInput
+    orderBy?: ReceiptOrderByWithRelationInput | ReceiptOrderByWithRelationInput[]
+    cursor?: ReceiptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReceiptScalarFieldEnum | ReceiptScalarFieldEnum[]
   }
 
   /**
@@ -11924,6 +12055,7 @@ export namespace Prisma {
     updatedAt?: boolean
     student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     enrollment?: boolean | Invoice$enrollmentArgs<ExtArgs>
+    receipt?: boolean | Invoice$receiptArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
 
   export type InvoiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11957,6 +12089,7 @@ export namespace Prisma {
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     enrollment?: boolean | Invoice$enrollmentArgs<ExtArgs>
+    receipt?: boolean | Invoice$receiptArgs<ExtArgs>
   }
   export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentProfileDefaultArgs<ExtArgs>
@@ -11968,6 +12101,7 @@ export namespace Prisma {
     objects: {
       student: Prisma.$StudentProfilePayload<ExtArgs>
       enrollment: Prisma.$EnrollmentPayload<ExtArgs> | null
+      receipt: Prisma.$ReceiptPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12346,6 +12480,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     enrollment<T extends Invoice$enrollmentArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$enrollmentArgs<ExtArgs>>): Prisma__EnrollmentClient<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    receipt<T extends Invoice$receiptArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$receiptArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12718,6 +12853,21 @@ export namespace Prisma {
   }
 
   /**
+   * Invoice.receipt
+   */
+  export type Invoice$receiptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    where?: ReceiptWhereInput
+  }
+
+  /**
    * Invoice without action
    */
   export type InvoiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12729,6 +12879,1027 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: InvoiceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Receipt
+   */
+
+  export type AggregateReceipt = {
+    _count: ReceiptCountAggregateOutputType | null
+    _avg: ReceiptAvgAggregateOutputType | null
+    _sum: ReceiptSumAggregateOutputType | null
+    _min: ReceiptMinAggregateOutputType | null
+    _max: ReceiptMaxAggregateOutputType | null
+  }
+
+  export type ReceiptAvgAggregateOutputType = {
+    amountMt: number | null
+  }
+
+  export type ReceiptSumAggregateOutputType = {
+    amountMt: number | null
+  }
+
+  export type ReceiptMinAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    studentId: string | null
+    amountMt: number | null
+    issuedAt: Date | null
+    issuedBy: string | null
+    receiptNumber: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceiptMaxAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    studentId: string | null
+    amountMt: number | null
+    issuedAt: Date | null
+    issuedBy: string | null
+    receiptNumber: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReceiptCountAggregateOutputType = {
+    id: number
+    invoiceId: number
+    studentId: number
+    amountMt: number
+    issuedAt: number
+    issuedBy: number
+    receiptNumber: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ReceiptAvgAggregateInputType = {
+    amountMt?: true
+  }
+
+  export type ReceiptSumAggregateInputType = {
+    amountMt?: true
+  }
+
+  export type ReceiptMinAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    studentId?: true
+    amountMt?: true
+    issuedAt?: true
+    issuedBy?: true
+    receiptNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceiptMaxAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    studentId?: true
+    amountMt?: true
+    issuedAt?: true
+    issuedBy?: true
+    receiptNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReceiptCountAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    studentId?: true
+    amountMt?: true
+    issuedAt?: true
+    issuedBy?: true
+    receiptNumber?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ReceiptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Receipt to aggregate.
+     */
+    where?: ReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Receipts to fetch.
+     */
+    orderBy?: ReceiptOrderByWithRelationInput | ReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Receipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Receipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Receipts
+    **/
+    _count?: true | ReceiptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReceiptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReceiptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReceiptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReceiptMaxAggregateInputType
+  }
+
+  export type GetReceiptAggregateType<T extends ReceiptAggregateArgs> = {
+        [P in keyof T & keyof AggregateReceipt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReceipt[P]>
+      : GetScalarType<T[P], AggregateReceipt[P]>
+  }
+
+
+
+
+  export type ReceiptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReceiptWhereInput
+    orderBy?: ReceiptOrderByWithAggregationInput | ReceiptOrderByWithAggregationInput[]
+    by: ReceiptScalarFieldEnum[] | ReceiptScalarFieldEnum
+    having?: ReceiptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReceiptCountAggregateInputType | true
+    _avg?: ReceiptAvgAggregateInputType
+    _sum?: ReceiptSumAggregateInputType
+    _min?: ReceiptMinAggregateInputType
+    _max?: ReceiptMaxAggregateInputType
+  }
+
+  export type ReceiptGroupByOutputType = {
+    id: string
+    invoiceId: string
+    studentId: string
+    amountMt: number
+    issuedAt: Date
+    issuedBy: string
+    receiptNumber: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ReceiptCountAggregateOutputType | null
+    _avg: ReceiptAvgAggregateOutputType | null
+    _sum: ReceiptSumAggregateOutputType | null
+    _min: ReceiptMinAggregateOutputType | null
+    _max: ReceiptMaxAggregateOutputType | null
+  }
+
+  type GetReceiptGroupByPayload<T extends ReceiptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReceiptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReceiptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReceiptGroupByOutputType[P]>
+            : GetScalarType<T[P], ReceiptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReceiptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    studentId?: boolean
+    amountMt?: boolean
+    issuedAt?: boolean
+    issuedBy?: boolean
+    receiptNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["receipt"]>
+
+  export type ReceiptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    studentId?: boolean
+    amountMt?: boolean
+    issuedAt?: boolean
+    issuedBy?: boolean
+    receiptNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["receipt"]>
+
+  export type ReceiptSelectScalar = {
+    id?: boolean
+    invoiceId?: boolean
+    studentId?: boolean
+    amountMt?: boolean
+    issuedAt?: boolean
+    issuedBy?: boolean
+    receiptNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ReceiptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }
+  export type ReceiptIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | InvoiceDefaultArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $ReceiptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Receipt"
+    objects: {
+      invoice: Prisma.$InvoicePayload<ExtArgs>
+      student: Prisma.$StudentProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      invoiceId: string
+      studentId: string
+      amountMt: number
+      issuedAt: Date
+      issuedBy: string
+      receiptNumber: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["receipt"]>
+    composites: {}
+  }
+
+  type ReceiptGetPayload<S extends boolean | null | undefined | ReceiptDefaultArgs> = $Result.GetResult<Prisma.$ReceiptPayload, S>
+
+  type ReceiptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ReceiptFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ReceiptCountAggregateInputType | true
+    }
+
+  export interface ReceiptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Receipt'], meta: { name: 'Receipt' } }
+    /**
+     * Find zero or one Receipt that matches the filter.
+     * @param {ReceiptFindUniqueArgs} args - Arguments to find a Receipt
+     * @example
+     * // Get one Receipt
+     * const receipt = await prisma.receipt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReceiptFindUniqueArgs>(args: SelectSubset<T, ReceiptFindUniqueArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Receipt that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ReceiptFindUniqueOrThrowArgs} args - Arguments to find a Receipt
+     * @example
+     * // Get one Receipt
+     * const receipt = await prisma.receipt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReceiptFindUniqueOrThrowArgs>(args: SelectSubset<T, ReceiptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Receipt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptFindFirstArgs} args - Arguments to find a Receipt
+     * @example
+     * // Get one Receipt
+     * const receipt = await prisma.receipt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReceiptFindFirstArgs>(args?: SelectSubset<T, ReceiptFindFirstArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Receipt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptFindFirstOrThrowArgs} args - Arguments to find a Receipt
+     * @example
+     * // Get one Receipt
+     * const receipt = await prisma.receipt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReceiptFindFirstOrThrowArgs>(args?: SelectSubset<T, ReceiptFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Receipts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Receipts
+     * const receipts = await prisma.receipt.findMany()
+     * 
+     * // Get first 10 Receipts
+     * const receipts = await prisma.receipt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const receiptWithIdOnly = await prisma.receipt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReceiptFindManyArgs>(args?: SelectSubset<T, ReceiptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Receipt.
+     * @param {ReceiptCreateArgs} args - Arguments to create a Receipt.
+     * @example
+     * // Create one Receipt
+     * const Receipt = await prisma.receipt.create({
+     *   data: {
+     *     // ... data to create a Receipt
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReceiptCreateArgs>(args: SelectSubset<T, ReceiptCreateArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Receipts.
+     * @param {ReceiptCreateManyArgs} args - Arguments to create many Receipts.
+     * @example
+     * // Create many Receipts
+     * const receipt = await prisma.receipt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReceiptCreateManyArgs>(args?: SelectSubset<T, ReceiptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Receipts and returns the data saved in the database.
+     * @param {ReceiptCreateManyAndReturnArgs} args - Arguments to create many Receipts.
+     * @example
+     * // Create many Receipts
+     * const receipt = await prisma.receipt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Receipts and only return the `id`
+     * const receiptWithIdOnly = await prisma.receipt.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReceiptCreateManyAndReturnArgs>(args?: SelectSubset<T, ReceiptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Receipt.
+     * @param {ReceiptDeleteArgs} args - Arguments to delete one Receipt.
+     * @example
+     * // Delete one Receipt
+     * const Receipt = await prisma.receipt.delete({
+     *   where: {
+     *     // ... filter to delete one Receipt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReceiptDeleteArgs>(args: SelectSubset<T, ReceiptDeleteArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Receipt.
+     * @param {ReceiptUpdateArgs} args - Arguments to update one Receipt.
+     * @example
+     * // Update one Receipt
+     * const receipt = await prisma.receipt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReceiptUpdateArgs>(args: SelectSubset<T, ReceiptUpdateArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Receipts.
+     * @param {ReceiptDeleteManyArgs} args - Arguments to filter Receipts to delete.
+     * @example
+     * // Delete a few Receipts
+     * const { count } = await prisma.receipt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReceiptDeleteManyArgs>(args?: SelectSubset<T, ReceiptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Receipts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Receipts
+     * const receipt = await prisma.receipt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReceiptUpdateManyArgs>(args: SelectSubset<T, ReceiptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Receipt.
+     * @param {ReceiptUpsertArgs} args - Arguments to update or create a Receipt.
+     * @example
+     * // Update or create a Receipt
+     * const receipt = await prisma.receipt.upsert({
+     *   create: {
+     *     // ... data to create a Receipt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Receipt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReceiptUpsertArgs>(args: SelectSubset<T, ReceiptUpsertArgs<ExtArgs>>): Prisma__ReceiptClient<$Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Receipts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptCountArgs} args - Arguments to filter Receipts to count.
+     * @example
+     * // Count the number of Receipts
+     * const count = await prisma.receipt.count({
+     *   where: {
+     *     // ... the filter for the Receipts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReceiptCountArgs>(
+      args?: Subset<T, ReceiptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReceiptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Receipt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReceiptAggregateArgs>(args: Subset<T, ReceiptAggregateArgs>): Prisma.PrismaPromise<GetReceiptAggregateType<T>>
+
+    /**
+     * Group by Receipt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReceiptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReceiptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReceiptGroupByArgs['orderBy'] }
+        : { orderBy?: ReceiptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReceiptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReceiptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Receipt model
+   */
+  readonly fields: ReceiptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Receipt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReceiptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    invoice<T extends InvoiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InvoiceDefaultArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Receipt model
+   */ 
+  interface ReceiptFieldRefs {
+    readonly id: FieldRef<"Receipt", 'String'>
+    readonly invoiceId: FieldRef<"Receipt", 'String'>
+    readonly studentId: FieldRef<"Receipt", 'String'>
+    readonly amountMt: FieldRef<"Receipt", 'Float'>
+    readonly issuedAt: FieldRef<"Receipt", 'DateTime'>
+    readonly issuedBy: FieldRef<"Receipt", 'String'>
+    readonly receiptNumber: FieldRef<"Receipt", 'String'>
+    readonly createdAt: FieldRef<"Receipt", 'DateTime'>
+    readonly updatedAt: FieldRef<"Receipt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Receipt findUnique
+   */
+  export type ReceiptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter, which Receipt to fetch.
+     */
+    where: ReceiptWhereUniqueInput
+  }
+
+  /**
+   * Receipt findUniqueOrThrow
+   */
+  export type ReceiptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter, which Receipt to fetch.
+     */
+    where: ReceiptWhereUniqueInput
+  }
+
+  /**
+   * Receipt findFirst
+   */
+  export type ReceiptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter, which Receipt to fetch.
+     */
+    where?: ReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Receipts to fetch.
+     */
+    orderBy?: ReceiptOrderByWithRelationInput | ReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Receipts.
+     */
+    cursor?: ReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Receipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Receipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Receipts.
+     */
+    distinct?: ReceiptScalarFieldEnum | ReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * Receipt findFirstOrThrow
+   */
+  export type ReceiptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter, which Receipt to fetch.
+     */
+    where?: ReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Receipts to fetch.
+     */
+    orderBy?: ReceiptOrderByWithRelationInput | ReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Receipts.
+     */
+    cursor?: ReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Receipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Receipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Receipts.
+     */
+    distinct?: ReceiptScalarFieldEnum | ReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * Receipt findMany
+   */
+  export type ReceiptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter, which Receipts to fetch.
+     */
+    where?: ReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Receipts to fetch.
+     */
+    orderBy?: ReceiptOrderByWithRelationInput | ReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Receipts.
+     */
+    cursor?: ReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Receipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Receipts.
+     */
+    skip?: number
+    distinct?: ReceiptScalarFieldEnum | ReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * Receipt create
+   */
+  export type ReceiptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Receipt.
+     */
+    data: XOR<ReceiptCreateInput, ReceiptUncheckedCreateInput>
+  }
+
+  /**
+   * Receipt createMany
+   */
+  export type ReceiptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Receipts.
+     */
+    data: ReceiptCreateManyInput | ReceiptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Receipt createManyAndReturn
+   */
+  export type ReceiptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Receipts.
+     */
+    data: ReceiptCreateManyInput | ReceiptCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Receipt update
+   */
+  export type ReceiptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Receipt.
+     */
+    data: XOR<ReceiptUpdateInput, ReceiptUncheckedUpdateInput>
+    /**
+     * Choose, which Receipt to update.
+     */
+    where: ReceiptWhereUniqueInput
+  }
+
+  /**
+   * Receipt updateMany
+   */
+  export type ReceiptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Receipts.
+     */
+    data: XOR<ReceiptUpdateManyMutationInput, ReceiptUncheckedUpdateManyInput>
+    /**
+     * Filter which Receipts to update
+     */
+    where?: ReceiptWhereInput
+  }
+
+  /**
+   * Receipt upsert
+   */
+  export type ReceiptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Receipt to update in case it exists.
+     */
+    where: ReceiptWhereUniqueInput
+    /**
+     * In case the Receipt found by the `where` argument doesn't exist, create a new Receipt with this data.
+     */
+    create: XOR<ReceiptCreateInput, ReceiptUncheckedCreateInput>
+    /**
+     * In case the Receipt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReceiptUpdateInput, ReceiptUncheckedUpdateInput>
+  }
+
+  /**
+   * Receipt delete
+   */
+  export type ReceiptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
+    /**
+     * Filter which Receipt to delete.
+     */
+    where: ReceiptWhereUniqueInput
+  }
+
+  /**
+   * Receipt deleteMany
+   */
+  export type ReceiptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Receipts to delete
+     */
+    where?: ReceiptWhereInput
+  }
+
+  /**
+   * Receipt without action
+   */
+  export type ReceiptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Receipt
+     */
+    select?: ReceiptSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReceiptInclude<ExtArgs> | null
   }
 
 
@@ -16805,6 +17976,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     studentNumber: 'studentNumber',
+    studentCode: 'studentCode',
     level: 'level',
     phone: 'phone',
     guardianName: 'guardianName',
@@ -16931,6 +18103,21 @@ export namespace Prisma {
   };
 
   export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+  export const ReceiptScalarFieldEnum: {
+    id: 'id',
+    invoiceId: 'invoiceId',
+    studentId: 'studentId',
+    amountMt: 'amountMt',
+    issuedAt: 'issuedAt',
+    issuedBy: 'issuedBy',
+    receiptNumber: 'receiptNumber',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
 
 
   export const DebateSessionScalarFieldEnum: {
@@ -17266,6 +18453,7 @@ export namespace Prisma {
     id?: StringFilter<"StudentProfile"> | string
     userId?: StringFilter<"StudentProfile"> | string
     studentNumber?: StringFilter<"StudentProfile"> | string
+    studentCode?: StringFilter<"StudentProfile"> | string
     level?: StringFilter<"StudentProfile"> | string
     phone?: StringNullableFilter<"StudentProfile"> | string | null
     guardianName?: StringNullableFilter<"StudentProfile"> | string | null
@@ -17276,6 +18464,7 @@ export namespace Prisma {
     attendances?: AttendanceListRelationFilter
     grades?: GradeListRelationFilter
     invoices?: InvoiceListRelationFilter
+    receipts?: ReceiptListRelationFilter
     debateEvaluations?: DebateEvaluationListRelationFilter
     moderatedDebates?: DebateSessionListRelationFilter
     debateParticipations?: DebateParticipantListRelationFilter
@@ -17285,6 +18474,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     studentNumber?: SortOrder
+    studentCode?: SortOrder
     level?: SortOrder
     phone?: SortOrderInput | SortOrder
     guardianName?: SortOrderInput | SortOrder
@@ -17295,6 +18485,7 @@ export namespace Prisma {
     attendances?: AttendanceOrderByRelationAggregateInput
     grades?: GradeOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
+    receipts?: ReceiptOrderByRelationAggregateInput
     debateEvaluations?: DebateEvaluationOrderByRelationAggregateInput
     moderatedDebates?: DebateSessionOrderByRelationAggregateInput
     debateParticipations?: DebateParticipantOrderByRelationAggregateInput
@@ -17304,6 +18495,7 @@ export namespace Prisma {
     id?: string
     userId?: string
     studentNumber?: string
+    studentCode?: string
     AND?: StudentProfileWhereInput | StudentProfileWhereInput[]
     OR?: StudentProfileWhereInput[]
     NOT?: StudentProfileWhereInput | StudentProfileWhereInput[]
@@ -17317,15 +18509,17 @@ export namespace Prisma {
     attendances?: AttendanceListRelationFilter
     grades?: GradeListRelationFilter
     invoices?: InvoiceListRelationFilter
+    receipts?: ReceiptListRelationFilter
     debateEvaluations?: DebateEvaluationListRelationFilter
     moderatedDebates?: DebateSessionListRelationFilter
     debateParticipations?: DebateParticipantListRelationFilter
-  }, "id" | "userId" | "studentNumber">
+  }, "id" | "userId" | "studentNumber" | "studentCode">
 
   export type StudentProfileOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     studentNumber?: SortOrder
+    studentCode?: SortOrder
     level?: SortOrder
     phone?: SortOrderInput | SortOrder
     guardianName?: SortOrderInput | SortOrder
@@ -17343,6 +18537,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"StudentProfile"> | string
     userId?: StringWithAggregatesFilter<"StudentProfile"> | string
     studentNumber?: StringWithAggregatesFilter<"StudentProfile"> | string
+    studentCode?: StringWithAggregatesFilter<"StudentProfile"> | string
     level?: StringWithAggregatesFilter<"StudentProfile"> | string
     phone?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     guardianName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
@@ -17922,6 +19117,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
     student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
     enrollment?: XOR<EnrollmentNullableRelationFilter, EnrollmentWhereInput> | null
+    receipt?: XOR<ReceiptNullableRelationFilter, ReceiptWhereInput> | null
   }
 
   export type InvoiceOrderByWithRelationInput = {
@@ -17937,6 +19133,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     student?: StudentProfileOrderByWithRelationInput
     enrollment?: EnrollmentOrderByWithRelationInput
+    receipt?: ReceiptOrderByWithRelationInput
   }
 
   export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
@@ -17955,6 +19152,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
     student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
     enrollment?: XOR<EnrollmentNullableRelationFilter, EnrollmentWhereInput> | null
+    receipt?: XOR<ReceiptNullableRelationFilter, ReceiptWhereInput> | null
   }, "id" | "reference">
 
   export type InvoiceOrderByWithAggregationInput = {
@@ -17989,6 +19187,86 @@ export namespace Prisma {
     paidAt?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Invoice"> | Date | string
+  }
+
+  export type ReceiptWhereInput = {
+    AND?: ReceiptWhereInput | ReceiptWhereInput[]
+    OR?: ReceiptWhereInput[]
+    NOT?: ReceiptWhereInput | ReceiptWhereInput[]
+    id?: StringFilter<"Receipt"> | string
+    invoiceId?: StringFilter<"Receipt"> | string
+    studentId?: StringFilter<"Receipt"> | string
+    amountMt?: FloatFilter<"Receipt"> | number
+    issuedAt?: DateTimeFilter<"Receipt"> | Date | string
+    issuedBy?: StringFilter<"Receipt"> | string
+    receiptNumber?: StringFilter<"Receipt"> | string
+    createdAt?: DateTimeFilter<"Receipt"> | Date | string
+    updatedAt?: DateTimeFilter<"Receipt"> | Date | string
+    invoice?: XOR<InvoiceRelationFilter, InvoiceWhereInput>
+    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+  }
+
+  export type ReceiptOrderByWithRelationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    studentId?: SortOrder
+    amountMt?: SortOrder
+    issuedAt?: SortOrder
+    issuedBy?: SortOrder
+    receiptNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    invoice?: InvoiceOrderByWithRelationInput
+    student?: StudentProfileOrderByWithRelationInput
+  }
+
+  export type ReceiptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    invoiceId?: string
+    receiptNumber?: string
+    AND?: ReceiptWhereInput | ReceiptWhereInput[]
+    OR?: ReceiptWhereInput[]
+    NOT?: ReceiptWhereInput | ReceiptWhereInput[]
+    studentId?: StringFilter<"Receipt"> | string
+    amountMt?: FloatFilter<"Receipt"> | number
+    issuedAt?: DateTimeFilter<"Receipt"> | Date | string
+    issuedBy?: StringFilter<"Receipt"> | string
+    createdAt?: DateTimeFilter<"Receipt"> | Date | string
+    updatedAt?: DateTimeFilter<"Receipt"> | Date | string
+    invoice?: XOR<InvoiceRelationFilter, InvoiceWhereInput>
+    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+  }, "id" | "invoiceId" | "receiptNumber">
+
+  export type ReceiptOrderByWithAggregationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    studentId?: SortOrder
+    amountMt?: SortOrder
+    issuedAt?: SortOrder
+    issuedBy?: SortOrder
+    receiptNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ReceiptCountOrderByAggregateInput
+    _avg?: ReceiptAvgOrderByAggregateInput
+    _max?: ReceiptMaxOrderByAggregateInput
+    _min?: ReceiptMinOrderByAggregateInput
+    _sum?: ReceiptSumOrderByAggregateInput
+  }
+
+  export type ReceiptScalarWhereWithAggregatesInput = {
+    AND?: ReceiptScalarWhereWithAggregatesInput | ReceiptScalarWhereWithAggregatesInput[]
+    OR?: ReceiptScalarWhereWithAggregatesInput[]
+    NOT?: ReceiptScalarWhereWithAggregatesInput | ReceiptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Receipt"> | string
+    invoiceId?: StringWithAggregatesFilter<"Receipt"> | string
+    studentId?: StringWithAggregatesFilter<"Receipt"> | string
+    amountMt?: FloatWithAggregatesFilter<"Receipt"> | number
+    issuedAt?: DateTimeWithAggregatesFilter<"Receipt"> | Date | string
+    issuedBy?: StringWithAggregatesFilter<"Receipt"> | string
+    receiptNumber?: StringWithAggregatesFilter<"Receipt"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Receipt"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Receipt"> | Date | string
   }
 
   export type DebateSessionWhereInput = {
@@ -18388,6 +19666,7 @@ export namespace Prisma {
   export type StudentProfileCreateInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -18398,6 +19677,7 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -18407,6 +19687,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -18416,6 +19697,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -18424,6 +19706,7 @@ export namespace Prisma {
   export type StudentProfileUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18434,6 +19717,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -18443,6 +19727,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18452,6 +19737,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -18461,6 +19747,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -18471,6 +19758,7 @@ export namespace Prisma {
   export type StudentProfileUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18482,6 +19770,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19091,6 +20380,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     student: StudentProfileCreateNestedOneWithoutInvoicesInput
     enrollment?: EnrollmentCreateNestedOneWithoutInvoicesInput
+    receipt?: ReceiptCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateInput = {
@@ -19104,6 +20394,7 @@ export namespace Prisma {
     paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    receipt?: ReceiptUncheckedCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceUpdateInput = {
@@ -19117,6 +20408,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentProfileUpdateOneRequiredWithoutInvoicesNestedInput
     enrollment?: EnrollmentUpdateOneWithoutInvoicesNestedInput
+    receipt?: ReceiptUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateInput = {
@@ -19130,6 +20422,7 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt?: ReceiptUncheckedUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceCreateManyInput = {
@@ -19165,6 +20458,88 @@ export namespace Prisma {
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceiptCreateInput = {
+    id?: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutReceiptInput
+    student: StudentProfileCreateNestedOneWithoutReceiptsInput
+  }
+
+  export type ReceiptUncheckedCreateInput = {
+    id?: string
+    invoiceId: string
+    studentId: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceiptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutReceiptNestedInput
+    student?: StudentProfileUpdateOneRequiredWithoutReceiptsNestedInput
+  }
+
+  export type ReceiptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceiptCreateManyInput = {
+    id?: string
+    invoiceId: string
+    studentId: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceiptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceiptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19690,6 +21065,12 @@ export namespace Prisma {
     none?: InvoiceWhereInput
   }
 
+  export type ReceiptListRelationFilter = {
+    every?: ReceiptWhereInput
+    some?: ReceiptWhereInput
+    none?: ReceiptWhereInput
+  }
+
   export type DebateEvaluationListRelationFilter = {
     every?: DebateEvaluationWhereInput
     some?: DebateEvaluationWhereInput
@@ -19724,6 +21105,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type ReceiptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type DebateEvaluationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -19740,6 +21125,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     studentNumber?: SortOrder
+    studentCode?: SortOrder
     level?: SortOrder
     phone?: SortOrder
     guardianName?: SortOrder
@@ -19751,6 +21137,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     studentNumber?: SortOrder
+    studentCode?: SortOrder
     level?: SortOrder
     phone?: SortOrder
     guardianName?: SortOrder
@@ -19762,6 +21149,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     studentNumber?: SortOrder
+    studentCode?: SortOrder
     level?: SortOrder
     phone?: SortOrder
     guardianName?: SortOrder
@@ -20179,6 +21567,11 @@ export namespace Prisma {
     isNot?: EnrollmentWhereInput | null
   }
 
+  export type ReceiptNullableRelationFilter = {
+    is?: ReceiptWhereInput | null
+    isNot?: ReceiptWhereInput | null
+  }
+
   export type InvoiceCountOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
@@ -20250,6 +21643,55 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumInvoiceStatusFilter<$PrismaModel>
     _max?: NestedEnumInvoiceStatusFilter<$PrismaModel>
+  }
+
+  export type InvoiceRelationFilter = {
+    is?: InvoiceWhereInput
+    isNot?: InvoiceWhereInput
+  }
+
+  export type ReceiptCountOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    studentId?: SortOrder
+    amountMt?: SortOrder
+    issuedAt?: SortOrder
+    issuedBy?: SortOrder
+    receiptNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceiptAvgOrderByAggregateInput = {
+    amountMt?: SortOrder
+  }
+
+  export type ReceiptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    studentId?: SortOrder
+    amountMt?: SortOrder
+    issuedAt?: SortOrder
+    issuedBy?: SortOrder
+    receiptNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceiptMinOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    studentId?: SortOrder
+    amountMt?: SortOrder
+    issuedAt?: SortOrder
+    issuedBy?: SortOrder
+    receiptNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReceiptSumOrderByAggregateInput = {
+    amountMt?: SortOrder
   }
 
   export type EnumDebateSessionStatusFilter<$PrismaModel = never> = {
@@ -20646,6 +22088,13 @@ export namespace Prisma {
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
+  export type ReceiptCreateNestedManyWithoutStudentInput = {
+    create?: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput> | ReceiptCreateWithoutStudentInput[] | ReceiptUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ReceiptCreateOrConnectWithoutStudentInput | ReceiptCreateOrConnectWithoutStudentInput[]
+    createMany?: ReceiptCreateManyStudentInputEnvelope
+    connect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+  }
+
   export type DebateEvaluationCreateNestedManyWithoutStudentInput = {
     create?: XOR<DebateEvaluationCreateWithoutStudentInput, DebateEvaluationUncheckedCreateWithoutStudentInput> | DebateEvaluationCreateWithoutStudentInput[] | DebateEvaluationUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutStudentInput | DebateEvaluationCreateOrConnectWithoutStudentInput[]
@@ -20693,6 +22142,13 @@ export namespace Prisma {
     connectOrCreate?: InvoiceCreateOrConnectWithoutStudentInput | InvoiceCreateOrConnectWithoutStudentInput[]
     createMany?: InvoiceCreateManyStudentInputEnvelope
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type ReceiptUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput> | ReceiptCreateWithoutStudentInput[] | ReceiptUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ReceiptCreateOrConnectWithoutStudentInput | ReceiptCreateOrConnectWithoutStudentInput[]
+    createMany?: ReceiptCreateManyStudentInputEnvelope
+    connect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
   }
 
   export type DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput = {
@@ -20778,6 +22234,20 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutStudentInput | InvoiceUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutStudentInput | InvoiceUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type ReceiptUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput> | ReceiptCreateWithoutStudentInput[] | ReceiptUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ReceiptCreateOrConnectWithoutStudentInput | ReceiptCreateOrConnectWithoutStudentInput[]
+    upsert?: ReceiptUpsertWithWhereUniqueWithoutStudentInput | ReceiptUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: ReceiptCreateManyStudentInputEnvelope
+    set?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    disconnect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    delete?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    connect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    update?: ReceiptUpdateWithWhereUniqueWithoutStudentInput | ReceiptUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: ReceiptUpdateManyWithWhereWithoutStudentInput | ReceiptUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: ReceiptScalarWhereInput | ReceiptScalarWhereInput[]
   }
 
   export type DebateEvaluationUpdateManyWithoutStudentNestedInput = {
@@ -20876,6 +22346,20 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutStudentInput | InvoiceUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutStudentInput | InvoiceUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type ReceiptUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput> | ReceiptCreateWithoutStudentInput[] | ReceiptUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ReceiptCreateOrConnectWithoutStudentInput | ReceiptCreateOrConnectWithoutStudentInput[]
+    upsert?: ReceiptUpsertWithWhereUniqueWithoutStudentInput | ReceiptUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: ReceiptCreateManyStudentInputEnvelope
+    set?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    disconnect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    delete?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    connect?: ReceiptWhereUniqueInput | ReceiptWhereUniqueInput[]
+    update?: ReceiptUpdateWithWhereUniqueWithoutStudentInput | ReceiptUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: ReceiptUpdateManyWithWhereWithoutStudentInput | ReceiptUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: ReceiptScalarWhereInput | ReceiptScalarWhereInput[]
   }
 
   export type DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput = {
@@ -21502,6 +22986,18 @@ export namespace Prisma {
     connect?: EnrollmentWhereUniqueInput
   }
 
+  export type ReceiptCreateNestedOneWithoutInvoiceInput = {
+    create?: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+    connectOrCreate?: ReceiptCreateOrConnectWithoutInvoiceInput
+    connect?: ReceiptWhereUniqueInput
+  }
+
+  export type ReceiptUncheckedCreateNestedOneWithoutInvoiceInput = {
+    create?: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+    connectOrCreate?: ReceiptCreateOrConnectWithoutInvoiceInput
+    connect?: ReceiptWhereUniqueInput
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -21530,6 +23026,54 @@ export namespace Prisma {
     delete?: EnrollmentWhereInput | boolean
     connect?: EnrollmentWhereUniqueInput
     update?: XOR<XOR<EnrollmentUpdateToOneWithWhereWithoutInvoicesInput, EnrollmentUpdateWithoutInvoicesInput>, EnrollmentUncheckedUpdateWithoutInvoicesInput>
+  }
+
+  export type ReceiptUpdateOneWithoutInvoiceNestedInput = {
+    create?: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+    connectOrCreate?: ReceiptCreateOrConnectWithoutInvoiceInput
+    upsert?: ReceiptUpsertWithoutInvoiceInput
+    disconnect?: ReceiptWhereInput | boolean
+    delete?: ReceiptWhereInput | boolean
+    connect?: ReceiptWhereUniqueInput
+    update?: XOR<XOR<ReceiptUpdateToOneWithWhereWithoutInvoiceInput, ReceiptUpdateWithoutInvoiceInput>, ReceiptUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type ReceiptUncheckedUpdateOneWithoutInvoiceNestedInput = {
+    create?: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+    connectOrCreate?: ReceiptCreateOrConnectWithoutInvoiceInput
+    upsert?: ReceiptUpsertWithoutInvoiceInput
+    disconnect?: ReceiptWhereInput | boolean
+    delete?: ReceiptWhereInput | boolean
+    connect?: ReceiptWhereUniqueInput
+    update?: XOR<XOR<ReceiptUpdateToOneWithWhereWithoutInvoiceInput, ReceiptUpdateWithoutInvoiceInput>, ReceiptUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type InvoiceCreateNestedOneWithoutReceiptInput = {
+    create?: XOR<InvoiceCreateWithoutReceiptInput, InvoiceUncheckedCreateWithoutReceiptInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutReceiptInput
+    connect?: InvoiceWhereUniqueInput
+  }
+
+  export type StudentProfileCreateNestedOneWithoutReceiptsInput = {
+    create?: XOR<StudentProfileCreateWithoutReceiptsInput, StudentProfileUncheckedCreateWithoutReceiptsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutReceiptsInput
+    connect?: StudentProfileWhereUniqueInput
+  }
+
+  export type InvoiceUpdateOneRequiredWithoutReceiptNestedInput = {
+    create?: XOR<InvoiceCreateWithoutReceiptInput, InvoiceUncheckedCreateWithoutReceiptInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutReceiptInput
+    upsert?: InvoiceUpsertWithoutReceiptInput
+    connect?: InvoiceWhereUniqueInput
+    update?: XOR<XOR<InvoiceUpdateToOneWithWhereWithoutReceiptInput, InvoiceUpdateWithoutReceiptInput>, InvoiceUncheckedUpdateWithoutReceiptInput>
+  }
+
+  export type StudentProfileUpdateOneRequiredWithoutReceiptsNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutReceiptsInput, StudentProfileUncheckedCreateWithoutReceiptsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutReceiptsInput
+    upsert?: StudentProfileUpsertWithoutReceiptsInput
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutReceiptsInput, StudentProfileUpdateWithoutReceiptsInput>, StudentProfileUncheckedUpdateWithoutReceiptsInput>
   }
 
   export type StudentProfileCreateNestedOneWithoutModeratedDebatesInput = {
@@ -22008,6 +23552,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutUserInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -22017,6 +23562,7 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -22025,6 +23571,7 @@ export namespace Prisma {
   export type StudentProfileUncheckedCreateWithoutUserInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -22034,6 +23581,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -22115,6 +23663,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22124,6 +23673,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -22132,6 +23682,7 @@ export namespace Prisma {
   export type StudentProfileUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22141,6 +23692,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -22348,6 +23900,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollment?: EnrollmentCreateNestedOneWithoutInvoicesInput
+    receipt?: ReceiptCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateWithoutStudentInput = {
@@ -22360,6 +23913,7 @@ export namespace Prisma {
     paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    receipt?: ReceiptUncheckedCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutStudentInput = {
@@ -22369,6 +23923,38 @@ export namespace Prisma {
 
   export type InvoiceCreateManyStudentInputEnvelope = {
     data: InvoiceCreateManyStudentInput | InvoiceCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReceiptCreateWithoutStudentInput = {
+    id?: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice: InvoiceCreateNestedOneWithoutReceiptInput
+  }
+
+  export type ReceiptUncheckedCreateWithoutStudentInput = {
+    id?: string
+    invoiceId: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceiptCreateOrConnectWithoutStudentInput = {
+    where: ReceiptWhereUniqueInput
+    create: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput>
+  }
+
+  export type ReceiptCreateManyStudentInputEnvelope = {
+    data: ReceiptCreateManyStudentInput | ReceiptCreateManyStudentInput[]
     skipDuplicates?: boolean
   }
 
@@ -22627,6 +24213,37 @@ export namespace Prisma {
     paidAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     createdAt?: DateTimeFilter<"Invoice"> | Date | string
     updatedAt?: DateTimeFilter<"Invoice"> | Date | string
+  }
+
+  export type ReceiptUpsertWithWhereUniqueWithoutStudentInput = {
+    where: ReceiptWhereUniqueInput
+    update: XOR<ReceiptUpdateWithoutStudentInput, ReceiptUncheckedUpdateWithoutStudentInput>
+    create: XOR<ReceiptCreateWithoutStudentInput, ReceiptUncheckedCreateWithoutStudentInput>
+  }
+
+  export type ReceiptUpdateWithWhereUniqueWithoutStudentInput = {
+    where: ReceiptWhereUniqueInput
+    data: XOR<ReceiptUpdateWithoutStudentInput, ReceiptUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type ReceiptUpdateManyWithWhereWithoutStudentInput = {
+    where: ReceiptScalarWhereInput
+    data: XOR<ReceiptUpdateManyMutationInput, ReceiptUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type ReceiptScalarWhereInput = {
+    AND?: ReceiptScalarWhereInput | ReceiptScalarWhereInput[]
+    OR?: ReceiptScalarWhereInput[]
+    NOT?: ReceiptScalarWhereInput | ReceiptScalarWhereInput[]
+    id?: StringFilter<"Receipt"> | string
+    invoiceId?: StringFilter<"Receipt"> | string
+    studentId?: StringFilter<"Receipt"> | string
+    amountMt?: FloatFilter<"Receipt"> | number
+    issuedAt?: DateTimeFilter<"Receipt"> | Date | string
+    issuedBy?: StringFilter<"Receipt"> | string
+    receiptNumber?: StringFilter<"Receipt"> | string
+    createdAt?: DateTimeFilter<"Receipt"> | Date | string
+    updatedAt?: DateTimeFilter<"Receipt"> | Date | string
   }
 
   export type DebateEvaluationUpsertWithWhereUniqueWithoutStudentInput = {
@@ -23353,6 +24970,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutEnrollmentsInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23362,6 +24980,7 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -23371,6 +24990,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23379,6 +24999,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -23465,6 +25086,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     student: StudentProfileCreateNestedOneWithoutInvoicesInput
+    receipt?: ReceiptCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateWithoutEnrollmentInput = {
@@ -23477,6 +25099,7 @@ export namespace Prisma {
     paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    receipt?: ReceiptUncheckedCreateNestedOneWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutEnrollmentInput = {
@@ -23503,6 +25126,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutEnrollmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23512,6 +25136,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -23521,6 +25146,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23529,6 +25155,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -23631,6 +25258,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutAttendancesInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23640,6 +25268,7 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -23649,6 +25278,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23657,6 +25287,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -23716,6 +25347,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutAttendancesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23725,6 +25357,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -23734,6 +25367,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23742,6 +25376,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -23791,6 +25426,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutGradesInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23800,6 +25436,7 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -23809,6 +25446,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -23817,6 +25455,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -23876,6 +25515,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutGradesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23885,6 +25525,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -23894,6 +25535,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23902,6 +25544,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -24079,6 +25722,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutInvoicesInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24088,6 +25732,7 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
@@ -24097,6 +25742,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24105,6 +25751,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
@@ -24142,6 +25789,33 @@ export namespace Prisma {
     create: XOR<EnrollmentCreateWithoutInvoicesInput, EnrollmentUncheckedCreateWithoutInvoicesInput>
   }
 
+  export type ReceiptCreateWithoutInvoiceInput = {
+    id?: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: StudentProfileCreateNestedOneWithoutReceiptsInput
+  }
+
+  export type ReceiptUncheckedCreateWithoutInvoiceInput = {
+    id?: string
+    studentId: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReceiptCreateOrConnectWithoutInvoiceInput = {
+    where: ReceiptWhereUniqueInput
+    create: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+  }
+
   export type StudentProfileUpsertWithoutInvoicesInput = {
     update: XOR<StudentProfileUpdateWithoutInvoicesInput, StudentProfileUncheckedUpdateWithoutInvoicesInput>
     create: XOR<StudentProfileCreateWithoutInvoicesInput, StudentProfileUncheckedCreateWithoutInvoicesInput>
@@ -24156,6 +25830,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24165,6 +25840,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
@@ -24174,6 +25850,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24182,6 +25859,7 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
@@ -24220,9 +25898,74 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type StudentProfileCreateWithoutModeratedDebatesInput = {
+  export type ReceiptUpsertWithoutInvoiceInput = {
+    update: XOR<ReceiptUpdateWithoutInvoiceInput, ReceiptUncheckedUpdateWithoutInvoiceInput>
+    create: XOR<ReceiptCreateWithoutInvoiceInput, ReceiptUncheckedCreateWithoutInvoiceInput>
+    where?: ReceiptWhereInput
+  }
+
+  export type ReceiptUpdateToOneWithWhereWithoutInvoiceInput = {
+    where?: ReceiptWhereInput
+    data: XOR<ReceiptUpdateWithoutInvoiceInput, ReceiptUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type ReceiptUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneRequiredWithoutReceiptsNestedInput
+  }
+
+  export type ReceiptUncheckedUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InvoiceCreateWithoutReceiptInput = {
+    id?: string
+    reference: string
+    amountMt: number
+    status?: $Enums.InvoiceStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: StudentProfileCreateNestedOneWithoutInvoicesInput
+    enrollment?: EnrollmentCreateNestedOneWithoutInvoicesInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutReceiptInput = {
+    id?: string
+    studentId: string
+    enrollmentId?: string | null
+    reference: string
+    amountMt: number
+    status?: $Enums.InvoiceStatus
+    dueDate: Date | string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InvoiceCreateOrConnectWithoutReceiptInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutReceiptInput, InvoiceUncheckedCreateWithoutReceiptInput>
+  }
+
+  export type StudentProfileCreateWithoutReceiptsInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24234,13 +25977,15 @@ export namespace Prisma {
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
 
-  export type StudentProfileUncheckedCreateWithoutModeratedDebatesInput = {
+  export type StudentProfileUncheckedCreateWithoutReceiptsInput = {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24250,6 +25995,136 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentProfileCreateOrConnectWithoutReceiptsInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutReceiptsInput, StudentProfileUncheckedCreateWithoutReceiptsInput>
+  }
+
+  export type InvoiceUpsertWithoutReceiptInput = {
+    update: XOR<InvoiceUpdateWithoutReceiptInput, InvoiceUncheckedUpdateWithoutReceiptInput>
+    create: XOR<InvoiceCreateWithoutReceiptInput, InvoiceUncheckedCreateWithoutReceiptInput>
+    where?: InvoiceWhereInput
+  }
+
+  export type InvoiceUpdateToOneWithWhereWithoutReceiptInput = {
+    where?: InvoiceWhereInput
+    data: XOR<InvoiceUpdateWithoutReceiptInput, InvoiceUncheckedUpdateWithoutReceiptInput>
+  }
+
+  export type InvoiceUpdateWithoutReceiptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    amountMt?: IntFieldUpdateOperationsInput | number
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneRequiredWithoutInvoicesNestedInput
+    enrollment?: EnrollmentUpdateOneWithoutInvoicesNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutReceiptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    enrollmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reference?: StringFieldUpdateOperationsInput | string
+    amountMt?: IntFieldUpdateOperationsInput | number
+    status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUpsertWithoutReceiptsInput = {
+    update: XOR<StudentProfileUpdateWithoutReceiptsInput, StudentProfileUncheckedUpdateWithoutReceiptsInput>
+    create: XOR<StudentProfileCreateWithoutReceiptsInput, StudentProfileUncheckedCreateWithoutReceiptsInput>
+    where?: StudentProfileWhereInput
+  }
+
+  export type StudentProfileUpdateToOneWithWhereWithoutReceiptsInput = {
+    where?: StudentProfileWhereInput
+    data: XOR<StudentProfileUpdateWithoutReceiptsInput, StudentProfileUncheckedUpdateWithoutReceiptsInput>
+  }
+
+  export type StudentProfileUpdateWithoutReceiptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStudentProfileNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    grades?: GradeUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutReceiptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    guardianName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutStudentNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentProfileCreateWithoutModeratedDebatesInput = {
+    id?: string
+    studentNumber: string
+    studentCode: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutStudentProfileInput
+    enrollments?: EnrollmentCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    grades?: GradeCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
+    debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
+    debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentProfileUncheckedCreateWithoutModeratedDebatesInput = {
+    id?: string
+    userId: string
+    studentNumber: string
+    studentCode: string
+    level: string
+    phone?: string | null
+    guardianName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutStudentInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
@@ -24331,6 +26206,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutModeratedDebatesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24341,6 +26217,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
@@ -24349,6 +26226,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24358,6 +26236,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -24428,6 +26307,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutDebateParticipationsInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24438,6 +26318,7 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
   }
@@ -24446,6 +26327,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24455,6 +26337,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     debateEvaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
   }
@@ -24515,6 +26398,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutDebateParticipationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24525,6 +26409,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
   }
@@ -24533,6 +26418,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24542,6 +26428,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     debateEvaluations?: DebateEvaluationUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
   }
@@ -24580,6 +26467,7 @@ export namespace Prisma {
   export type StudentProfileCreateWithoutDebateEvaluationsInput = {
     id?: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24590,6 +26478,7 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutStudentInput
     invoices?: InvoiceCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantCreateNestedManyWithoutStudentInput
   }
@@ -24598,6 +26487,7 @@ export namespace Prisma {
     id?: string
     userId: string
     studentNumber: string
+    studentCode: string
     level: string
     phone?: string | null
     guardianName?: string | null
@@ -24607,6 +26497,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutStudentInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutStudentInput
+    receipts?: ReceiptUncheckedCreateNestedManyWithoutStudentInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
     debateParticipations?: DebateParticipantUncheckedCreateNestedManyWithoutStudentInput
   }
@@ -24667,6 +26558,7 @@ export namespace Prisma {
   export type StudentProfileUpdateWithoutDebateEvaluationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24677,6 +26569,7 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUpdateManyWithoutStudentNestedInput
   }
@@ -24685,6 +26578,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     studentNumber?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     guardianName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24694,6 +26588,7 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutStudentNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+    receipts?: ReceiptUncheckedUpdateManyWithoutStudentNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -24854,6 +26749,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ReceiptCreateManyStudentInput = {
+    id?: string
+    invoiceId: string
+    amountMt: number
+    issuedAt?: Date | string
+    issuedBy: string
+    receiptNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DebateEvaluationCreateManyStudentInput = {
     id?: string
     sessionId: string
@@ -24992,6 +26898,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollment?: EnrollmentUpdateOneWithoutInvoicesNestedInput
+    receipt?: ReceiptUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateWithoutStudentInput = {
@@ -25004,6 +26911,7 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt?: ReceiptUncheckedUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateManyWithoutStudentInput = {
@@ -25014,6 +26922,39 @@ export namespace Prisma {
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceiptUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneRequiredWithoutReceiptNestedInput
+  }
+
+  export type ReceiptUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReceiptUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: StringFieldUpdateOperationsInput | string
+    amountMt?: FloatFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    issuedBy?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25502,6 +27443,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentProfileUpdateOneRequiredWithoutInvoicesNestedInput
+    receipt?: ReceiptUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateWithoutEnrollmentInput = {
@@ -25514,6 +27456,7 @@ export namespace Prisma {
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt?: ReceiptUncheckedUpdateOneWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateManyWithoutEnrollmentInput = {
@@ -25677,6 +27620,10 @@ export namespace Prisma {
      * @deprecated Use InvoiceDefaultArgs instead
      */
     export type InvoiceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = InvoiceDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ReceiptDefaultArgs instead
+     */
+    export type ReceiptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ReceiptDefaultArgs<ExtArgs>
     /**
      * @deprecated Use DebateSessionDefaultArgs instead
      */

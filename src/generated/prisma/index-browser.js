@@ -138,6 +138,7 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   studentNumber: 'studentNumber',
+  studentCode: 'studentCode',
   level: 'level',
   phone: 'phone',
   guardianName: 'guardianName',
@@ -235,6 +236,18 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   status: 'status',
   dueDate: 'dueDate',
   paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReceiptScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  studentId: 'studentId',
+  amountMt: 'amountMt',
+  issuedAt: 'issuedAt',
+  issuedBy: 'issuedBy',
+  receiptNumber: 'receiptNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -353,6 +366,7 @@ exports.Prisma.ModelName = {
   Grade: 'Grade',
   StudyMaterial: 'StudyMaterial',
   Invoice: 'Invoice',
+  Receipt: 'Receipt',
   DebateSession: 'DebateSession',
   DebateParticipant: 'DebateParticipant',
   DebateEvaluation: 'DebateEvaluation',

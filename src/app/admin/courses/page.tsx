@@ -13,7 +13,7 @@ type CoursesPageProps = {
 
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const courses = await prisma.course.findMany({
-    orderBy: { createdAt: "desc" }
+    orderBy: { title: "asc" }
   });
 
   return (
@@ -49,16 +49,16 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                   <input name="level" defaultValue={course.level} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" required />
                   <input name="duration" defaultValue={course.duration ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Duracao" />
                   <input name="description" defaultValue={course.description ?? ""} className="rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="Descricao" />
-                  <button className="rounded-xl bg-navy px-3 py-2 text-[10px] font-black uppercase text-white" type="submit">Guardar</button>
+                  <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Guardar</PrimaryButton>
                 </form>,
                 course.level,
                 course.isActive ? "Ativo" : "Inativo",
                 <form key={`${course.id}-active`} action={setCourseActiveAction} className="flex justify-end">
                   <input type="hidden" name="id" value={course.id} />
                   <input type="hidden" name="isActive" value={course.isActive ? "false" : "true"} />
-                  <button className="rounded-xl border border-slate-200 px-3 py-2 text-[10px] font-black uppercase text-slate-700" type="submit">
+                  <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]" type="submit">
                     {course.isActive ? "Desativar" : "Ativar"}
-                  </button>
+                  </PrimaryButton>
                 </form>
               ])}
             />

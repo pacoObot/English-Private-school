@@ -83,6 +83,7 @@ async function main() {
       studentProfile: {
         create: {
           studentNumber: "STU-TEST-442910",
+          studentCode: "DEL-2026-0001",
           level: "B2 Upper Intermediate",
           guardianName: "Teste Encarregado"
         }
@@ -100,6 +101,7 @@ async function main() {
       studentProfile: {
         create: {
           studentNumber: "STU-TEST-555555",
+          studentCode: "DEL-2026-0002",
           level: "B2 Upper Intermediate",
           guardianName: "Teste Encarregado 2"
         }
