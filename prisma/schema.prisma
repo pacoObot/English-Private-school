@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "linux-musl", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -43,19 +44,23 @@ enum DebateSessionStatus {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         Role
-  avatarUrl    String?
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  name                String
+  email               String?  @unique
+  passwordHash        String
+  role                Role
+  avatarUrl           String?
+  isActive            Boolean  @default(true)
+  canModerateDebates  Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  studentProfile StudentProfile?
-  teacherProfile TeacherProfile?
-  auditLogs      AuditLog[]      @relation("AuditActor")
+  studentProfile         StudentProfile?
+  teacherProfile         TeacherProfile?
+  auditLogs              AuditLog[]         @relation("AuditActor")
+  notifications          Notification[]
+  moderatedDebates       DebateSession[]    @relation("SessionModerator")
+  debateEvaluationsGiven DebateEvaluation[] @relation("DebateEvaluator")
 }
 
 model StudentProfile {
@@ -76,8 +81,8 @@ model StudentProfile {
   invoices             Invoice[]
   receipts             Receipt[]
   debateEvaluations    DebateEvaluation[]
-  moderatedDebates     DebateSession[]     @relation("SessionModerator")
   debateParticipations DebateParticipant[]
+  debateProposals      DebateProposal[]
 }
 
 model TeacherProfile {
@@ -255,7 +260,7 @@ model DebateSession {
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
 
-  moderator    StudentProfile?     @relation("SessionModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
+  moderator    User?               @relation("SessionModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
   evaluations  DebateEvaluation[]
   participants DebateParticipant[]
 }
@@ -274,20 +279,23 @@ model DebateParticipant {
 }
 
 model DebateEvaluation {
-  id            String   @id @default(cuid())
-  sessionId     String
-  studentId     String
-  evaluatorId   String?
-  fluency       Int
-  argumentation Int
-  posture       Int
-  feedback      String?
-  evaluatedAt   DateTime @default(now())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String    @id @default(cuid())
+  sessionId      String
+  studentId      String
+  evaluatorId    String?
+  fluency        Int
+  argumentation  Int
+  posture        Int
+  feedback       String?
+  acknowledgedAt DateTime?
+  evaluatedAt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  session DebateSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  session       DebateSession    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student       StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  evaluator     User?            @relation("DebateEvaluator", fields: [evaluatorId], references: [id], onDelete: SetNull)
+  notifications Notification[]
 
   @@unique([sessionId, studentId])
   @@index([studentId])
@@ -307,4 +315,37 @@ model AuditLog {
 
   @@index([actorId])
   @@index([entity])
+}
+
+model DebateProposal {
+  id        String   @id @default(cuid())
+  studentId String
+  topic     String
+  reason    String?
+  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+}
+
+model Notification {
+  id           String   @id @default(cuid())
+  userId       String
+  title        String
+  message      String
+  type         String   @default("INFO") // INFO, SUCCESS, WARNING, DANGER, DEBATE_FEEDBACK
+  isRead       Boolean  @default(false)
+  evaluationId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  evaluation DebateEvaluation? @relation(fields: [evaluationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([evaluationId])
 }
