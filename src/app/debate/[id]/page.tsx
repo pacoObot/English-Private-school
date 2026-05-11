@@ -15,37 +15,54 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
   const session = await getCurrentSession();
   if (!session) redirect("/login");
 
-  const debate = await prisma.debateSession.findUnique({
-    where: { id: params.id },
-    include: {
-      moderator: { include: { user: true } },
-      participants: { include: { student: { include: { user: true } } } },
-      evaluations: true
-    }
-  });
+  const [debate, lastDebates, nextSessions] = await Promise.all([
+    prisma.debateSession.findUnique({
+      where: { id: params.id },
+      include: {
+        moderator: { include: { studentProfile: true, teacherProfile: true } },
+        participants: { include: { student: { include: { user: true } } } },
+        evaluations: true
+      }
+    }),
+    prisma.debateSession.findMany({
+      where: { status: "CLOSED", id: { not: params.id } },
+      orderBy: { startsAt: "desc" },
+      take: 1
+    }),
+    prisma.debateSession.findMany({
+      where: { status: "SCHEDULED", id: { not: params.id } },
+      orderBy: { startsAt: "asc" },
+      take: 2
+    })
+  ]);
 
   if (!debate) notFound();
 
-  const isTeacherOrAdmin = ([Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] as Role[]).includes(session.role);
+  const isAdmin = ([Role.SUPER_ADMIN, Role.ADMIN] as Role[]).includes(session.role);
+  const isAssignedInstructor = debate.moderatorId === session.userId;
   
-  let isModerator = false;
-  let isParticipant = false;
-  let currentStudentProfile: any = null;
-  if (!isTeacherOrAdmin) {
-    currentStudentProfile = await prisma.studentProfile.findUnique({ where: { userId: session.userId } });
-    isModerator = !!(currentStudentProfile && debate.moderatorId === currentStudentProfile.id);
-    isParticipant = !!(currentStudentProfile && debate.participants.some(p => p.studentId === currentStudentProfile.id));
-  }
+  // New: Check for canModerateDebates permission
+  const userPerms = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: { canModerateDebates: true }
+  });
 
-  const canEvaluate = isTeacherOrAdmin || isModerator;
+  let isModerator = isAssignedInstructor || userPerms?.canModerateDebates || isAdmin;
+  let currentStudentProfile = await prisma.studentProfile.findUnique({ where: { userId: session.userId } });
+  let isParticipant = !!(currentStudentProfile && debate.participants.some(p => p.studentId === currentStudentProfile.id));
+
+  const canManageDebate = isModerator;
+  const canEvaluate = isModerator;
 
   // For adding new participants, get list of students not yet in this debate
   const participantIds = debate.participants.map(p => p.studentId);
-  const availableStudents = isTeacherOrAdmin ? await prisma.studentProfile.findMany({
-    where: { id: { notIn: participantIds } },
+  const availableStudents = canManageDebate ? await prisma.studentProfile.findMany({
+    where: { id: { notIn: participantIds }, user: { isActive: true } },
     include: { user: true },
     orderBy: { user: { name: "asc" } }
   }) : [];
+
+  const lastDebate = lastDebates[0];
 
   return (
     <DashboardLayout
@@ -64,7 +81,7 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
             <div className="flex items-center gap-3 mb-4">
                <StatusBadge tone={debate.status === "ACTIVE" ? "danger" : debate.status === "CLOSED" ? "navy" : "success"}>{debate.status}</StatusBadge>
                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">ID: {debate.id.slice(-6)}</span>
-               {isTeacherOrAdmin && debate.status !== "CLOSED" && (
+               {canManageDebate && debate.status !== "CLOSED" && (
                  <form action={updateDebateSessionStatusAction} className="ml-auto">
                    <input type="hidden" name="id" value={debate.id} />
                    <input type="hidden" name="status" value={debate.status === "SCHEDULED" ? "ACTIVE" : "CLOSED"} />
@@ -116,16 +133,56 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
             <BentoCard>
                <h3 className="mb-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Gestor da Sessão</h3>
                <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <div className="w-12 h-12 rounded-xl bg-rose-600 flex items-center justify-center text-white font-black">
-                    {debate.moderator?.user.name.charAt(0) || "P"}
+                  <div className="w-12 h-12 rounded-xl bg-navy text-white flex items-center justify-center font-black">
+                    {debate.moderator?.name.charAt(0) || "I"}
                   </div>
                   <div>
-                    <p className="text-sm font-black text-slate-900">{debate.moderator?.user.name || "Professor Responsável"}</p>
-                    <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest">Moderador</p>
+                    <p className="text-sm font-black text-slate-900">{debate.moderator?.name || "Sem instrutor designado"}</p>
+                    <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest">
+                      {debate.moderator?.id === session.userId ? "Tu és o Moderador" : "Designado"}
+                    </p>
                   </div>
                </div>
 
-               {isTeacherOrAdmin && debate.status !== DebateSessionStatus.CLOSED && (
+               {/* Visão de Contexto para Instrutor */}
+               {isModerator && (
+                 <div className="mt-8 space-y-6 border-t border-slate-100 pt-6">
+                    <div>
+                       <h4 className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Última Arena</h4>
+                       {lastDebate ? (
+                         <div className="rounded-2xl bg-slate-900 p-4 text-white">
+                            <p className="text-xs font-bold line-clamp-1">{lastDebate.topic}</p>
+                            <p className="mt-1 text-[9px] font-black text-rose-400 uppercase">{new Date(lastDebate.startsAt).toLocaleDateString()}</p>
+                         </div>
+                       ) : (
+                         <p className="text-[10px] font-bold text-slate-400 italic">Primeiro debate da arena.</p>
+                       )}
+                    </div>
+
+                    <div>
+                       <h4 className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Próximas Sessões</h4>
+                       <div className="space-y-2">
+                          {nextSessions.length > 0 ? (
+                            nextSessions.map(s => (
+                              <div key={s.id} className="rounded-xl border border-slate-100 p-3 flex justify-between items-center">
+                                 <span className="text-[10px] font-bold text-slate-600 truncate max-w-[120px]">{s.topic}</span>
+                                 <span className="text-[9px] font-black text-navy uppercase">{new Date(s.startsAt).toLocaleDateString()}</span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="rounded-xl bg-amber-50 p-4 text-center border border-amber-100">
+                               <p className="text-[10px] font-black text-amber-700 uppercase">Nenhum debate sugerido</p>
+                               {isAdmin && (
+                                 <p className="mt-1 text-[9px] font-bold text-amber-600">Designa um tema no painel central.</p>
+                               )}
+                            </div>
+                          )}
+                       </div>
+                    </div>
+                 </div>
+               )}
+
+               {canManageDebate && debate.status !== DebateSessionStatus.CLOSED && (
                 <div className="mt-8 border-t border-slate-100 pt-6">
                   <h4 className="mb-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Inscrição Rápida</h4>
                   <form action={addDebateParticipantAction} className="space-y-4">
@@ -133,7 +190,7 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
                     <SelectField 
                       name="studentId" 
                       label="Selecionar Aluno"
-                      options={availableStudents.map(s => ({ label: `${s.user.name} (${s.studentNumber})`, value: s.id }))} 
+                      options={availableStudents.map(s => ({ label: `${s.user.name} (${s.studentCode})`, value: s.id }))} 
                       required 
                     />
                     <PrimaryButton tone="navy" type="submit" className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest">
@@ -142,6 +199,7 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
                   </form>
                 </div>
               )}
+            </BentoCard>
 
               {session.role === Role.STUDENT && currentStudentProfile && !isParticipant && !isModerator && debate.status === DebateSessionStatus.SCHEDULED && (
                 <div className="mt-8 border-t border-slate-100 pt-6">
@@ -168,8 +226,8 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
               participants={debate.participants}
               evaluations={debate.evaluations}
               canEvaluate={canEvaluate}
-              isTeacherOrAdmin={isTeacherOrAdmin}
-              moderatorId={debate.moderatorId}
+              canManageDebate={canManageDebate}
+              moderatorUserId={debate.moderatorId}
               sessionId={debate.id}
               sessionStatus={debate.status}
             />
