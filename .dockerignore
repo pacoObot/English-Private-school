@@ -1,0 +1,59 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node
+node_modules
+npm-debug.log
+npm-error.log
+yarn-error.log
+pnpm-debug.log
+package-lock.json.lock
+
+# Build
+.next
+out
+dist
+build
+.swc
+
+# Development
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+coverage
+.nyc_output
+jest-coverage
+
+# Misc
+README.md
+*.md
+.planning
+messages
+qa
+scripts
+server.log
+.codex
+.agents
+docker/README.md
+instrutor-debate.html
+login.html
+super-admin.html
+teacher.html
+user.html
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore

@@ -74,41 +74,34 @@ async function main() {
     include: { teacherProfile: true }
   });
 
-  const student = await prisma.user.create({
-    data: {
-      name: "Teste Alipio Paco",
-      email: "alipio.teste@delsonps.local",
-      passwordHash,
-      role: Role.STUDENT,
-      studentProfile: {
-        create: {
-          studentNumber: "STU-TEST-442910",
-          studentCode: "DEL-2026-0001",
-          level: "B2 Upper Intermediate",
-          guardianName: "Teste Encarregado"
-        }
-      }
-    },
-    include: { studentProfile: true }
-  });
+  // Criar apenas os estudantes reais para testes solicitados
+  const names = ["Ester", "Anderson", "Paulo", "Maria", "Delson", "Alfredo", "Ana"];
+  const testStudents = [];
 
-  const student2 = await prisma.user.create({
-    data: {
-      name: "Teste Aluno Participante",
-      email: "participante.teste@delsonps.local",
-      passwordHash,
-      role: Role.STUDENT,
-      studentProfile: {
-        create: {
-          studentNumber: "STU-TEST-555555",
-          studentCode: "DEL-2026-0002",
-          level: "B2 Upper Intermediate",
-          guardianName: "Teste Encarregado 2"
+  for (const name of names) {
+    const email = `${name.toLowerCase()}@delsonps.local`;
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        passwordHash,
+        role: Role.STUDENT,
+        studentProfile: {
+          create: {
+            studentNumber: `STU-2026-${name.toUpperCase()}`,
+            studentCode: `DEL-${name.toUpperCase()}`,
+            level: "B2 Upper Intermediate",
+          }
         }
-      }
-    },
-    include: { studentProfile: true }
-  });
+      },
+      include: { studentProfile: true }
+    });
+    testStudents.push(user);
+  }
+
+  // Usar o primeiro estudante como moderador padrão para o debate de teste
+  const student = testStudents[0]; 
+  const student2 = testStudents[1];
 
   const course = await prisma.course.create({
     data: {
@@ -194,7 +187,7 @@ async function main() {
       capacity: 15,
       location: "Sala 04",
       status: DebateSessionStatus.SCHEDULED,
-      moderatorId: student.studentProfile.id
+      moderatorId: student.id
     }
   });
 

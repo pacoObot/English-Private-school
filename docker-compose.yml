@@ -1,21 +1,95 @@
+version: '3.9'
+
 services:
+  # ============================================
+  # PostgreSQL Database
+  # ============================================
   postgres:
     image: postgres:16-alpine
-    container_name: delson_ps_postgres
+    container_name: delson_ps_postgres_dev
     restart: unless-stopped
+    shm_size: 256mb
     environment:
-      POSTGRES_USER: delson
-      POSTGRES_PASSWORD: delson_dev_password
-      POSTGRES_DB: delson_ps
+      POSTGRES_USER: ${POSTGRES_USER:-delson}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-delson_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-delson_ps}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=pt_PT.UTF-8"
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+    networks:
+      - delson_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U delson -d delson_ps"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-delson} -d ${POSTGRES_DB:-delson_ps}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
+    labels:
+      com.delsonps.service: "database"
+      com.delsonps.environment: "dev"
 
+  # ============================================
+  # Next.js Application (Development)
+  # ============================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: delson_ps_app_dev
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://${POSTGRES_USER:-delson}:${POSTGRES_PASSWORD:-delson_dev_password}@postgres:5432/${POSTGRES_DB:-delson_ps}?schema=public
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-delson}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-delson_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-delson_ps}
+      NEXT_PUBLIC_DEFAULT_LOCALE: ${NEXT_PUBLIC_DEFAULT_LOCALE:-pt-PT}
+      AUTH_SECRET: ${AUTH_SECRET:-local-dev-secret-change-before-production-delson-ps}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      # Montar código fonte para hot-reload em desenvolvimento
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - delson_network
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      com.delsonps.service: "application"
+      com.delsonps.environment: "dev"
+
+# ============================================
+# Volumes
+# ============================================
 volumes:
   postgres_data:
+    driver: local
+    labels:
+      com.delsonps.service: "database"
+      com.delsonps.backup: "daily"
+  postgres_logs:
+    driver: local
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  delson_network:
+    driver: bridge
+    labels:
+      com.delsonps.network: "main"

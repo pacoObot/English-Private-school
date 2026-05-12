@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { Bell, Menu, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { NotificationCenter } from "./NotificationCenter";
 
 type TopBarProps = {
   title: string;
@@ -55,14 +56,7 @@ export function TopBar({ title, subtitle, onMenuClick, action, showSearch = fals
         >
           Sair
         </a>
-        <button
-          type="button"
-          className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 text-slate-500 backdrop-blur-md"
-          aria-label="Notificacoes"
-        >
-          <Bell size={18} />
-          <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-crimson ring-2 ring-white" />
-        </button>
+        <NotificationCenter />
       </div>
     </header>
   );

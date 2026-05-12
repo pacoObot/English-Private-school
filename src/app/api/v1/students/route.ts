@@ -39,9 +39,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { name, email, studentNumber, level, phone, guardianName } = body;
+    const normalizedEmail = typeof email === "string" && email.trim() ? email.toLowerCase().trim() : null;
 
-    if (!name || !email || !studentNumber || !level) {
+    if (!name || !level) {
       return errorResponse("Missing required fields", 400);
+    }
+
+    if (normalizedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      return errorResponse("Invalid email", 400, "INVALID_EMAIL");
     }
 
     const studentCode = await generateStudentCode();
@@ -49,12 +54,12 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.create({
       data: {
         name,
-        email: email.toLowerCase(),
+        email: normalizedEmail,
         passwordHash: hashPassword("Delson@2026"), // Default password
         role: Role.STUDENT,
         studentProfile: {
           create: {
-            studentNumber,
+            studentNumber: studentNumber || studentCode,
             studentCode,
             level,
             phone: phone || null,
@@ -71,7 +76,7 @@ export async function POST(request: NextRequest) {
         action: "api_student_created",
         entity: "StudentProfile",
         entityId: user.studentProfile?.id,
-        metadata: { email, studentNumber }
+        metadata: { email: normalizedEmail, studentNumber: studentNumber || studentCode, studentCode }
       }
     });
 

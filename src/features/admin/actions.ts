@@ -8,6 +8,8 @@ import { routeForRole } from "@/features/auth/session";
 import { hashPassword } from "@/features/auth/password";
 import { prisma } from "@/lib/prisma";
 import { generateStudentCode } from "@/lib/id-generators";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 const DEFAULT_PASSWORD = "Delson@2026";
 const adminRoles: Role[] = [Role.SUPER_ADMIN, Role.ADMIN];
@@ -40,10 +42,13 @@ type ActionStatus =
   | "duplicate_staff_number"
   | "duplicate_enrollment"
   | "duplicate_attendance"
-  | "duplicate_evaluation";
+  | "duplicate_evaluation"
+  | "duplicate_student_code"
+  | "invalid_email"
+  | "forbidden";
 
 function redirectBack(path: string, result: ActionStatus) {
-  redirect(`${path}?status=${result}`);
+  redirect(`${path}${path.includes("?") ? "&" : "?"}status=${result}`);
 }
 
 function handlePrismaError(error: unknown, path: string) {
@@ -51,6 +56,7 @@ function handlePrismaError(error: unknown, path: string) {
     const target = (error.meta?.target as string[]) || [];
     if (target.includes("email")) return redirectBack(path, "duplicate_email");
     if (target.includes("studentNumber")) return redirectBack(path, "duplicate_student_number");
+    if (target.includes("studentCode")) return redirectBack(path, "duplicate_student_code");
     if (target.includes("staffNumber")) return redirectBack(path, "duplicate_staff_number");
     if (target.includes("studentId") && target.includes("classGroupId")) {
       if (target.includes("lessonDate")) return redirectBack(path, "duplicate_attendance");
@@ -59,6 +65,15 @@ function handlePrismaError(error: unknown, path: string) {
     if (target.includes("sessionId") && target.includes("studentId")) return redirectBack(path, "duplicate_evaluation");
   }
   return redirectBack(path, "error");
+}
+
+function normalizeEmail(value: string) {
+  const email = value.toLowerCase().trim();
+  return email || null;
+}
+
+function isValidEmail(email: string | null) {
+  return !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 async function requireAdmin() {
@@ -90,19 +105,24 @@ async function audit(actorId: string, action: string, entity: string, entityId?:
 export async function createStudentAction(formData: FormData) {
   const session = await requireAdmin();
   const name = text(formData, "name");
-  const email = text(formData, "email").toLowerCase();
-  const studentNumber = text(formData, "studentNumber");
+  const email = normalizeEmail(text(formData, "email"));
+  const studentNumberInput = text(formData, "studentNumber");
   const level = text(formData, "level");
   const phone = text(formData, "phone");
   const guardianName = text(formData, "guardianName");
 
-  if (!name || !email || !studentNumber || !level) {
+  if (!name || !level) {
     redirectBack("/admin/students", "error");
+  }
+
+  if (!isValidEmail(email)) {
+    redirectBack("/admin/students", "invalid_email");
   }
 
   try {
     const studentCode = await generateStudentCode();
-    
+    const studentNumber = studentNumberInput || studentCode;
+
     const user = await prisma.user.create({
       data: {
         name,
@@ -131,19 +151,110 @@ export async function createStudentAction(formData: FormData) {
   }
 }
 
+export async function bulkImportStudentsAction(formData: FormData) {
+  const session = await requireAdmin();
+  const file = formData.get("file") as File;
+
+  if (!file) {
+    redirectBack("/admin/students", "error");
+  }
+
+  if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+    redirectBack("/admin/students", "error");
+  }
+
+  const fileText = await file.text();
+  const lines = fileText.split("\n").filter((line) => line.trim());
+
+  if (lines.length < 2) {
+    redirectBack("/admin/students", "error");
+  }
+
+  const [header, ...names] = lines;
+  const columnsHeader = header.toLowerCase().split(",").map((col) => col.trim());
+  const emailIndex = columnsHeader.findIndex((col) => col === "email");
+  const nameIndex = columnsHeader.findIndex((col) => col === "name");
+  const studentNumberIndex = columnsHeader.findIndex((col) => col === "studentnumber" || col === "student_number" || col === "student code" || col === "studentcode");
+  const levelIndex = columnsHeader.findIndex((col) => col === "level" || col === "nivel");
+
+  if (nameIndex === -1) {
+    redirectBack("/admin/students", "error");
+  }
+
+  let successCount = 0;
+  let errorCount = 0;
+  const errors: string[] = [];
+
+  for (const line of names) {
+    const columns = line.split(",");
+    const name = columns[nameIndex]?.trim();
+    const email = emailIndex >= 0 ? normalizeEmail(columns[emailIndex] ?? "") : null;
+    const studentNumberInput = studentNumberIndex >= 0 ? columns[studentNumberIndex]?.trim() : "";
+    const level = levelIndex >= 0 ? columns[levelIndex]?.trim() : "A1 Beginner";
+
+    if (!name) {
+      errorCount++;
+      errors.push(`Linha inválida: ${line}`);
+      continue;
+    }
+
+    if (!isValidEmail(email)) {
+      errorCount++;
+      errors.push(`Email inválido: ${email}`);
+      continue;
+    }
+
+    try {
+      const studentCode = await generateStudentCode();
+      await prisma.user.create({
+        data: {
+          name,
+          email,
+          passwordHash: hashPassword(DEFAULT_PASSWORD),
+          role: Role.STUDENT,
+          studentProfile: {
+            create: {
+              studentNumber: studentNumberInput || studentCode,
+              studentCode,
+              level,
+              phone: null,
+              guardianName: null
+            }
+          }
+        },
+        include: { studentProfile: true }
+      });
+      successCount++;
+    } catch (error) {
+      errorCount++;
+      if (error instanceof Error) {
+        errors.push(`Erro ao importar ${email ?? name}: ${error.message}`);
+      }
+    }
+  }
+
+  await audit(session.userId, "students_bulk_import", "StudentProfile", undefined, { successCount, errorCount });
+
+  const status = successCount > 0 ? "created" : "error";
+  redirectBack(`/admin/students?importStatus=success:${successCount}&errorCount=${errorCount}`, status);
+}
+
 export async function updateStudentAction(formData: FormData) {
   const session = await requireAdmin();
   const id = text(formData, "id");
   const userId = text(formData, "userId");
   const name = text(formData, "name");
-  const email = text(formData, "email").toLowerCase();
-  const studentNumber = text(formData, "studentNumber");
+  const email = normalizeEmail(text(formData, "email"));
   const level = text(formData, "level");
   const phone = text(formData, "phone");
   const guardianName = text(formData, "guardianName");
 
-  if (!id || !userId || !name || !email || !studentNumber || !level) {
+  if (!id || !userId || !name || !level) {
     redirectBack("/admin/students", "error");
+  }
+
+  if (!isValidEmail(email)) {
+    redirectBack("/admin/students", "invalid_email");
   }
 
   try {
@@ -151,7 +262,7 @@ export async function updateStudentAction(formData: FormData) {
       prisma.user.update({ where: { id: userId }, data: { name, email } }),
       prisma.studentProfile.update({
         where: { id },
-        data: { studentNumber, level, phone: phone || null, guardianName: guardianName || null }
+        data: { level, phone: phone || null, guardianName: guardianName || null }
       }),
       prisma.auditLog.create({ data: { actorId: session.userId, action: "student_updated", entity: "StudentProfile", entityId: id } })
     ]);
@@ -208,11 +319,11 @@ export async function createStaffAction(formData: FormData) {
         teacherProfile:
           role === Role.TEACHER
             ? {
-                create: {
-                  staffNumber,
-                  specialty
-                }
+              create: {
+                staffNumber,
+                specialty
               }
+            }
             : undefined
       },
       include: { teacherProfile: true }
@@ -221,7 +332,9 @@ export async function createStaffAction(formData: FormData) {
     await audit(session.userId, "staff_created", role === Role.TEACHER ? "TeacherProfile" : "User", user.teacherProfile?.id ?? user.id, { email, role });
     revalidatePath("/admin/staff");
     revalidatePath("/admin/dashboard");
-    redirectBack("/admin/staff", "created");
+
+    const identifier = role === Role.TEACHER ? (staffNumber || email) : email;
+    redirect(`/admin/staff?status=created&newCode=${encodeURIComponent(identifier)}&newName=${encodeURIComponent(name)}`);
   } catch (error) {
     return handlePrismaError(error, "/admin/staff");
   }
@@ -279,6 +392,46 @@ export async function setStaffActiveAction(formData: FormData) {
   revalidatePath("/admin/staff");
   revalidatePath("/admin/dashboard");
   redirectBack("/admin/staff", isActive ? "activated" : "deactivated");
+}
+
+export async function setDebateModerationPermissionAction(formData: FormData) {
+  const session = await requireAdmin();
+  const userId = text(formData, "userId");
+  const canModerateDebates = text(formData, "canModerateDebates") === "true";
+  const returnTo = text(formData, "returnTo") || "/admin/staff";
+
+  if (!userId || userId === session.userId) {
+    redirectBack(returnTo, "error");
+  }
+
+  const target = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true, isActive: true }
+  });
+
+  if (!target || !target.isActive || !([Role.TEACHER, Role.STUDENT] as Role[]).includes(target.role)) {
+    redirectBack(returnTo, "forbidden");
+  }
+
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: { canModerateDebates }
+    }),
+    prisma.auditLog.create({
+      data: {
+        actorId: session.userId,
+        action: canModerateDebates ? "debate_moderation_enabled" : "debate_moderation_disabled",
+        entity: "User",
+        entityId: userId
+      }
+    })
+  ]);
+
+  revalidatePath("/admin/staff");
+  revalidatePath("/admin/students");
+  revalidatePath("/debate");
+  redirectBack(returnTo, "updated");
 }
 
 export async function createCourseAction(formData: FormData) {

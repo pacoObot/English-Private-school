@@ -46,8 +46,8 @@ Todas as respostas seguem o formato JSON:
   - **Descrição:** Lista perfis de alunos com os respetivos utilizadores base.
 - **`POST /api/v1/students`**
   - **Permissões:** `SUPER_ADMIN`, `ADMIN`
-  - **Body:** `{ name, email, studentNumber, level, phone, guardianName }`
-  - **Descrição:** Cria um utilizador base e um perfil de aluno.
+  - **Body:** `{ name, email?, studentNumber?, level, phone, guardianName }`
+  - **Descrição:** Cria um utilizador base e um perfil de aluno. `email` e opcional; `studentCode` e gerado automaticamente e usado como `studentNumber` quando esse campo nao for enviado.
 
 ### 3. Cursos (Courses)
 - **`GET /api/v1/courses`**
@@ -91,4 +91,4 @@ Todas as respostas seguem o formato JSON:
 ### 9. Sessões de Debate (Debates)
 - **`GET /api/v1/debates`**
   - **Permissões:** `SUPER_ADMIN`, `ADMIN`, `TEACHER`
-  - **Descrição:** Lista sessões de debate e contagem de participantes/avaliações.
+  - **Descrição:** Lista sessões de debate, instrutor designado e contagem de participantes/avaliações.

@@ -49,3 +49,31 @@ textarea {
   border: 1px solid rgba(226, 232, 240, 0.82);
   backdrop-filter: blur(12px);
 }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(6px) scale(1.1); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(30, 58, 138, 0.4);
+}

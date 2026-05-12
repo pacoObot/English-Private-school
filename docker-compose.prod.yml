@@ -1,0 +1,116 @@
+version: '3.9'
+
+services:
+  # ============================================
+  # PostgreSQL Database (Production)
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: delson_ps_postgres_prod
+    restart: always
+    shm_size: 512mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=pt_PT.UTF-8"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+      - postgres_backups:/backups
+    networks:
+      - delson_network_prod
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      com.delsonps.service: "database"
+      com.delsonps.environment: "production"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # ============================================
+  # Next.js Application (Production)
+  # ============================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+      args:
+        - NODE_ENV=production
+    container_name: delson_ps_app_prod
+    restart: always
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      NEXT_PUBLIC_DEFAULT_LOCALE: ${NEXT_PUBLIC_DEFAULT_LOCALE:-pt-PT}
+      AUTH_SECRET: ${AUTH_SECRET}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - delson_network_prod
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/v1/students"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      com.delsonps.service: "application"
+      com.delsonps.environment: "production"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '1'
+          memory: 512m
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+# ============================================
+# Volumes
+# ============================================
+volumes:
+  postgres_data_prod:
+    driver: local
+    labels:
+      com.delsonps.service: "database"
+      com.delsonps.backup: "daily"
+  postgres_backups:
+    driver: local
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  delson_network_prod:
+    driver: bridge
+    labels:
+      com.delsonps.network: "production"

@@ -15,14 +15,21 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
   const session = await getCurrentSession();
   if (!session) redirect("/login");
 
-  const isTeacherOrAdmin = ([Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] as Role[]).includes(session.role);
+  const isAdmin = ([Role.SUPER_ADMIN, Role.ADMIN] as Role[]).includes(session.role);
 
-  const students = await prisma.studentProfile.findMany({ include: { user: true } });
+  const instructors = await prisma.user.findMany({
+    where: {
+      isActive: true,
+      OR: [{ role: Role.TEACHER }, { role: Role.STUDENT }]
+    },
+    include: { studentProfile: true, teacherProfile: true },
+    orderBy: { name: "asc" }
+  });
 
   let sessions: any[] = [];
-  if (isTeacherOrAdmin) {
+  if (isAdmin) {
     sessions = await prisma.debateSession.findMany({
-      include: { moderator: { include: { user: true } }, _count: { select: { participants: true, evaluations: true } } },
+      include: { moderator: true, _count: { select: { participants: true, evaluations: true } } },
       orderBy: { startsAt: "desc" }
     });
   } else {
@@ -35,10 +42,17 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
             { participants: { some: { studentId: studentProfile.id } } }
           ]
         },
-        include: { moderator: { include: { user: true } }, _count: { select: { participants: true, evaluations: true } } },
+        include: { moderator: true, _count: { select: { participants: true, evaluations: true } } },
         orderBy: { startsAt: "desc" }
       });
     }
+
+    const instructedSessions = await prisma.debateSession.findMany({
+      where: { moderatorId: session.userId },
+      include: { moderator: true, _count: { select: { participants: true, evaluations: true } } },
+      orderBy: { startsAt: "desc" }
+    });
+    sessions = [...sessions, ...instructedSessions].filter((value, index, array) => array.findIndex((item) => item.id === value.id) === index);
   }
 
   const nextSession = sessions.find((s) => s.status === DebateSessionStatus.SCHEDULED);
@@ -84,7 +98,7 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
         )}
 
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
-          {isTeacherOrAdmin && (
+          {isAdmin && (
             <BentoCard className="xl:col-span-4">
               <div className="mb-6 flex items-center justify-between">
                 <h3 className="font-black text-slate-800">Agendar Debate</h3>
@@ -97,10 +111,13 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
                 <FormField name="location" label="Local" placeholder="Sala 04" />
                 <SelectField 
                   name="moderatorId" 
-                  label="Gestor do Debate (Aluno)" 
+                  label="Instrutor designado" 
                   options={[
-                    { label: "Sem Moderador Aluno", value: "" },
-                    ...students.map(s => ({ label: `${s.user.name} (${s.studentNumber})`, value: s.id }))
+                    { label: "Sem instrutor designado", value: "" },
+                    ...instructors.map((user) => ({
+                      label: `${user.name} (${user.studentProfile?.studentCode ?? user.teacherProfile?.staffNumber ?? user.role})`,
+                      value: user.id
+                    }))
                   ]} 
                 />
                 <PrimaryButton className="w-full" tone="rose" type="submit">Criar Sessão</PrimaryButton>
@@ -108,7 +125,7 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
             </BentoCard>
           )}
 
-          <BentoCard className={`p-0 ${isTeacherOrAdmin ? "xl:col-span-8" : "xl:col-span-12"}`}>
+          <BentoCard className={`p-0 ${isAdmin ? "xl:col-span-8" : "xl:col-span-12"}`}>
             <div className="flex items-center justify-between p-6">
               <h3 className="font-black text-slate-800">Histórico de Sessões</h3>
               <SlidersHorizontal size={18} className="text-slate-400" />
@@ -119,7 +136,7 @@ export default async function DebatePage({ searchParams }: { searchParams?: { st
               rows={sessions.map((s) => [
                 s.topic,
                 s.startsAt.toLocaleDateString("pt-PT"),
-                s.moderator?.user.name ?? "Professor",
+                s.moderator?.name ?? "Sem instrutor",
                 <StatusBadge key={s.id} tone={s.status === "ACTIVE" ? "danger" : s.status === "CLOSED" ? "navy" : "success"}>{s.status}</StatusBadge>,
                 <Link key={`${s.id}-link`} href={`/debate/${s.id}`}>
                   <PrimaryButton tone="light" className="px-3 min-h-10 py-2 text-[10px]">Ver / Avaliar</PrimaryButton>

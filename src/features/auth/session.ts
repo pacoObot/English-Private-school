@@ -5,7 +5,7 @@ export const SESSION_COOKIE = "delson_ps_session";
 export type SessionPayload = {
   userId: string;
   name: string;
-  email: string;
+  email: string | null;
   role: Role;
   exp: number;
 };

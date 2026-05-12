@@ -15,7 +15,11 @@ function redirectBack(result: "saved" | "error") {
   redirect(`/teacher/dashboard?status=${result}`);
 }
 
-async function requireTeacherOrAdmin(classGroupId: string) {
+function redirectBackTo(path: string, result: "saved" | "created" | "deleted" | "error") {
+  redirect(`${path}?status=${result}`);
+}
+
+async function requireTeacherOrAdmin(classGroupId?: string) {
   const session = await getCurrentSession();
 
   if (!session) {
@@ -32,16 +36,18 @@ async function requireTeacherOrAdmin(classGroupId: string) {
     redirect(routeForRole(session.role));
   }
 
-  const ownsClass = await prisma.teacherProfile.findFirst({
-    where: {
-      userId: session.userId,
-      classGroups: { some: { id: classGroupId } }
-    },
-    select: { id: true }
-  });
+  if (classGroupId) {
+    const ownsClass = await prisma.teacherProfile.findFirst({
+      where: {
+        userId: session.userId,
+        classGroups: { some: { id: classGroupId } }
+      },
+      select: { id: true }
+    });
 
-  if (!ownsClass) {
-    redirect(routeForRole(session.role));
+    if (!ownsClass) {
+      redirect(routeForRole(session.role));
+    }
   }
 
   return session;
@@ -145,12 +151,10 @@ export async function saveAllGradesAction(formData: FormData) {
 
   const session = await requireTeacherOrAdmin(classGroupId);
 
-  // Process all in a transaction
   await prisma.$transaction(
     studentIds.map((studentId, index) => {
       const score = Number.parseFloat(scores[index]);
       if (!Number.isFinite(score) || score < 0) {
-        // Return a dummy operation if score is invalid to keep the array length and structure consistent for transaction
         return prisma.auditLog.create({ 
           data: { 
             actorId: session.userId, 
@@ -219,4 +223,111 @@ export async function saveAllAttendanceAction(formData: FormData) {
   revalidatePath("/teacher/dashboard");
   revalidatePath("/student/dashboard");
   redirectBack("saved");
+}
+
+export async function createStudyMaterialAction(formData: FormData) {
+  const session = await requireTeacherOrAdmin();
+
+  if (session.role === Role.TEACHER) {
+    const teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.userId }
+    });
+    if (!teacherProfile) {
+      redirectBackTo("/teacher/materials", "error");
+    }
+  }
+
+  const title = text(formData, "title");
+  const description = text(formData, "description");
+  const unit = text(formData, "unit");
+  const courseId = text(formData, "courseId");
+
+  if (!title || !courseId) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  const teacherId = session.role === Role.TEACHER 
+    ? (await prisma.teacherProfile.findUnique({ where: { userId: session.userId } }))?.id
+    : undefined;
+
+  const material = await prisma.studyMaterial.create({
+    data: {
+      title,
+      description: description || null,
+      unit: unit || null,
+      courseId,
+      teacherId: teacherId || null
+    }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "study_material_created",
+      entity: "StudyMaterial",
+      entityId: material.id,
+      metadata: { title, courseId }
+    }
+  });
+
+  revalidatePath("/teacher/materials");
+  revalidatePath("/student/dashboard");
+  redirectBackTo("/teacher/materials", "created");
+}
+
+export async function deleteStudyMaterialAction(formData: FormData) {
+  const session = await requireTeacherOrAdmin();
+
+  if (session.role === Role.TEACHER) {
+    const teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.userId }
+    });
+    if (!teacherProfile) {
+      redirectBackTo("/teacher/materials", "error");
+    }
+  }
+
+  const id = text(formData, "id");
+
+  if (!id) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  const material = await prisma.studyMaterial.delete({
+    where: { id }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "study_material_deleted",
+      entity: "StudyMaterial",
+      entityId: id
+    }
+  });
+
+  revalidatePath("/teacher/materials");
+  revalidatePath("/student/dashboard");
+  redirectBackTo("/teacher/materials", "deleted");
+}
+
+export async function generateTeacherReportAction(formData: FormData) {
+  const session = await requireTeacherOrAdmin();
+  const reportType = text(formData, "reportType");
+
+  if (!reportType || !["attendance", "grades", "material_usage"].includes(reportType)) {
+    redirectBackTo("/teacher/reports", "error");
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "teacher_report_generated",
+      entity: "Report",
+      metadata: { reportType }
+    }
+  });
+
+  revalidatePath("/teacher/reports");
+  redirectBackTo("/teacher/reports", "saved");
 }

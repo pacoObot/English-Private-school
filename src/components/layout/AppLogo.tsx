@@ -13,10 +13,10 @@ export function AppLogo({ context = "Language Academy", variant = "default", dar
     return (
       <div className={cn("text-center", className)}>
         <div className="relative mx-auto mb-4 h-[100px] w-[100px]">
-          <div className="flex h-full w-full items-center justify-center rounded-[2rem] bg-crimson text-white shadow-xl shadow-rose-900/20">
+          <div className="flex h-full w-full items-center justify-center rounded-[2rem] bg-crimson text-white shadow-xl shadow-rose-900/20 animate-float">
             <Languages size={44} />
           </div>
-          <div className="absolute -bottom-1 -right-1 flex h-12 w-12 items-center justify-center rounded-2xl border-4 border-white bg-navy text-white">
+          <div className="absolute -bottom-1 -right-1 flex h-12 w-12 items-center justify-center rounded-2xl border-4 border-white bg-navy text-white animate-float-reverse">
             <MessageCircle size={20} />
           </div>
         </div>

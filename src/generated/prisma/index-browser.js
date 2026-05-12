@@ -130,6 +130,7 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   avatarUrl: 'avatarUrl',
   isActive: 'isActive',
+  canModerateDebates: 'canModerateDebates',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -280,6 +281,7 @@ exports.Prisma.DebateEvaluationScalarFieldEnum = {
   argumentation: 'argumentation',
   posture: 'posture',
   feedback: 'feedback',
+  acknowledgedAt: 'acknowledgedAt',
   evaluatedAt: 'evaluatedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -292,6 +294,28 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   entity: 'entity',
   entityId: 'entityId',
   metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DebateProposalScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  topic: 'topic',
+  reason: 'reason',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  isRead: 'isRead',
+  evaluationId: 'evaluationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -370,7 +394,9 @@ exports.Prisma.ModelName = {
   DebateSession: 'DebateSession',
   DebateParticipant: 'DebateParticipant',
   DebateEvaluation: 'DebateEvaluation',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  DebateProposal: 'DebateProposal',
+  Notification: 'Notification'
 };
 
 /**

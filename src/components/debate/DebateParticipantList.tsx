@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mic2, Trash2, Info } from "lucide-react";
+import { CheckCircle2, Clock3, Mic2, Trash2 } from "lucide-react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { EvaluationModal } from "./EvaluationModal";
 import { DebateSessionStatus } from "@/generated/prisma";
@@ -12,6 +12,7 @@ interface Participant {
   studentId: string;
   student: {
     user: {
+      id: string;
       name: string;
     };
     studentNumber: string;
@@ -20,19 +21,21 @@ interface Participant {
 }
 
 interface Evaluation {
+  id?: string;
   studentId: string;
   fluency: number;
   argumentation: number;
   posture: number;
   feedback?: string | null;
+  acknowledgedAt?: Date | string | null;
 }
 
 interface DebateParticipantListProps {
   participants: Participant[];
   evaluations: Evaluation[];
   canEvaluate: boolean;
-  isTeacherOrAdmin: boolean;
-  moderatorId?: string | null;
+  canManageDebate: boolean;
+  moderatorUserId?: string | null;
   sessionId: string;
   sessionStatus: DebateSessionStatus;
 }
@@ -41,8 +44,8 @@ export function DebateParticipantList({
   participants,
   evaluations,
   canEvaluate,
-  isTeacherOrAdmin,
-  moderatorId,
+  canManageDebate,
+  moderatorUserId,
   sessionId,
   sessionStatus,
 }: DebateParticipantListProps) {
@@ -56,7 +59,7 @@ export function DebateParticipantList({
       ) : (
         sortedParticipants.map((p) => {
           const evaluation = evaluations.find((e) => e.studentId === p.studentId);
-          const isSelf = p.studentId === moderatorId;
+          const isSelf = p.student.user.id === moderatorUserId;
           const allowEval = canEvaluate && !isSelf && sessionStatus !== DebateSessionStatus.CLOSED;
 
           return (
@@ -70,8 +73,12 @@ export function DebateParticipantList({
                   <p className="text-[9px] text-rose-600 font-bold uppercase tracking-widest">{p.student.studentCode}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  {evaluation && <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-[10px]"><i className="fas fa-check"></i></div>}
-                  {isTeacherOrAdmin && sessionStatus !== DebateSessionStatus.CLOSED && (
+                  {evaluation && (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                      <CheckCircle2 size={15} />
+                    </div>
+                  )}
+                  {canManageDebate && sessionStatus !== DebateSessionStatus.CLOSED && (
                     <form action={removeDebateParticipantAction}>
                       <input type="hidden" name="sessionId" value={sessionId} />
                       <input type="hidden" name="studentId" value={p.studentId} />
@@ -111,9 +118,19 @@ export function DebateParticipantList({
                     Aguardando...
                   </div>
                 )}
-                <button className="w-12 h-11 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:text-rose-600 transition-all">
-                  <Info size={16} />
-                </button>
+                {evaluation ? (
+                  <div className="flex min-w-28 items-center justify-center gap-1 rounded-xl bg-slate-50 px-3 text-[9px] font-black uppercase tracking-widest text-slate-500">
+                    {evaluation.acknowledgedAt ? (
+                      <>
+                        <CheckCircle2 size={13} className="text-emerald-500" /> Recebido
+                      </>
+                    ) : (
+                      <>
+                        <Clock3 size={13} className="text-amber-500" /> Pendente
+                      </>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
           );

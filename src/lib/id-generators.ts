@@ -28,6 +28,10 @@ export async function generateStudentCode(): Promise<string> {
   return `DEL-${currentYear}-${nextNumber.toString().padStart(4, '0')}`;
 }
 
+export async function generateStudentNumber(): Promise<string> {
+  return generateStudentCode();
+}
+
 export async function generateReceiptNumber(): Promise<string> {
   const currentYear = new Date().getFullYear();
   

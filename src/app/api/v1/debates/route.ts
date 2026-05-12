@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       prisma.debateSession.findMany({
         skip,
         take: limit,
-        include: { moderator: { include: { user: true } }, _count: { select: { participants: true, evaluations: true } } },
+        include: { moderator: true, _count: { select: { participants: true, evaluations: true } } },
         orderBy: { startsAt: "desc" }
       }),
       prisma.debateSession.count()

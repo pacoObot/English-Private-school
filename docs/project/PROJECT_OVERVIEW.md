@@ -47,11 +47,11 @@ O projeto esta em entrega parcial validada do Sprint 3. Ja existe uma estrutura 
 
 ### Autenticacao
 
-Base em `src/features/auth`. O login real, cookie de sessao e middleware por role ja existem; ainda faltam refinamentos como recuperacao de senha, politicas mais completas de seguranca e testes automatizados.
+Base em `src/features/auth`. O login real, cookie de sessao e middleware por role ja existem. Alunos podem entrar com email, `studentCode` ou `studentNumber`; email e opcional para contas de aluno.
 
 ### Administracao
 
-Base em `src/features/admin`. Ja cobre CRUD operacional de estudantes, turmas, cursos e staff, matriculas com fatura inicial, resumo financeiro e auditoria em acoes criticas.
+Base em `src/features/admin`. Ja cobre CRUD operacional de estudantes, turmas, cursos e staff, matriculas com fatura inicial, resumo financeiro e auditoria em acoes criticas. O registo de aluno gera automaticamente o codigo unico de estudante.
 
 ### Estudante
 
@@ -63,13 +63,15 @@ Base em `src/features/teacher`. O dashboard ja permite ao docente ver turma atri
 
 ### Debate
 
-Base em `src/features/debate`. Deve gerir sessoes, banco de estudantes, historico e avaliacao de fala.
+Base em `src/features/debate`. Gere sessoes, participantes, historico e avaliacao de fala. Admin/Super Admin designa professor ou aluno como instrutor por sessao; o instrutor designado pode liderar e avaliar a sessao, e cada feedback gera notificacao e historico para o aluno.
+
+O ciclo de feedback de debates e fechado: quando o instrutor publica a avaliacao, o aluno recebe notificacao real no centro de notificacoes e pode clicar em "Certo, recebido". Esta confirmacao grava `acknowledgedAt`, marca a notificacao como lida, avisa o instrutor e aparece no estado da avaliacao.
 
 ## Modelo de dados Prisma
 
 O schema atual modela:
 
-- `User`: utilizadores com role e estado ativo.
+- `User`: utilizadores com role, estado ativo e permissao opcional para moderar debates.
 - `StudentProfile`: perfil academico do estudante.
 - `TeacherProfile`: perfil docente.
 - `Course`: cursos e niveis.
@@ -80,7 +82,8 @@ O schema atual modela:
 - `StudyMaterial`: materiais.
 - `Invoice`: pagamentos em meticais.
 - `DebateSession`: sessoes de debate.
-- `DebateEvaluation`: avaliacao de debate por estudante.
+- `DebateEvaluation`: avaliacao de debate por estudante, incluindo confirmacao de leitura do feedback.
+- `Notification`: comunicados e notificacoes reais do sistema.
 - `AuditLog`: auditoria.
 
 ## QA responsivo

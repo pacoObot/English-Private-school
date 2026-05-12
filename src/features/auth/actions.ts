@@ -7,12 +7,29 @@ import { createSessionToken, routeForRole, SESSION_COOKIE } from "./session";
 import { verifyPassword } from "./password";
 
 export async function loginAction(formData: FormData) {
-  const email = String(formData.get("email") ?? "").toLowerCase().trim();
+  const identifier = String(formData.get("email") ?? "").toLowerCase().trim();
   const password = String(formData.get("password") ?? "");
 
-  const user = await prisma.user.findUnique({
-    where: { email }
-  });
+  if (!identifier || !password) {
+    redirect("/login?error=invalid");
+  }
+
+  let user;
+  try {
+    user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: identifier || undefined },
+          { studentProfile: { studentCode: identifier } },
+          { studentProfile: { studentNumber: identifier } },
+          { teacherProfile: { staffNumber: identifier } }
+        ]
+      }
+    });
+  } catch (err) {
+    console.error("Prisma error during login:", err);
+    redirect("/login?error=db");
+  }
 
   if (!user || !user.isActive || !verifyPassword(password, user.passwordHash)) {
     redirect("/login?error=invalid");

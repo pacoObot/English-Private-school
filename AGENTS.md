@@ -32,6 +32,22 @@ Ao iniciar uma nova sessao:
 3. Verificar `git status --short` dentro desta pasta.
 4. Retomar a primeira pendencia marcada como prioridade.
 
+## Arranque seguro do projeto
+
+Quando o utilizador pedir para ligar o projeto, qualquer agente deve preferir:
+
+```bash
+scripts/start-safe.sh dev
+```
+
+Comandos auxiliares:
+
+- `scripts/start-safe.sh status`: ver containers e migrations.
+- `scripts/start-safe.sh logs`: acompanhar logs da aplicação.
+- `scripts/start-safe.sh stop`: parar containers sem apagar volumes.
+
+Nunca usar `docker compose down -v` ou `npx prisma migrate reset` sem confirmacao explicita do utilizador, porque estes comandos podem apagar dados.
+
 ## Convenções
 
 - Manter documentos em portugues.
