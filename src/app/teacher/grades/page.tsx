@@ -1,8 +1,8 @@
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { DashboardLayout } from "@/components/layout";
 import { ActionNotice, BentoCard, FormField, PrimaryButton, SelectField, StatusBadge } from "@/components/ui";
-import { createStudyMaterialAction, deleteStudyMaterialAction, generateTeacherReportAction, saveAllGradesAction } from "@/features/teacher/actions";
+import { getCurrentSession } from "@/features/auth/current-user";
+import { saveAllGradesAction } from "@/features/teacher/actions";
+import { Role } from "@/generated/prisma";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 
@@ -13,10 +13,12 @@ type GradesPageProps = {
 };
 
 export default async function GradesPage({ searchParams }: GradesPageProps) {
-  const selectedClassId = searchParams?.classGroupId;
+  const session = await getCurrentSession();
+  const isTeacher = session?.role === Role.TEACHER;
 
   const [allClassGroups, allEnrollments] = await Promise.all([
     prisma.classGroup.findMany({
+      where: isTeacher ? { teacher: { userId: session.userId } } : undefined,
       include: { course: true, enrollments: true },
       orderBy: { name: "asc" }
     }),
@@ -29,6 +31,7 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
     })
   ]);
 
+  const selectedClassId = searchParams?.classGroupId || allClassGroups[0]?.id;
   const classGroupOptions = allClassGroups.map((cg) => ({
     label: `${cg.name} · ${cg.course.title}`,
     value: cg.id
@@ -49,18 +52,16 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
           {/* Selection Panel */}
           <BentoCard className="xl:col-span-4">
             <h3 className="mb-6 text-lg font-black text-slate-900">Selecionar Turma</h3>
-            <form className="space-y-4">
+            <form action="/teacher/grades" className="space-y-4" method="get">
               <SelectField 
                 name="classGroupId" 
                 label="Turma" 
                 options={classGroupOptions}
                 value={selectedClassId || ""}
               />
-              <a href={`/teacher/grades${selectedClassId ? `?classGroupId=${selectedClassId}` : ""}`}>
-                <PrimaryButton tone="rose" type="button" className="w-full">
-                  {selectedClassId ? "Mudar Turma" : "Selecionar"}
-                </PrimaryButton>
-              </a>
+              <PrimaryButton tone="rose" type="submit" className="w-full">
+                Abrir Turma
+              </PrimaryButton>
             </form>
 
             {selectedClassId && (
@@ -89,7 +90,7 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                 <FormField 
                   name="title" 
                   label="Título da Avaliação" 
-                  placeholder="Ex: Teste Unit 5"
+                  placeholder="Ex: Speaking Checkpoint Unit 5"
                   required 
                 />
                 

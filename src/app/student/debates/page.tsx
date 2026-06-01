@@ -6,7 +6,7 @@ import { getCurrentSession } from "@/features/auth/current-user";
 import { acknowledgeDebateFeedbackAction } from "@/features/debate/actions";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
-import { Calendar, Mic2, Clock, CheckCircle2 } from "lucide-react";
+import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +32,18 @@ export default async function StudentDebatesPage() {
   const lastScore = evaluations[0]
     ? ((evaluations[0].fluency + evaluations[0].argumentation + evaluations[0].posture) / 3).toFixed(1)
     : "0.0";
+
+  // Aproveitamento ponderado: últimos N debates
+  function avgPercent(n: number): string {
+    const slice = evaluations.slice(0, n);
+    if (slice.length === 0) return "0";
+    const sum = slice.reduce((acc, ev) => acc + ((ev.fluency + ev.argumentation + ev.posture) / 3) * 10, 0);
+    return (sum / slice.length).toFixed(0);
+  }
+  const avg10 = avgPercent(10);
+  const avg20 = avgPercent(20);
+  const total10 = Math.min(evaluations.length, 10);
+  const total20 = Math.min(evaluations.length, 20);
   
   // Próximos debates (sessões agendadas onde o aluno é participante ou ainda não)
   const upcomingDebates = await prisma.debateSession.findMany({
@@ -95,6 +107,30 @@ export default async function StudentDebatesPage() {
            </BentoCard>
         </div>
 
+        {/* Cartões de Aproveitamento */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <BentoCard className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-200">
+              <TrendingUp size={24} />
+            </div>
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Aproveitamento (Últimos 10)</p>
+              <p className="text-2xl font-black text-slate-900">{avg10}<span className="text-sm font-bold text-slate-400">%</span></p>
+              <p className="text-[10px] font-bold text-slate-400">{total10} debate{total10 !== 1 ? "s" : ""} avaliado{total10 !== 1 ? "s" : ""}</p>
+            </div>
+          </BentoCard>
+          <BentoCard className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-200">
+              <TrendingUp size={24} />
+            </div>
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Aproveitamento (Últimos 20)</p>
+              <p className="text-2xl font-black text-slate-900">{avg20}<span className="text-sm font-bold text-slate-400">%</span></p>
+              <p className="text-[10px] font-bold text-slate-400">{total20} debate{total20 !== 1 ? "s" : ""} avaliado{total20 !== 1 ? "s" : ""}</p>
+            </div>
+          </BentoCard>
+        </div>
+
         {/* Sessions Lists */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            {/* Upcoming Debates */}
@@ -132,32 +168,51 @@ export default async function StudentDebatesPage() {
                    <p className="text-sm font-bold text-slate-400 italic">Nenhum debate avaliado ainda.</p>
                 </BentoCard>
               ) : (
-                evaluations.map(ev => (
+                evaluations.map(ev => {
+                  const score = ((ev.fluency + ev.argumentation + ev.posture) / 3 * 10).toFixed(0);
+                  return (
                   <BentoCard key={ev.id} className="border-l-4 border-l-rose-500">
-                     <div className="flex justify-between items-start mb-4">
+                     <div className="flex justify-between items-start mb-2">
                         <div>
                           <h4 className="font-black text-slate-900 text-sm">{ev.session.topic}</h4>
                           <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                            {student?.studentCode ?? "---"} · Instrutor: {ev.evaluator?.name ?? "Não identificado"}
+                            {student?.studentCode ?? "---"} · {ev.evaluatedAt.toLocaleDateString("pt-PT")}
                           </p>
                         </div>
-                        <StatusBadge tone={ev.acknowledgedAt ? "success" : "danger"}>
-                          {ev.acknowledgedAt ? "Recebido" : "Novo"}
-                        </StatusBadge>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-black text-slate-700">{score}%</span>
+                          <StatusBadge tone={ev.acknowledgedAt ? "success" : "danger"}>
+                            {ev.acknowledgedAt ? "Recebido" : "Novo"}
+                          </StatusBadge>
+                        </div>
                      </div>
-                     <div className="grid grid-cols-3 gap-2">
-                        <MiniStat label="Fluência" value={ev.fluency} />
-                        <MiniStat label="Argum." value={ev.argumentation} />
-                        <MiniStat label="Postura" value={ev.posture} />
-                     </div>
-                     <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Feedback</p>
-                        <p className="mt-2 text-sm font-bold leading-relaxed text-slate-600">
-                          {ev.feedback || "Sem comentário adicional."}
-                        </p>
-                     </div>
+
+                     {/* Expandable Details */}
+                     <details className="group mt-2">
+                       <summary className="cursor-pointer select-none list-none flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-navy hover:text-rose-600 transition-colors py-2">
+                         <span className="inline-flex h-5 w-5 items-center justify-center rounded-lg bg-slate-100 text-slate-500 group-open:bg-navy group-open:text-white transition-all text-[10px]">▸</span>
+                         Ver Notas Detalhadas
+                       </summary>
+                       <div className="mt-2 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                         <div className="grid grid-cols-3 gap-2">
+                           <MiniStat label="Fluência" value={ev.fluency} />
+                           <MiniStat label="Argum." value={ev.argumentation} />
+                           <MiniStat label="Postura" value={ev.posture} />
+                         </div>
+                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                           <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Feedback do Instrutor</p>
+                           <p className="mt-2 text-sm font-bold leading-relaxed text-slate-600">
+                             {ev.feedback || "Sem comentário adicional."}
+                           </p>
+                           <p className="mt-2 text-[10px] font-bold text-slate-400">
+                             Instrutor: {ev.evaluator?.name ?? "Não identificado"}
+                           </p>
+                         </div>
+                       </div>
+                     </details>
+
                      {ev.acknowledgedAt ? (
-                       <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-emerald-700">
+                       <div className="mt-3 flex items-center gap-2 rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-emerald-700">
                          <CheckCircle2 size={14} /> Confirmado em {ev.acknowledgedAt.toLocaleDateString("pt-PT")}
                        </div>
                      ) : (
@@ -166,7 +221,7 @@ export default async function StudentDebatesPage() {
                            "use server";
                            await acknowledgeDebateFeedbackAction(formData);
                          }}
-                         className="mt-4"
+                         className="mt-3"
                        >
                          <input type="hidden" name="evaluationId" value={ev.id} />
                          <PrimaryButton tone="rose" className="w-full min-h-10 py-2 text-[10px]" type="submit">
@@ -175,7 +230,8 @@ export default async function StudentDebatesPage() {
                        </form>
                      )}
                   </BentoCard>
-                ))
+                  );
+                })
               )}
            </div>
         </div>

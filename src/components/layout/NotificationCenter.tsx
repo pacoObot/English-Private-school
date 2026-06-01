@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, Check, Info, AlertTriangle, XCircle, CheckCircle2, MessageSquare } from "lucide-react";
+import { Bell, Check, Info, AlertTriangle, XCircle, CheckCircle2, MessageSquare, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { getNotifications, markAsRead, markAllAsRead } from "@/features/notifications/actions";
 import { acknowledgeDebateFeedbackAction } from "@/features/debate/actions";
@@ -13,6 +13,7 @@ type NotificationItem = {
   type: string;
   isRead: boolean;
   evaluationId?: string | null;
+  debateSessionId?: string | null;
   createdAt: Date | string;
   evaluation?: {
     acknowledgedAt?: Date | string | null;
@@ -119,11 +120,13 @@ export function NotificationCenter() {
                           notif.type === "DANGER" ? "bg-rose-50 text-rose-500" :
                           notif.type === "WARNING" ? "bg-amber-50 text-amber-600" :
                           notif.type === "SUCCESS" ? "bg-emerald-50 text-emerald-500" :
+                          notif.type === "DEBATE_DESIGNATION" ? "bg-indigo-50 text-indigo-600 border border-indigo-100" :
                           "bg-blue-50 text-blue-500"
                         )}>
                            {notif.type === "DANGER" ? <XCircle size={18} /> :
                             notif.type === "WARNING" ? <AlertTriangle size={18} /> :
                             notif.type === "SUCCESS" ? <CheckCircle2 size={18} /> :
+                            notif.type === "DEBATE_DESIGNATION" ? <GraduationCap size={18} /> :
                             <Info size={18} />}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -154,6 +157,14 @@ export function NotificationCenter() {
                              <p className="mt-3 inline-flex rounded-xl bg-emerald-50 px-3 py-2 text-[9px] font-black uppercase tracking-widest text-emerald-600">
                                Feedback confirmado
                              </p>
+                           ) : notif.debateSessionId ? (
+                             <a
+                               href={`/debate/${notif.debateSessionId}`}
+                               onClick={() => setOpen(false)}
+                               className="mt-3 inline-flex min-h-9 items-center gap-2 rounded-xl bg-navy px-3.5 py-2 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-blue-950 text-center"
+                             >
+                               <GraduationCap size={13} /> Avaliar Participantes
+                             </a>
                            ) : null}
                         </div>
                      </div>

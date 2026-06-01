@@ -20,7 +20,8 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
     studentCount, courseCount, classCount, staffCount, 
     paidAggregate, pendingAggregate, 
     latestEnrollments, invoices, auditLogs,
-    allGrades, allDebates, allAttendances
+    allGrades, allDebates, allAttendances,
+    pendingFeedbackCount, sessionsWithoutInstructor, latestMaterials
   ] = await Promise.all([
     prisma.studentProfile.count(),
     prisma.course.count({ where: { isActive: true } }),
@@ -33,7 +34,10 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
     prisma.auditLog.findMany({ take: 3, orderBy: { createdAt: "desc" } }),
     prisma.grade.findMany({ select: { score: true } }),
     prisma.debateEvaluation.aggregate({ _avg: { fluency: true, argumentation: true, posture: true } }),
-    prisma.attendance.groupBy({ by: ['status'], _count: true })
+    prisma.attendance.groupBy({ by: ['status'], _count: true }),
+    prisma.debateEvaluation.count({ where: { acknowledgedAt: null } }),
+    prisma.debateSession.count({ where: { moderatorId: null } }),
+    prisma.studyMaterial.findMany({ take: 3, include: { course: true, teacher: { include: { user: true } } }, orderBy: { createdAt: "desc" } })
   ]);
 
   const globalAverage = allGrades.length > 0 ? (allGrades.reduce((acc, g) => acc + g.score, 0) / allGrades.length).toFixed(1) : "0.0";
@@ -67,6 +71,51 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
           <Link href="/admin/staff"><PrimaryButton className="w-full" tone="navy">Gerir Staff</PrimaryButton></Link>
           <Link href="/admin/courses"><PrimaryButton className="w-full" tone="dark">Gerir Cursos</PrimaryButton></Link>
           <Link href="/admin/classes"><PrimaryButton className="w-full" tone="light">Gerir Turmas</PrimaryButton></Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <BentoCard>
+            <div className="flex items-center justify-between">
+              <h3 className="font-black text-slate-800">Feedback por confirmar</h3>
+              <StatusBadge tone={pendingFeedbackCount > 0 ? "danger" : "success"}>{pendingFeedbackCount}</StatusBadge>
+            </div>
+            <p className="mt-3 text-xs font-bold text-slate-500">
+              Avaliações de debate enviadas ao aluno que ainda não foram marcadas como recebidas.
+            </p>
+            <Link href="/admin/students?tab=talentos" className="mt-4 inline-flex">
+              <PrimaryButton tone="light" className="min-h-10 px-3 py-2 text-[10px]">Ver desempenho</PrimaryButton>
+            </Link>
+          </BentoCard>
+
+          <BentoCard>
+            <div className="flex items-center justify-between">
+              <h3 className="font-black text-slate-800">Sessões sem instrutor</h3>
+              <StatusBadge tone={sessionsWithoutInstructor > 0 ? "warning" : "success"}>{sessionsWithoutInstructor}</StatusBadge>
+            </div>
+            <p className="mt-3 text-xs font-bold text-slate-500">
+              Debates agendados que ainda precisam de uma pessoa designada para orientar e avaliar.
+            </p>
+            <Link href="/debate" className="mt-4 inline-flex">
+              <PrimaryButton tone="navy" className="min-h-10 px-3 py-2 text-[10px]">Abrir debates</PrimaryButton>
+            </Link>
+          </BentoCard>
+
+          <BentoCard>
+            <div className="flex items-center justify-between">
+              <h3 className="font-black text-slate-800">Materiais recentes</h3>
+              <StatusBadge tone="navy">{latestMaterials.length}</StatusBadge>
+            </div>
+            <div className="mt-3 space-y-2">
+              {latestMaterials.length > 0 ? latestMaterials.map((material) => (
+                <div key={material.id} className="rounded-xl border border-slate-100 px-3 py-2">
+                  <p className="truncate text-xs font-black text-slate-800">{material.title}</p>
+                  <p className="text-[10px] font-bold text-slate-400">{material.course.title} · {material.teacher?.user.name ?? "Administração"}</p>
+                </div>
+              )) : (
+                <p className="text-xs font-bold text-slate-400">Nenhum material publicado.</p>
+              )}
+            </div>
+          </BentoCard>
         </div>
 
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
@@ -118,7 +167,9 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
               {auditLogs.map((log) => (
                 <AdminLine key={log.id} icon={<FileText size={17} />} title={log.action} detail={`${log.entity}${log.entityId ? ` · ${log.entityId}` : ""}`} />
               ))}
-              <AdminLine icon={<ShieldCheck size={17} />} title="uniexe_ready" detail="API V1 Base Preparada" />
+              {auditLogs.length === 0 ? (
+                <AdminLine icon={<ShieldCheck size={17} />} title="Sem eventos recentes" detail="As próximas ações do sistema aparecerão aqui." />
+              ) : null}
             </div>
           </BentoCard>
         </div>

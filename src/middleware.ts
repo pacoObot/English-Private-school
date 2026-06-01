@@ -5,7 +5,7 @@ const access = {
   "/admin": ["SUPER_ADMIN", "ADMIN"],
   "/teacher": ["SUPER_ADMIN", "ADMIN", "TEACHER"],
   "/student": ["SUPER_ADMIN", "ADMIN", "STUDENT"],
-  "/debate": ["SUPER_ADMIN", "ADMIN", "TEACHER"]
+  "/debate": ["SUPER_ADMIN", "ADMIN", "TEACHER", "STUDENT"]
 } as const;
 
 export async function middleware(request: NextRequest) {

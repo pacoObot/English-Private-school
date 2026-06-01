@@ -1,10 +1,11 @@
-import { UserPlus, GraduationCap, CheckCircle, Copy, Users, AlertTriangle } from "lucide-react";
+import { UserPlus, GraduationCap, CheckCircle, Users, AlertTriangle, TrendingUp, KeyRound, ArrowRight, Hash, Phone } from "lucide-react";
 import { DashboardLayout } from "@/components/layout";
 import { ActionNotice, BentoCard, DataTable, FormField, PrimaryButton, SelectField, StatusBadge } from "@/components/ui";
 import { createEnrollmentAction, createStudentAction, setDebateModerationPermissionAction, setStudentActiveAction } from "@/features/admin/actions";
 import { adminNavigation } from "@/features/admin/nav";
 import { EnrollmentStatus } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import { generateStudentCode } from "@/lib/id-generators";
 
 export const dynamic = "force-dynamic";
 
@@ -24,15 +25,23 @@ type StudentsPageProps = {
     tab?: string;
     newCode?: string;
     newName?: string;
+    studentId?: string;
+    importStatus?: string;
+    errorCount?: string;
+    missing?: string;
+    invalid?: string;
+    duplicate?: string;
   };
 };
 
-  const [students, courses, classes, talentStats] = await Promise.all([
+export default async function StudentsPage({ searchParams }: StudentsPageProps) {
+  const [students, courses, classes, talentStats, nextStudentCode] = await Promise.all([
     prisma.studentProfile.findMany({
-      include: { 
-        user: true, 
-        enrollments: { select: { id: true } },
-        debateEvaluations: { select: { fluency: true, argumentation: true, posture: true } }
+      include: {
+        user: true,
+        enrollments: { include: { classGroup: true, course: true } },
+        debateEvaluations: { select: { fluency: true, argumentation: true, posture: true } },
+        grades: true
       },
       orderBy: { user: { name: "asc" } },
     }),
@@ -42,21 +51,51 @@ type StudentsPageProps = {
       by: ['studentId'],
       _avg: { fluency: true, argumentation: true, posture: true },
       _count: { studentId: true }
-    })
+    }),
+    generateStudentCode(), // pré-visualização do próximo código
   ]);
 
   const activeTab = searchParams?.tab || "registar";
   const newCode = searchParams?.newCode;
   const newName = searchParams?.newName;
-  const showCredentials = searchParams?.status === "created" && newCode;
+  const justCreated = searchParams?.status === "created" && newCode;
 
-  // Calculo de médias para talentos
   const studentTalents = students.map(s => {
     const stats = talentStats.find(ts => ts.studentId === s.id);
     const avgFluency = stats?._avg.fluency || 0;
     const avgArgumentation = stats?._avg.argumentation || 0;
     const avgPosture = stats?._avg.posture || 0;
-    const globalAvg = (avgFluency + avgArgumentation + avgPosture) / 3;
+    const debateAvg = (avgFluency + avgArgumentation + avgPosture) / 3;
+
+    // Speaking percentage calculation
+    let speakingPercentage = 0;
+    if (s.debateEvaluations.length > 0) {
+      speakingPercentage = debateAvg * 10;
+    } else {
+      const speakingGrades = s.grades.filter(g => 
+        /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+      );
+      if (speakingGrades.length > 0) {
+        speakingPercentage = (speakingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / speakingGrades.length) * 100;
+      }
+    }
+
+    // Writing percentage calculation
+    const writingGrades = s.grades.filter(g => 
+      /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title)
+    );
+    let writingPercentage = 0;
+    if (writingGrades.length > 0) {
+      writingPercentage = (writingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / writingGrades.length) * 100;
+    } else if (s.grades.length > 0) {
+      const academicGrades = s.grades.filter(g => 
+        !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+      );
+      const gradesToUse = academicGrades.length > 0 ? academicGrades : s.grades;
+      writingPercentage = (gradesToUse.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / gradesToUse.length) * 100;
+    }
+
+    const overallSkill = (speakingPercentage + writingPercentage) / 2;
 
     return {
       ...s,
@@ -64,13 +103,17 @@ type StudentsPageProps = {
         fluency: avgFluency,
         argumentation: avgArgumentation,
         posture: avgPosture,
-        global: globalAvg,
-        count: stats?._count.studentId || 0
+        debateAvg: debateAvg,
+        speaking: speakingPercentage,
+        writing: writingPercentage,
+        overall: overallSkill,
+        debateCount: stats?._count.studentId || 0
       }
     };
-  }).sort((a, b) => b.stats.global - a.stats.global);
+  }).sort((a, b) => b.stats.overall - a.stats.overall);
 
   const unenrolledStudents = students.filter((s) => s.enrollments.length === 0 && s.user.isActive);
+  const enrolledStudents = students.filter((s) => s.enrollments.length > 0 && s.user.isActive);
 
   return (
     <DashboardLayout
@@ -81,42 +124,20 @@ type StudentsPageProps = {
       darkSidebar
     >
       <div className="space-y-5">
-        <ActionNotice status={searchParams?.status} />
+        <ActionNotice 
+          status={searchParams?.status} 
+          newCode={searchParams?.newCode}
+          newName={searchParams?.newName}
+          studentId={searchParams?.studentId}
+          importStatus={searchParams?.importStatus}
+          errorCount={searchParams?.errorCount ? parseInt(searchParams.errorCount, 10) : undefined}
+          missing={searchParams?.missing}
+          invalid={searchParams?.invalid}
+          duplicate={searchParams?.duplicate}
+        />
 
-        {/* ── Credenciais do novo aluno ── */}
-        {showCredentials ? (
-          <div className="rounded-3xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 shadow-lg animate-in fade-in slide-in-from-top-2 duration-500">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-white">
-                <CheckCircle size={24} />
-              </div>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-lg font-black text-emerald-900">
-                  Aluno criado com sucesso!
-                </h3>
-                <p className="text-sm font-bold text-emerald-700">
-                  {newName} foi registado. Partilhe as credenciais iniciais:
-                </p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-emerald-200 bg-white px-4 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Código de Acesso</p>
-                    <p className="mt-1 text-lg font-black text-navy tracking-wide">{newCode}</p>
-                  </div>
-                  <div className="rounded-2xl border border-emerald-200 bg-white px-4 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Senha Inicial</p>
-                    <p className="mt-1 text-lg font-black text-navy tracking-wide">{DEFAULT_PASSWORD}</p>
-                  </div>
-                </div>
-                <p className="text-xs text-emerald-600 font-semibold">
-                  O aluno pode alterar a senha no seu perfil após o primeiro acesso.
-                </p>
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        {/* ── Abas ── */}
-        <div className="flex gap-2">
+        {/* ══ Abas ══ */}
+        <div className="flex flex-wrap gap-2">
           <a
             href="/admin/students?tab=registar"
             className={`flex items-center gap-2 rounded-full px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${
@@ -154,7 +175,7 @@ type StudentsPageProps = {
           </a>
         </div>
 
-        {/* ── Aba: Registar Novo Aluno ── */}
+        {/* ══ Aba: Registar Novo Aluno ══ */}
         {activeTab === "registar" ? (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
             <BentoCard className="lg:col-span-5">
@@ -164,19 +185,50 @@ type StudentsPageProps = {
                   O código de estudante e a senha são gerados automaticamente.
                 </p>
               </div>
-              <form action={createStudentAction} className="space-y-4">
-                <FormField name="name" label="Nome Completo" placeholder="Ex: Celso Manuel" required />
-                <SelectField name="level" label="Nível" options={STUDENT_LEVELS} required />
-                <FormField name="phone" label="Telefone" placeholder="+258 84 000 0000" />
-                <FormField name="email" label="Email (opcional)" placeholder="aluno@exemplo.com" type="email" />
-                <FormField name="guardianName" label="Encarregado (opcional)" placeholder="Nome do encarregado" />
-                <PrimaryButton className="w-full" tone="rose" type="submit">
+
+              {/* Pré-visualização do próximo código */}
+              <div className="mb-5 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 px-5 py-4">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Próximo código a ser gerado</p>
+                <div className="flex items-center gap-3">
+                  <p className="text-xl font-black text-navy tracking-widest">{nextStudentCode}</p>
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-emerald-700">Auto</span>
+                </div>
+                <p className="mt-1 text-[10px] text-slate-400 font-semibold">Este será o código de login do próximo aluno registado.</p>
+              </div>
+
+              <form action={createStudentAction} className="space-y-5">
+                <div className="space-y-4">
+                  <FormField name="name" label="Nome Completo" placeholder="Ex: Celso Manuel" required />
+                  <SelectField name="level" label="Nível" options={STUDENT_LEVELS} required />
+                </div>
+
+                {/* Secção Dedicada de Contactos */}
+                <div className="rounded-[1.8rem] border border-slate-100 bg-slate-50/50 p-5 space-y-4 mt-6">
+                  <div className="flex items-center gap-2 border-b border-slate-100/80 pb-3 mb-1">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-white shadow-sm text-navy">
+                      <Phone size={14} className="text-navy" />
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-700">Contactos e Encarregado</h4>
+                      <p className="text-[9px] text-slate-400 font-bold">Informação opcional de contacto e tutoria</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField name="phone" label="Telefone" placeholder="+258 84 000 0000" />
+                    <FormField name="email" label="Email (opcional)" placeholder="aluno@exemplo.com" type="email" />
+                  </div>
+
+                  <FormField name="guardianName" label="Encarregado (opcional)" placeholder="Nome do encarregado" />
+                </div>
+
+                <PrimaryButton className="w-full mt-2" tone="rose" type="submit">
                   <UserPlus size={16} /> Criar Aluno
                 </PrimaryButton>
               </form>
             </BentoCard>
 
-            {/* Lista de alunos */}
+            {/* Lista de alunos com código sempre visível */}
             <BentoCard className="p-0 lg:col-span-7">
               <div className="flex items-center justify-between p-6">
                 <h3 className="font-black text-slate-900">Alunos Registados</h3>
@@ -184,14 +236,15 @@ type StudentsPageProps = {
               </div>
               <DataTable
                 emptyMessage="Ainda não existem alunos."
-                headers={["Código", "Nome", "Nível", "Debates", "Estado"]}
+                headers={["Código DPS", "Nome / Email", "Nível", "Instrutor", "Estado"]}
                 rows={students.map((student) => [
-                  <span key={`${student.id}-code`} className="text-[10px] font-black text-rose-600 uppercase tracking-widest">
-                    {student.studentCode}
-                  </span>,
+                  <div key={`${student.id}-code`} className="space-y-0.5">
+                    <p className="text-xs font-black text-crimson uppercase tracking-wider">{student.studentCode}</p>
+                    <p className="text-[9px] text-slate-400 font-bold">Login ID</p>
+                  </div>,
                   <div key={`${student.id}-name`}>
                     <p className="text-sm font-bold text-slate-800">{student.user.name}</p>
-                    <p className="text-[10px] text-slate-400">{student.user.email ?? "Sem email"}</p>
+                    <p className="text-[10px] text-slate-400">{student.user.email ?? <span className="italic text-amber-500">Sem email</span>}</p>
                   </div>,
                   <span key={`${student.id}-level`} className="text-xs font-bold text-slate-600">{student.level}</span>,
                   <form key={`${student.id}-debate`} action={setDebateModerationPermissionAction} className="flex justify-end">
@@ -225,14 +278,14 @@ type StudentsPageProps = {
           </div>
         ) : null}
 
-        {/* ── Aba: Matricular Aluno ── */}
+        {/* ══ Aba: Matricular Aluno ══ */}
         {activeTab === "matricular" ? (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-            <BentoCard className="lg:col-span-5">
+            <BentoCard className="lg:col-span-4">
               <div className="mb-6">
                 <h3 className="text-lg font-black text-slate-900">Nova Matrícula</h3>
                 <p className="mt-1 text-xs text-slate-400 font-semibold">
-                  Selecione o aluno, curso e turma para matricular.
+                  Selecione o aluno, curso e turma.
                 </p>
               </div>
               {unenrolledStudents.length === 0 && students.length > 0 ? (
@@ -253,6 +306,7 @@ type StudentsPageProps = {
                     name="studentId"
                     label="Aluno"
                     required
+                    defaultValue={searchParams?.studentId}
                     options={[
                       { label: "— Selecionar aluno —", value: "" },
                       ...students
@@ -295,7 +349,7 @@ type StudentsPageProps = {
             </BentoCard>
 
             {/* Alunos sem matrícula */}
-            <BentoCard className="p-0 lg:col-span-7">
+            <BentoCard className="p-0 lg:col-span-8">
               <div className="flex items-center justify-between p-6">
                 <h3 className="font-black text-slate-900">Alunos Sem Matrícula</h3>
                 <StatusBadge tone={unenrolledStudents.length > 0 ? "danger" : "navy"}>
@@ -303,21 +357,64 @@ type StudentsPageProps = {
                 </StatusBadge>
               </div>
               <DataTable
-                emptyMessage="Todos os alunos estão matriculados. 🎉"
-                headers={["Código", "Nome", "Nível", "Telefone"]}
+                emptyMessage="Todos os alunos estão matriculados."
+                headers={["Código DPS", "Nome", "Nível", "Telefone", "Ação"]}
                 rows={unenrolledStudents.map((student) => [
-                  <span key={`${student.id}-code`} className="text-[10px] font-black text-rose-600 uppercase tracking-widest">
-                    {student.studentCode}
-                  </span>,
-                  <p key={`${student.id}-name`} className="text-sm font-bold text-slate-800">{student.user.name}</p>,
+                  <div key={`${student.id}-code`} className="space-y-0.5">
+                    <p className="text-xs font-black text-crimson uppercase tracking-wider">{student.studentCode}</p>
+                  </div>,
+                  <div key={`${student.id}-name`}>
+                    <p className="text-sm font-bold text-slate-800">{student.user.name}</p>
+                    <p className="text-[10px] text-slate-400">{student.user.email ?? "Sem email"}</p>
+                  </div>,
                   <span key={`${student.id}-level`} className="text-xs font-bold text-slate-600">{student.level}</span>,
                   <span key={`${student.id}-phone`} className="text-xs text-slate-500">{student.phone ?? "—"}</span>,
+                  <a
+                    key={`${student.id}-enroll`}
+                    href={`/admin/students?tab=matricular&studentId=${student.id}`}
+                    className="inline-flex items-center gap-1 rounded-full bg-navy/10 hover:bg-navy text-navy hover:text-white px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all"
+                  >
+                    <GraduationCap size={11} /> Matricular
+                  </a>,
                 ])}
+              />
+
+              <div className="flex items-center justify-between p-6 border-t border-slate-100">
+                <h3 className="font-black text-slate-900">Alunos Matriculados (Transferências)</h3>
+                <StatusBadge tone="success">{`${enrolledStudents.length} Matriculados`}</StatusBadge>
+              </div>
+              <DataTable
+                emptyMessage="Não existem alunos matriculados."
+                headers={["Código DPS", "Nome", "Curso · Turma", "Transferir para"]}
+                rows={enrolledStudents.map((student) => {
+                  const enrollment = student.enrollments[0];
+                  return [
+                    <div key={`${student.id}-code-e`} className="space-y-0.5">
+                      <p className="text-xs font-black text-crimson uppercase tracking-wider">{student.studentCode}</p>
+                    </div>,
+                    <p key={`${student.id}-name-e`} className="text-sm font-bold text-slate-800">{student.user.name}</p>,
+                    <p key={`${student.id}-class`} className="text-xs font-bold text-slate-600">{enrollment.course.title} · {enrollment.classGroup.name}</p>,
+                    <form key={`${student.id}-transfer`} action={async (formData) => {
+                      "use server";
+                      const { changeEnrollmentClassAction } = await import("@/features/admin/actions");
+                      await changeEnrollmentClassAction(formData);
+                    }} className="flex gap-2 min-w-48">
+                      <input type="hidden" name="enrollmentId" value={enrollment.id} />
+                      <select name="classGroupId" defaultValue={enrollment.classGroupId} className="flex-1 rounded-xl border border-slate-200 px-3 text-xs font-bold outline-none focus:border-navy">
+                        {classes.filter(c => c.courseId === enrollment.courseId).map((cl) => (
+                          <option key={cl.id} value={cl.id}>{cl.name}</option>
+                        ))}
+                      </select>
+                      <PrimaryButton tone="navy" className="min-h-9 px-3 py-1.5 text-[10px]" type="submit">Mover</PrimaryButton>
+                    </form>
+                  ];
+                })}
               />
             </BentoCard>
           </div>
         ) : null}
-        {/* ── Aba: Radar de Talentos ── */}
+
+        {/* ══ Aba: Radar de Talentos ══ */}
         {activeTab === "talentos" ? (
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -329,40 +426,52 @@ type StudentsPageProps = {
               <div className="rounded-[2rem] bg-crimson p-6 text-white shadow-xl shadow-crimson/20">
                 <p className="text-[10px] font-black uppercase tracking-widest text-rose-300">Top Aluno (Global)</p>
                 <h4 className="mt-2 text-3xl font-black">{studentTalents[0]?.user.name.split(' ')[0] || "—"}</h4>
-                <p className="mt-1 text-xs font-bold text-rose-300">Média: {studentTalents[0]?.stats.global.toFixed(1) || "0.0"}/10</p>
+                <p className="mt-1 text-xs font-bold text-rose-300">Proficiência: {studentTalents[0]?.stats.overall.toFixed(0) || "0"}%</p>
               </div>
               <div className="rounded-[2rem] bg-slate-900 p-6 text-white shadow-xl shadow-slate-900/20">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Habilidade em Destaque</p>
-                <h4 className="mt-2 text-3xl font-black">Fluência</h4>
-                <p className="mt-1 text-xs font-bold text-slate-400">Média geral da escola: 7.8</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total de Alunos</p>
+                <h4 className="mt-2 text-3xl font-black">{students.length}</h4>
+                <p className="mt-1 text-xs font-bold text-slate-400">{unenrolledStudents.length} sem matrícula</p>
               </div>
             </div>
 
             <BentoCard className="p-0 overflow-hidden">
-               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-                  <h3 className="font-black text-slate-900">Ranking de Performance em Debates</h3>
-               </div>
-               <DataTable
-                 headers={["Posição", "Aluno", "Fluência", "Argumentação", "Postura", "Geral"]}
-                 rows={studentTalents.map((s, i) => [
-                   <div key={s.id} className="flex h-8 w-8 items-center justify-center rounded-xl font-black text-xs bg-slate-50 text-slate-400">
-                     {i + 1}º
-                   </div>,
-                   <div key={`${s.id}-name`}>
-                     <p className="text-sm font-bold text-slate-800">{s.user.name}</p>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{s.stats.count} debates avaliados</p>
-                   </div>,
-                   <span key={`${s.id}-fluency`} className="text-sm font-black text-navy">{s.stats.fluency.toFixed(1)}</span>,
-                   <span key={`${s.id}-arg`} className="text-sm font-black text-crimson">{s.stats.argumentation.toFixed(1)}</span>,
-                   <span key={`${s.id}-posture`} className="text-sm font-black text-slate-600">{s.stats.posture.toFixed(1)}</span>,
-                   <div key={`${s.id}-total`} className="flex items-center gap-2">
-                      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
-                         <div className="h-full bg-navy transition-all" style={{ width: `${s.stats.global * 10}%` }} />
-                      </div>
-                      <span className="text-xs font-black text-navy">{s.stats.global.toFixed(1)}</span>
-                   </div>
-                 ])}
-               />
+              <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+                <h3 className="font-black text-slate-900">Ranking de Performance em Debates</h3>
+              </div>
+              <DataTable
+                headers={["Pos", "Código / Aluno", "Speaking (Oratória)", "Writing (Escrita)", "Proficiência Geral"]}
+                rows={studentTalents.map((s, i) => [
+                  <div key={s.id} className="flex h-8 w-8 items-center justify-center rounded-xl font-black text-xs bg-slate-50 text-slate-400">
+                    {i + 1}º
+                  </div>,
+                  <div key={`${s.id}-name`}>
+                    <p className="text-[9px] font-black text-crimson uppercase tracking-widest">{s.studentCode}</p>
+                    <p className="text-sm font-bold text-slate-800">{s.user.name}</p>
+                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wide">
+                      {s.stats.debateCount} debates · {s.grades.length} notas
+                    </p>
+                  </div>,
+                  <div key={`${s.id}-speaking`} className="flex items-center gap-2">
+                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+                      <div className="h-full bg-navy transition-all duration-500" style={{ width: `${s.stats.speaking}%` }} />
+                    </div>
+                    <span className="text-xs font-black text-navy">{s.stats.speaking.toFixed(0)}%</span>
+                  </div>,
+                  <div key={`${s.id}-writing`} className="flex items-center gap-2">
+                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+                      <div className="h-full bg-rose-600 transition-all duration-500" style={{ width: `${s.stats.writing}%` }} />
+                    </div>
+                    <span className="text-xs font-black text-rose-600">{s.stats.writing.toFixed(0)}%</span>
+                  </div>,
+                  <div key={`${s.id}-total`} className="flex items-center gap-2">
+                    <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-100">
+                      <div className="h-full bg-slate-900 transition-all duration-500" style={{ width: `${s.stats.overall}%` }} />
+                    </div>
+                    <span className="text-xs font-black text-slate-900">{s.stats.overall.toFixed(0)}%</span>
+                  </div>
+                ])}
+              />
             </BentoCard>
           </div>
         ) : null}

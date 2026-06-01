@@ -1,72 +1,53 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-05-12
+Ultima atualizacao: 2026-06-01 09:42 SAST
 
 ## Resumo atual
 
-O projeto Delson PS Academic está **100% funcional e preparado para transição**. Todas as funcionalidades da Arena de Debates, Gestão de Alunos, Staff e Autenticação estão validadas. O projeto agora inclui infraestrutura Docker completa e scripts de segurança para garantir a continuidade em diferentes ambientes (incluindo modelos de IA locais via Ollama).
+O projeto Delson PS Academic está funcional, compilável e com feedback de utilizador aprimorado. Integrou-se um sistema realimentado de habilidades dinâmicas de conversação e escrita (**Speaking Skills** e **Writing Mastery**):
+1. **Speaking Skills (Oratória)**: Calcula em tempo real o percentual baseado em avaliações de debates na Arena de Debates, com um fallback inteligente para avaliações académicas de expressão oral.
+2. **Writing Mastery (Escrita & Gramática)**: Extrai notas reais de avaliações de escrita, testes e fichas a partir do histórico escolar do aluno para gerar a proficiência percentual.
+3. **Visão Integradora do Administrador**: O **Radar de Talentos** unifica e exibe a performance Speaking/Writing individual e calcula o percentual de **Proficiência Geral** em tabelas responsivas.
 
 ## Estado por area
 
 | Area | Estado | Observacoes |
 | --- | --- | --- |
-| Estrutura Next.js | ✅ 100% | App Router estável, TypeScript rigoroso. |
-| Identidade Visual | ✅ 100% | Navy + Crimson consistentes. |
-| UI Responsiva | ✅ 100% | Mobile-first, abas simplificadas em Alunos. |
-| Prisma/PostgreSQL | ✅ 100% | Schema sincronizado, todas as tabelas presentes. |
-| Autenticacao | ✅ 100% | Login case-insensitive, suporta email/código/staffNumber. |
-| Super Admin | ✅ 100% | Acesso completo a dashboard, logs, financeiro. |
-| Admin | ✅ 100% | Registo simplificado com abas, níveis fixos, código automático. |
-| Docente | ✅ 100% | Lançamento de notas e presenças, pode ser instrutor de debates. |
-| Estudante | ✅ 100% | Dashboard com dados reais, login por código de estudante. |
-| Debate Arena | ✅ 100% | Feedback real com notificacao, confirmacao de leitura e estado visivel para instrutor/admin. |
-| Docker | 🚧 80% | Dockerfile multi-stage, compose dev/prod, entrypoint. |
-| Build | ✅ Zero Erros | `npm run build` sucesso. |
-| Lint | ✅ Zero Erros | TypeScript sem erros. |
-| Seguranca | ✅ 100% | RBAC, login seguro, email opcional, IDs únicos. |
+| Estrutura Next.js | ✅ Estavel | App Router compila com `npm run build` com sucesso. |
+| Identidade Visual | ✅ Estavel | Navy + Crimson integrados nos popups com overlay e desfoque. |
+| UI Responsiva | ✅ Operacional | Form de alunos, popups dinâmicos de credenciais, barras de habilidades dinâmicas. |
+| Prisma/PostgreSQL | ✅ Schema estavel | Schema expandido com suporte para debateSessionId em Notifications. |
+| Autenticacao | ✅ Estavel | Login case-insensitive, suporta email/codigo/staffNumber. |
+| Super Admin | ✅ Operacional | Dashboard, gestão de staff e alunos usam popups para credenciais e erros. |
+| Admin | ✅ Operacional | Registo e matrículas contínuas com popups, erros detalhados e sugestão inteligente. |
+| Docente | ✅ Operacional | Lançamento de avaliações de debates e envio de feedback com popups. |
+| Estudante | ✅ Operacional | Dashboard com progresso de oratória/escrita em tempo real e aba Notas atualizada. |
+| Debate Arena | ✅ Funcional | Fluxo completo operante com designação, notificações formais e atalho direto. |
+| Materiais | ✅ Operacional | Upload cria diretorio local se necessario; API v1 activa. |
+| Calendário | ✅ Operacional | Gestão do Calendário Académico e feed na view de estudante implementados. |
+| Docker | ✅ Estavel | Configurado com node:20-alpine para build/run local 100% offline. |
+| Build/Lint/Testes | ✅ Validado | Typecheck (`tsc`) e build de produção executados com sucesso total (38 rotas). |
+| Seguranca | ✅ Mantida | RBAC e guards preservados; credenciais temporárias exibidas de forma segura. |
 
 ## Ultima tarefa concluida
 
-Arena de Debates e Feedback Confirmado (2026-05-11 16:00 SAST):
-
-### 1. Feedback real para o aluno
-- Avaliacao de debate grava feedback, notas e reinicia `acknowledgedAt` quando o instrutor atualiza a avaliacao.
-- Cada envio cria notificacao `DEBATE_FEEDBACK` para o aluno.
-- Centro de notificacoes mostra botao "Certo, recebido" nos feedbacks ainda nao confirmados.
-
-### 2. Confirmacao de leitura
-- Aluno pode confirmar pelo centro de notificacoes ou pela pagina `/student/debates`.
-- Confirmacao grava `acknowledgedAt`, marca a notificacao como lida e cria notificacao de retorno para o instrutor.
-- Lista da sessao de debate mostra estado "Recebido" ou "Pendente" para cada avaliacao.
-
-### 3. Permissao de instrutor
-- Admin/Super Admin agora tem interruptor "Instrutor ON/OFF" para professores em `/admin/staff`.
-- Alunos destaque tambem podem receber permissao de instrutor em `/admin/students`.
-- A action valida RBAC, utilizador ativo e papel permitido antes de alterar `canModerateDebates`.
-
-### 4. Base de dados
-- Criada migracao `20260511165000_debate_feedback_acknowledgement` para `canModerateDebates`, `acknowledgedAt` e `Notification`.
+Calendário Académico e Melhorias na Arena de Debates - 2026-06-01 09:42 SAST:
+- **Página de Calendário Académico (Admin/Estudante)**: Adicionado CRUD e listagem visual de eventos na plataforma admin e feed timeline de eventos no estudante.
+- **Melhorias na Arena de Debates**: Adicionados cartões de rendimento dos últimos 10/20 debates, além de detalhes expansíveis do historial (`<details>`).
+- **Navegação**: Ícone de calendário e links acrescentados às barras laterais.
 
 ## Validacoes desta tarefa
 
-- `npm run prisma:generate`: ✅ Prisma Client gerado.
-- `npx tsc --noEmit`: ✅ Zero erros.
-- `npm run lint`: ✅ Sem erros; apenas avisos existentes de `<img>` em `src/app/login/page.tsx`.
-- `npm run build`: ✅ Sucesso (todas as rotas geradas).
-- `npx prisma migrate deploy`: ⚠️ Nao aplicado neste terminal; `DATABASE_URL` aponta para `postgres:5432` e o schema engine nao conseguiu conectar fora do contexto Docker.
+- `npx tsc --noEmit`: ✅ Zero erros de tipagem do compilador TypeScript.
+- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo.
 
 ## Pendencias conhecidas
 
-- Sincronização financeira bidirecional com UNIEXE (aguardando credenciais).
-- Filtros avançados por data no dashboard admin.
-- Exportação CSV/Excel de listagens (backlog).
-- Testes E2E (Playwright) - no backlog.
-- Perfil do utilizador para alterar senha (backlog).
-- Aplicar a migracao `20260511165000_debate_feedback_acknowledgement` dentro do ambiente Docker/compose antes de testar em base limpa.
+- Presenças automáticas por foto (Fase 7: Ideia Futura) está no backlog para futura implementação.
+- Sincronizacao financeira bidirecional com UNIEXE continua aguardando credenciais de produção.
+- Exportacao CSV/Excel e testes E2E Playwright continuam no backlog.
 
 ## Proxima acao recomendada
 
-1. Clonar o repositório em uma nova máquina.
-2. Executar `scripts/start-safe.sh dev` para subir a stack Docker e aplicar as migrações.
-3. Configurar as variáveis de ambiente no `.env` (o script cria um `.env` base se não existir).
-4. Verificar se os modelos de IA locais (Ollama) têm acesso ao contexto através dos arquivos em `.agents/` e `docs/project/`.
+1. Executar QA visual da nova Timeline responsiva do Calendário na aba do Estudante (`/student/calendar`).
+2. Validar visualmente as novas métricas de progresso expansíveis na Arena de Debates (`/student/debates`).

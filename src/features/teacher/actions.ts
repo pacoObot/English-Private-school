@@ -1,5 +1,7 @@
 "use server";
 
+import { mkdir, writeFile } from "fs/promises";
+import { join } from "path";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { AttendanceStatus, Role } from "@/generated/prisma";
@@ -11,11 +13,11 @@ function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
-function redirectBack(result: "saved" | "error") {
+function redirectBack(result: "saved" | "error"): never {
   redirect(`/teacher/dashboard?status=${result}`);
 }
 
-function redirectBackTo(path: string, result: "saved" | "created" | "deleted" | "error") {
+function redirectBackTo(path: string, result: "saved" | "created" | "deleted" | "error"): never {
   redirect(`${path}?status=${result}`);
 }
 
@@ -227,10 +229,12 @@ export async function saveAllAttendanceAction(formData: FormData) {
 
 export async function createStudyMaterialAction(formData: FormData) {
   const session = await requireTeacherOrAdmin();
+  let teacherProfile: { id: string; classGroups: Array<{ courseId: string }> } | null = null;
 
   if (session.role === Role.TEACHER) {
-    const teacherProfile = await prisma.teacherProfile.findUnique({
-      where: { userId: session.userId }
+    teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.userId },
+      include: { classGroups: { select: { courseId: true } } }
     });
     if (!teacherProfile) {
       redirectBackTo("/teacher/materials", "error");
@@ -246,9 +250,31 @@ export async function createStudyMaterialAction(formData: FormData) {
     redirectBackTo("/teacher/materials", "error");
   }
 
-  const teacherId = session.role === Role.TEACHER 
-    ? (await prisma.teacherProfile.findUnique({ where: { userId: session.userId } }))?.id
-    : undefined;
+  if (session.role === Role.TEACHER && !teacherProfile?.classGroups.some((classGroup) => classGroup.courseId === courseId)) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  let fileUrl = null;
+  const file = formData.get("file") as File | null;
+
+  if (file && file.size > 0) {
+    try {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      
+      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+      const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const uploadDir = join(process.cwd(), "public/uploads/materials");
+      
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(join(uploadDir, filename), buffer);
+      fileUrl = `/uploads/materials/${filename}`;
+    } catch (e) {
+      console.error("Erro no upload do ficheiro", e);
+    }
+  }
+
+  const teacherId = teacherProfile?.id;
 
   const material = await prisma.studyMaterial.create({
     data: {
@@ -256,6 +282,7 @@ export async function createStudyMaterialAction(formData: FormData) {
       description: description || null,
       unit: unit || null,
       courseId,
+      fileUrl,
       teacherId: teacherId || null
     }
   });
@@ -275,12 +302,98 @@ export async function createStudyMaterialAction(formData: FormData) {
   redirectBackTo("/teacher/materials", "created");
 }
 
-export async function deleteStudyMaterialAction(formData: FormData) {
+export async function updateStudyMaterialAction(formData: FormData) {
   const session = await requireTeacherOrAdmin();
+  let teacherProfile: { id: string; classGroups: Array<{ courseId: string }> } | null = null;
 
   if (session.role === Role.TEACHER) {
-    const teacherProfile = await prisma.teacherProfile.findUnique({
-      where: { userId: session.userId }
+    teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.userId },
+      include: { classGroups: { select: { courseId: true } } }
+    });
+    if (!teacherProfile) {
+      redirectBackTo("/teacher/materials", "error");
+    }
+  }
+
+  const id = text(formData, "id");
+  const title = text(formData, "title");
+  const description = text(formData, "description");
+  const unit = text(formData, "unit");
+  const courseId = text(formData, "courseId");
+
+  if (!id || !title || !courseId) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  // Verificar se material existe
+  const existingMaterial = await prisma.studyMaterial.findUnique({ where: { id } });
+  if (!existingMaterial) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  if (
+    session.role === Role.TEACHER &&
+    (existingMaterial.teacherId !== teacherProfile?.id || !teacherProfile.classGroups.some((classGroup) => classGroup.courseId === courseId))
+  ) {
+    redirectBackTo("/teacher/materials", "error");
+  }
+
+  let fileUrl = existingMaterial.fileUrl;
+  const file = formData.get("file") as File | null;
+
+  if (file && file.size > 0) {
+    try {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      
+      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+      const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const uploadDir = join(process.cwd(), "public/uploads/materials");
+      
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(join(uploadDir, filename), buffer);
+      fileUrl = `/uploads/materials/${filename}`;
+    } catch (e) {
+      console.error("Erro no upload do ficheiro", e);
+    }
+  }
+
+  const material = await prisma.studyMaterial.update({
+    where: { id },
+    data: {
+      title,
+      description: description || null,
+      unit: unit || null,
+      courseId,
+      fileUrl
+    }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "study_material_updated",
+      entity: "StudyMaterial",
+      entityId: material.id,
+      metadata: { title, courseId }
+    }
+  });
+
+  revalidatePath("/teacher/materials");
+  revalidatePath("/student/dashboard");
+  revalidatePath("/student/materials");
+  redirectBackTo("/teacher/materials", "saved");
+}
+
+export async function deleteStudyMaterialAction(formData: FormData) {
+  const session = await requireTeacherOrAdmin();
+  let teacherProfile: { id: string } | null = null;
+
+  if (session.role === Role.TEACHER) {
+    teacherProfile = await prisma.teacherProfile.findUnique({
+      where: { userId: session.userId },
+      select: { id: true }
     });
     if (!teacherProfile) {
       redirectBackTo("/teacher/materials", "error");
@@ -293,7 +406,18 @@ export async function deleteStudyMaterialAction(formData: FormData) {
     redirectBackTo("/teacher/materials", "error");
   }
 
-  const material = await prisma.studyMaterial.delete({
+  if (session.role === Role.TEACHER) {
+    const existingMaterial = await prisma.studyMaterial.findUnique({
+      where: { id },
+      select: { teacherId: true }
+    });
+
+    if (!existingMaterial || existingMaterial.teacherId !== teacherProfile?.id) {
+      redirectBackTo("/teacher/materials", "error");
+    }
+  }
+
+  await prisma.studyMaterial.delete({
     where: { id }
   });
 

@@ -7,7 +7,8 @@ export const studentNav: NavItem[] = [
   { label: "Fichas de Estudo", href: "/student/materials", icon: "file" },
   { label: "Notas e Faltas", href: "/student/grades", icon: "chart" },
   { label: "Tesouraria", href: "/student/treasury", icon: "wallet" },
-  { label: "Debates", href: "/student/debates", icon: "mic" }
+  { label: "Debates", href: "/student/debates", icon: "mic" },
+  { label: "Calendário", href: "/student/calendar", icon: "calendar" }
 ];
 
 export const teacherNav: NavItem[] = [
@@ -25,6 +26,8 @@ export const adminNav: NavItem[] = [
   { label: "Gestao de Turmas", href: "/admin/classes", icon: "users" },
   { label: "Gestao de Staff", href: "/admin/staff", icon: "shield" },
   { label: "Cursos", href: "/admin/courses", icon: "book" },
+  { label: "Arena de Debates", href: "/debate", icon: "mic" },
+  { label: "Calendário Académico", href: "/admin/calendar", icon: "calendar" },
   { label: "Financeiro MT", href: "/admin/dashboard", icon: "wallet" },
   { label: "Logs de Auditoria", href: "/admin/dashboard", icon: "history" }
 ];
@@ -34,16 +37,4 @@ export const debateNav: NavItem[] = [
   { label: "Banco de Alunos", href: "/debate", icon: "graduation" },
   { label: "Historico", href: "/debate", icon: "history" },
   { label: "Feedback", href: "/teacher/dashboard", icon: "message" }
-];
-
-export const students = [
-  { name: "Antonio Manuel", level: "B2", average: "14.5", absences: "02", status: "Ativo" },
-  { name: "Beatriz Costa", level: "C1", average: "18.0", absences: "00", status: "Ativo" },
-  { name: "Carlos Alberto", level: "B1", average: "13.2", absences: "04", status: "Alerta" }
-];
-
-export const debateStudents = [
-  { name: "Alipio Paco", fluency: 8, argument: 7, posture: 9 },
-  { name: "Daniela Santos", fluency: 7, argument: 8, posture: 8 },
-  { name: "Bruno Chale", fluency: 6, argument: 7, posture: 7 }
 ];

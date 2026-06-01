@@ -6,7 +6,7 @@ import { debateNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { DebateSessionStatus, Role } from "@/generated/prisma";
-import { addDebateParticipantAction, removeDebateParticipantAction, updateDebateSessionStatusAction } from "@/features/debate/actions";
+import { addDebateParticipantAction, removeDebateParticipantAction, updateDebateSessionDetailsAction, updateDebateSessionStatusAction } from "@/features/debate/actions";
 import { DebateParticipantList } from "@/components/debate/DebateParticipantList";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +20,8 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
       where: { id: params.id },
       include: {
         moderator: { include: { studentProfile: true, teacherProfile: true } },
+        moderatorAssignedBy: true,
+        sourceProposal: { include: { proposer: true } },
         participants: { include: { student: { include: { user: true } } } },
         evaluations: true
       }
@@ -39,7 +41,7 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
   if (!debate) notFound();
 
   const isAdmin = ([Role.SUPER_ADMIN, Role.ADMIN] as Role[]).includes(session.role);
-  const isAssignedInstructor = debate.moderatorId === session.userId;
+  const isAssignedInstructor = debate.moderatorId === session.userId && (!debate.moderatorExpiresAt || debate.moderatorExpiresAt >= new Date());
   
   // New: Check for canModerateDebates permission
   const userPerms = await prisma.user.findUnique({
@@ -47,9 +49,9 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
     select: { canModerateDebates: true }
   });
 
-  let isModerator = isAssignedInstructor || userPerms?.canModerateDebates || isAdmin;
-  let currentStudentProfile = await prisma.studentProfile.findUnique({ where: { userId: session.userId } });
-  let isParticipant = !!(currentStudentProfile && debate.participants.some(p => p.studentId === currentStudentProfile.id));
+  const isModerator = isAssignedInstructor || userPerms?.canModerateDebates || isAdmin;
+  const currentStudentProfile = await prisma.studentProfile.findUnique({ where: { userId: session.userId } });
+  const isParticipant = !!(currentStudentProfile && debate.participants.some(p => p.studentId === currentStudentProfile.id));
 
   const canManageDebate = isModerator;
   const canEvaluate = isModerator;
@@ -63,6 +65,7 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
   }) : [];
 
   const lastDebate = lastDebates[0];
+  const startsAtInput = new Date(debate.startsAt.getTime() - debate.startsAt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
   return (
     <DashboardLayout
@@ -121,6 +124,11 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
                 </div>
               </div>
             </div>
+            {debate.sourceProposal?.proposer && (
+              <p className="mt-5 text-xs font-bold text-slate-400">
+                Sugestão original de {debate.sourceProposal.proposer.name}
+              </p>
+            )}
           </div>
           <div className="absolute right-[-20px] bottom-[-20px] text-white/5 text-9xl font-black rotate-12 select-none">
             DEBATE
@@ -139,10 +147,37 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
                   <div>
                     <p className="text-sm font-black text-slate-900">{debate.moderator?.name || "Sem instrutor designado"}</p>
                     <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest">
-                      {debate.moderator?.id === session.userId ? "Tu és o Moderador" : "Designado"}
+                      {debate.moderator?.id === session.userId ? "Tu és o Instrutor" : "Designado"}
                     </p>
+                    {debate.moderatorExpiresAt && (
+                      <p className="mt-1 text-[10px] font-bold text-slate-400">
+                        Até {debate.moderatorExpiresAt.toLocaleString("pt-PT")}
+                      </p>
+                    )}
                   </div>
                </div>
+               {debate.moderatorNote && (
+                 <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                   <p className="text-[10px] font-black uppercase tracking-widest text-navy">Nota para o instrutor</p>
+                   <p className="mt-1 text-xs font-bold text-slate-600">{debate.moderatorNote}</p>
+                 </div>
+               )}
+
+               {canManageDebate && debate.status !== DebateSessionStatus.CLOSED && (
+                 <div className="mt-8 border-t border-slate-100 pt-6">
+                   <h4 className="mb-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Editar Sessão</h4>
+                   <form action={updateDebateSessionDetailsAction} className="space-y-4">
+                     <input type="hidden" name="id" value={debate.id} />
+                     <FormField name="topic" label="Tema" defaultValue={debate.topic} required />
+                     <FormField name="startsAt" label="Data e Hora" type="datetime-local" defaultValue={startsAtInput} required />
+                     <FormField name="capacity" label="Capacidade" type="number" defaultValue={String(debate.capacity)} min={1} required />
+                     <FormField name="location" label="Local" defaultValue={debate.location ?? ""} />
+                     <PrimaryButton tone="light" type="submit" className="w-full">
+                       Guardar Ajustes
+                     </PrimaryButton>
+                   </form>
+                 </div>
+               )}
 
                {/* Visão de Contexto para Instrutor */}
                {isModerator && (
@@ -199,8 +234,6 @@ export default async function DebateDetailsPage({ params, searchParams }: { para
                   </form>
                 </div>
               )}
-            </BentoCard>
-
               {session.role === Role.STUDENT && currentStudentProfile && !isParticipant && !isModerator && debate.status === DebateSessionStatus.SCHEDULED && (
                 <div className="mt-8 border-t border-slate-100 pt-6">
                   <form action={addDebateParticipantAction}>

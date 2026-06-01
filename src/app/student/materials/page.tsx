@@ -73,9 +73,17 @@ export default async function StudentMaterialsPage() {
                          {mat.teacher?.user.name || "Sistema"}
                       </span>
                    </div>
-                   <PrimaryButton tone="dark" className="h-9 py-0 px-4 text-[10px]">
-                      <Download size={14} /> Baixar
-                   </PrimaryButton>
+                   {mat.fileUrl ? (
+                     <a href={mat.fileUrl} target="_blank" rel="noreferrer">
+                       <PrimaryButton tone="dark" type="button" className="h-9 py-0 px-4 text-[10px]">
+                          <Download size={14} /> Baixar
+                       </PrimaryButton>
+                     </a>
+                   ) : (
+                     <PrimaryButton tone="dark" className="h-9 py-0 px-4 text-[10px] opacity-50 cursor-not-allowed" disabled>
+                        <Download size={14} /> Indisponível
+                     </PrimaryButton>
+                   )}
                 </div>
               </BentoCard>
             ))

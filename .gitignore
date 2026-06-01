@@ -1,5 +1,6 @@
 node_modules
 .next
+.next-*
 .env
 .env.local
 dist
@@ -7,3 +8,10 @@ coverage
 *.log
 tsconfig.tsbuildinfo
 .codex
+.antigravitycli
+.antigravitycli/
+*.so.node
+src/generated/prisma/*.so.node
+public/uploads/
+public/uploads/*
+

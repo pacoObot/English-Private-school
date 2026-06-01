@@ -1,6 +1,8 @@
 import { DashboardLayout } from "@/components/layout";
 import { ActionNotice, BentoCard, FormField, PrimaryButton, SelectField, StatusBadge } from "@/components/ui";
+import { getCurrentSession } from "@/features/auth/current-user";
 import { saveAllAttendanceAction } from "@/features/teacher/actions";
+import { Role } from "@/generated/prisma";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { AttendanceStatus } from "@/generated/prisma";
@@ -12,11 +14,13 @@ type AttendancePageProps = {
 };
 
 export default async function AttendancePage({ searchParams }: AttendancePageProps) {
-  const selectedClassId = searchParams?.classGroupId;
+  const session = await getCurrentSession();
+  const isTeacher = session?.role === Role.TEACHER;
   const today = new Date().toISOString().split("T")[0];
 
   const [allClassGroups, allEnrollments] = await Promise.all([
     prisma.classGroup.findMany({
+      where: isTeacher ? { teacher: { userId: session.userId } } : undefined,
       include: { course: true, enrollments: true },
       orderBy: { name: "asc" }
     }),
@@ -29,8 +33,8 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
     })
   ]);
 
+  const selectedClassId = searchParams?.classGroupId || allClassGroups[0]?.id;
   const classGroupOptions = [
-    { label: "Selecione uma turma...", value: "" },
     ...allClassGroups.map((cg) => ({
       label: `${cg.name} · ${cg.course.title}`,
       value: cg.id
@@ -52,18 +56,16 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
           {/* Selection Panel */}
           <BentoCard className="xl:col-span-4">
             <h3 className="mb-6 text-lg font-black text-slate-900">Chamada Rápida</h3>
-            <form className="space-y-4">
+            <form action="/teacher/attendance" className="space-y-4" method="get">
               <SelectField 
                 name="classGroupId" 
                 label="Turma" 
                 options={classGroupOptions}
                 value={selectedClassId || ""}
               />
-              <a href={`/teacher/attendance${selectedClassId ? `?classGroupId=${selectedClassId}` : ""}`}>
-                <PrimaryButton tone="rose" type="button" className="w-full">
-                  {selectedClassId ? "Mudar Turma" : "Selecionar"}
-                </PrimaryButton>
-              </a>
+              <PrimaryButton tone="rose" type="submit" className="w-full">
+                Abrir Turma
+              </PrimaryButton>
             </form>
 
             {selectedClassId && (

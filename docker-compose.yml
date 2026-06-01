@@ -55,6 +55,7 @@ services:
       - "${APP_PORT:-3000}:3000"
     volumes:
       # Montar código fonte para hot-reload em desenvolvimento
+      # node_modules está na imagem (copiado do host no build) - NÃO montar do host
       - .:/app
       - /app/node_modules
       - /app/.next

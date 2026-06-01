@@ -18,7 +18,8 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
         include: {
           grades: { orderBy: { createdAt: "desc" } },
           attendances: { orderBy: { lessonDate: "desc" } },
-          enrollments: { include: { course: true, classGroup: true } }
+          enrollments: { include: { course: true, classGroup: true } },
+          debateEvaluations: true
         }
       })
     : null;
@@ -28,6 +29,37 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
     : 0;
 
   const totalAbsences = student?.attendances.filter(a => a.status === "ABSENT").length ?? 0;
+
+  const debateEvals = student?.debateEvaluations ?? [];
+  const debateAvg = debateEvals.length > 0 ? debateEvals.reduce((sum, ev) => sum + ev.fluency + ev.argumentation + ev.posture, 0) / (debateEvals.length * 3) : 0;
+
+  // Habilidades reais baseadas em avaliações académicas e debates
+  let speakingPercentage = 0;
+  if (debateEvals.length > 0) {
+    speakingPercentage = debateAvg * 10;
+  } else {
+    const speakingGrades = student?.grades.filter(g => 
+      /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+    ) ?? [];
+    if (speakingGrades.length > 0) {
+      speakingPercentage = (speakingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / speakingGrades.length) * 100;
+    }
+  }
+
+  const writingGrades = student?.grades.filter(g => 
+    /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title)
+  ) ?? [];
+  
+  let writingPercentage = 0;
+  if (writingGrades.length > 0) {
+    writingPercentage = (writingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / writingGrades.length) * 100;
+  } else if (student?.grades && student.grades.length > 0) {
+    const academicGrades = student.grades.filter(g => 
+      !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+    );
+    const gradesToUse = academicGrades.length > 0 ? academicGrades : student.grades;
+    writingPercentage = (gradesToUse.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / gradesToUse.length) * 100;
+  }
 
   return (
     <DashboardLayout
@@ -46,6 +78,35 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
            <QuickStat label="Faltas" value={String(totalAbsences)} icon={Calendar} tone="dark" />
            <QuickStat label="Cursos" value={String(student?.enrollments.length ?? 0)} icon={BookOpen} tone="light" />
         </div>
+
+        <BentoCard className="p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-black text-slate-900">Desenvolvimento de Habilidades</h3>
+            <p className="text-xs font-semibold text-slate-400">Progresso calculado em tempo real com base em debates e avaliações escritas.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] font-bold uppercase text-slate-400">
+                <span>Speaking Skills (Oratória)</span>
+                <span className="text-navy font-black">{speakingPercentage.toFixed(0)}%</span>
+              </div>
+              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-navy rounded-full transition-all duration-1000" style={{ width: `${speakingPercentage}%` }}></div>
+              </div>
+              <p className="text-[10px] text-slate-400 font-semibold">Calculado a partir de debates na Arena e avaliações de oratória.</p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] font-bold uppercase text-slate-400">
+                <span>Writing Mastery (Escrita & Gramática)</span>
+                <span className="text-rose-600 font-black">{writingPercentage.toFixed(0)}%</span>
+              </div>
+              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-rose-600 rounded-full transition-all duration-1000" style={{ width: `${writingPercentage}%` }}></div>
+              </div>
+              <p className="text-[10px] text-slate-400 font-semibold">Calculado a partir de redações, fichas de exercícios e avaliações escritas.</p>
+            </div>
+          </div>
+        </BentoCard>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
            <BentoCard className="p-0">

@@ -45,26 +45,38 @@ type ActionStatus =
   | "duplicate_evaluation"
   | "duplicate_student_code"
   | "invalid_email"
-  | "forbidden";
+  | "forbidden"
+  | "deleted";
 
 function redirectBack(path: string, result: ActionStatus) {
   redirect(`${path}${path.includes("?") ? "&" : "?"}status=${result}`);
 }
 
+function isRedirectError(error: any): error is Error & { digest: string } {
+  return error && (
+    (typeof error.digest === "string" && error.digest.startsWith("NEXT_REDIRECT")) ||
+    error.message === "NEXT_REDIRECT"
+  );
+}
+
 function handlePrismaError(error: unknown, path: string) {
+  if (isRedirectError(error)) {
+    throw error;
+  }
+  const connector = path.includes("?") ? "&" : "?";
   if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
     const target = (error.meta?.target as string[]) || [];
-    if (target.includes("email")) return redirectBack(path, "duplicate_email");
-    if (target.includes("studentNumber")) return redirectBack(path, "duplicate_student_number");
-    if (target.includes("studentCode")) return redirectBack(path, "duplicate_student_code");
-    if (target.includes("staffNumber")) return redirectBack(path, "duplicate_staff_number");
+    if (target.includes("email")) return redirect(`${path}${connector}status=validation_error&duplicate=email`);
+    if (target.includes("studentNumber")) return redirect(`${path}${connector}status=validation_error&duplicate=studentNumber`);
+    if (target.includes("studentCode")) return redirect(`${path}${connector}status=validation_error&duplicate=studentCode`);
+    if (target.includes("staffNumber")) return redirect(`${path}${connector}status=validation_error&duplicate=staffNumber`);
     if (target.includes("studentId") && target.includes("classGroupId")) {
-      if (target.includes("lessonDate")) return redirectBack(path, "duplicate_attendance");
-      return redirectBack(path, "duplicate_enrollment");
+      if (target.includes("lessonDate")) return redirect(`${path}${connector}status=validation_error&duplicate=attendance`);
+      return redirect(`${path}${connector}status=validation_error&duplicate=enrollment`);
     }
-    if (target.includes("sessionId") && target.includes("studentId")) return redirectBack(path, "duplicate_evaluation");
+    if (target.includes("sessionId") && target.includes("studentId")) return redirect(`${path}${connector}status=validation_error&duplicate=evaluation`);
   }
-  return redirectBack(path, "error");
+  return redirect(`${path}${connector}status=error`);
 }
 
 function normalizeEmail(value: string) {
@@ -111,12 +123,16 @@ export async function createStudentAction(formData: FormData) {
   const phone = text(formData, "phone");
   const guardianName = text(formData, "guardianName");
 
-  if (!name || !level) {
-    redirectBack("/admin/students", "error");
+  const missing = [];
+  if (!name) missing.push("name");
+  if (!level) missing.push("level");
+
+  if (missing.length > 0) {
+    redirect(`/admin/students?status=validation_error&missing=${missing.join(",")}`);
   }
 
   if (!isValidEmail(email)) {
-    redirectBack("/admin/students", "invalid_email");
+    redirect(`/admin/students?status=validation_error&invalid=email`);
   }
 
   try {
@@ -145,7 +161,7 @@ export async function createStudentAction(formData: FormData) {
     await audit(session.userId, "student_created", "StudentProfile", user.studentProfile?.id, { email, studentNumber, studentCode });
     revalidatePath("/admin/students");
     revalidatePath("/admin/dashboard");
-    redirectBack("/admin/students", "created");
+    redirect(`/admin/students?status=created&newCode=${studentCode}&newName=${encodeURIComponent(name)}&studentId=${user.studentProfile?.id}`);
   } catch (error) {
     return handlePrismaError(error, "/admin/students");
   }
@@ -305,8 +321,13 @@ export async function createStaffAction(formData: FormData) {
   const specialty = text(formData, "specialty");
   const role = text(formData, "role") as Role;
 
-  if (!name || !email || !adminRoles.concat(Role.TEACHER).includes(role)) {
-    redirectBack("/admin/staff", "error");
+  const missing = [];
+  if (!name) missing.push("name");
+  if (!email) missing.push("email");
+  if (!role || !adminRoles.concat(Role.TEACHER).includes(role)) missing.push("role");
+
+  if (missing.length > 0) {
+    redirect(`/admin/staff?status=validation_error&missing=${missing.join(",")}`);
   }
 
   try {
@@ -569,8 +590,15 @@ export async function createEnrollmentAction(formData: FormData) {
   const monthlyFeeMt = intValue(formData, "monthlyFeeMt");
   const dueDate = dateValue(formData, "dueDate");
 
-  if (!studentId || !courseId || !classGroupId || monthlyFeeMt <= 0 || !Object.values(EnrollmentStatus).includes(status)) {
-    redirectBack("/admin/students", "error");
+  const missing = [];
+  if (!studentId) missing.push("studentId");
+  if (!courseId) missing.push("courseId");
+  if (!classGroupId) missing.push("classGroupId");
+  if (monthlyFeeMt <= 0) missing.push("monthlyFeeMt");
+  if (!Object.values(EnrollmentStatus).includes(status)) missing.push("status");
+
+  if (missing.length > 0) {
+    redirect(`/admin/students?status=validation_error&missing=${missing.join(",")}`);
   }
 
   try {
@@ -607,10 +635,20 @@ export async function createEnrollmentAction(formData: FormData) {
       return { enrollment, invoice };
     });
 
+    const student = await prisma.studentProfile.findUnique({
+      where: { id: studentId },
+      include: { user: true }
+    });
+
     revalidatePath("/admin/students");
     revalidatePath("/admin/dashboard");
     revalidatePath("/student/dashboard");
-    redirectBack("/admin/students", created.invoice ? "enrolled" : "error");
+
+    if (created.invoice) {
+      redirect(`/admin/students?status=enrolled&newCode=${student?.studentCode || ""}&newName=${encodeURIComponent(student?.user.name || "")}&studentId=${studentId}`);
+    } else {
+      redirect(`/admin/students?status=error`);
+    }
   } catch (error) {
     return handlePrismaError(error, "/admin/students");
   }
@@ -633,6 +671,37 @@ export async function updateEnrollmentStatusAction(formData: FormData) {
   revalidatePath("/admin/students");
   revalidatePath("/student/dashboard");
   redirectBack("/admin/students", "updated");
+}
+
+export async function changeEnrollmentClassAction(formData: FormData) {
+  const session = await requireAdmin();
+  const enrollmentId = String(formData.get("enrollmentId") ?? "").trim();
+  const classGroupId = String(formData.get("classGroupId") ?? "").trim();
+
+  if (!enrollmentId || !classGroupId) {
+    redirectBack("/admin/students?tab=matricular", "error");
+  }
+
+  const newClass = await prisma.classGroup.findUnique({ where: { id: classGroupId } });
+  if (!newClass) redirectBack("/admin/students?tab=matricular", "error");
+
+  const enrollment = await prisma.enrollment.update({
+    where: { id: enrollmentId },
+    data: { classGroupId }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "student_transferred_class",
+      entity: "Enrollment",
+      entityId: enrollment.id,
+      metadata: { newClassGroupId: classGroupId }
+    }
+  });
+
+  revalidatePath("/admin/students");
+  redirectBack("/admin/students?tab=matricular", "updated");
 }
 
 export async function updateInvoiceStatusAction(formData: FormData) {
@@ -659,3 +728,56 @@ export async function updateInvoiceStatusAction(formData: FormData) {
   revalidatePath("/student/dashboard");
   redirectBack("/admin/dashboard", status === InvoiceStatus.PAID ? "paid" : status === InvoiceStatus.CANCELLED ? "cancelled" : "updated");
 }
+
+// ── Calendário Académico ──
+
+export async function createCalendarEventAction(formData: FormData) {
+  const session = await requireAdmin();
+
+  const title = text(formData, "title");
+  const description = text(formData, "description");
+  const startsAtValue = text(formData, "startsAt");
+  const endsAtValue = text(formData, "endsAt");
+  const type = text(formData, "type") || "GENERAL";
+  const location = text(formData, "location");
+  const isImportant = formData.get("isImportant") === "true";
+
+  if (!title || !startsAtValue) {
+    redirectBack("/admin/calendar", "error");
+  }
+
+  const event = await prisma.calendarEvent.create({
+    data: {
+      title,
+      description: description || null,
+      startsAt: new Date(startsAtValue),
+      endsAt: endsAtValue ? new Date(endsAtValue) : null,
+      type,
+      location: location || null,
+      isImportant,
+    }
+  });
+
+  await audit(session.userId, "calendar_event_created", "CalendarEvent", event.id, { title, type });
+
+  revalidatePath("/admin/calendar");
+  revalidatePath("/student/calendar");
+  redirectBack("/admin/calendar", "created");
+}
+
+export async function deleteCalendarEventAction(formData: FormData) {
+  const session = await requireAdmin();
+  const id = text(formData, "id");
+
+  if (!id) {
+    redirectBack("/admin/calendar", "error");
+  }
+
+  await prisma.calendarEvent.delete({ where: { id } });
+  await audit(session.userId, "calendar_event_deleted", "CalendarEvent", id);
+
+  revalidatePath("/admin/calendar");
+  revalidatePath("/student/calendar");
+  redirectBack("/admin/calendar", "deleted");
+}
+

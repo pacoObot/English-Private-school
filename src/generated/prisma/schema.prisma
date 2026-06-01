@@ -1,7 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
   output        = "../src/generated/prisma"
-  binaryTargets = ["native", "linux-musl", "debian-openssl-1.1.x"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -55,12 +55,16 @@ model User {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  studentProfile         StudentProfile?
-  teacherProfile         TeacherProfile?
-  auditLogs              AuditLog[]         @relation("AuditActor")
-  notifications          Notification[]
-  moderatedDebates       DebateSession[]    @relation("SessionModerator")
-  debateEvaluationsGiven DebateEvaluation[] @relation("DebateEvaluator")
+  studentProfile          StudentProfile?
+  teacherProfile          TeacherProfile?
+  auditLogs               AuditLog[]               @relation("AuditActor")
+  notifications           Notification[]
+  moderatedDebates        DebateSession[]          @relation("SessionModerator")
+  assignedDebateSessions  DebateSession[]          @relation("SessionInstructorAssigner")
+  debateEvaluationsGiven  DebateEvaluation[]       @relation("DebateEvaluator")
+  debateProposals         DebateProposal[]         @relation("DebateProposalProposer")
+  approvedDebateProposals DebateProposal[]         @relation("DebateProposalApprover")
+  debateProposalReactions DebateProposalReaction[]
 }
 
 model StudentProfile {
@@ -126,11 +130,13 @@ model ClassGroup {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  course      Course          @relation(fields: [courseId], references: [id], onDelete: Restrict)
-  teacher     TeacherProfile? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  teacher     TeacherProfile?  @relation(fields: [teacherId], references: [id], onDelete: SetNull)
   enrollments Enrollment[]
   attendances Attendance[]
   grades      Grade[]
+  debates     DebateSession[]
+  proposals   DebateProposal[]
 
   @@index([courseId])
   @@index([teacherId])
@@ -250,19 +256,33 @@ model Receipt {
 }
 
 model DebateSession {
-  id          String              @id @default(cuid())
-  topic       String
-  startsAt    DateTime
-  capacity    Int
-  location    String?
-  status      DebateSessionStatus @default(SCHEDULED)
-  moderatorId String?
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  id                    String              @id @default(cuid())
+  topic                 String
+  startsAt              DateTime
+  capacity              Int
+  location              String?
+  status                DebateSessionStatus @default(SCHEDULED)
+  moderatorId           String?
+  sourceProposalId      String?             @unique
+  moderatorAssignedById String?
+  moderatorAssignedAt   DateTime?
+  moderatorExpiresAt    DateTime?
+  moderatorNote         String?
+  classGroupId          String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
 
-  moderator    User?               @relation("SessionModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
-  evaluations  DebateEvaluation[]
-  participants DebateParticipant[]
+  moderator           User?               @relation("SessionModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
+  moderatorAssignedBy User?               @relation("SessionInstructorAssigner", fields: [moderatorAssignedById], references: [id], onDelete: SetNull)
+  sourceProposal      DebateProposal?     @relation("ProposalSession", fields: [sourceProposalId], references: [id], onDelete: SetNull)
+  classGroup          ClassGroup?         @relation(fields: [classGroupId], references: [id], onDelete: SetNull)
+  evaluations         DebateEvaluation[]
+  participants        DebateParticipant[]
+  notifications       Notification[]
+
+  @@index([moderatorId])
+  @@index([classGroupId])
+  @@index([moderatorExpiresAt])
 }
 
 model DebateParticipant {
@@ -318,34 +338,80 @@ model AuditLog {
 }
 
 model DebateProposal {
-  id        String   @id @default(cuid())
-  studentId String
-  topic     String
-  reason    String?
-  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String    @id @default(cuid())
+  studentId          String?
+  proposerId         String
+  topic              String
+  reason             String?
+  status             String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedById       String?
+  approvedAt         DateTime?
+  convertedSessionId String?
+  classGroupId       String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
-  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student          StudentProfile?          @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  proposer         User                     @relation("DebateProposalProposer", fields: [proposerId], references: [id], onDelete: Cascade)
+  approvedBy       User?                    @relation("DebateProposalApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  convertedSession DebateSession?           @relation("ProposalSession")
+  classGroup       ClassGroup?              @relation(fields: [classGroupId], references: [id], onDelete: SetNull)
+  reactions        DebateProposalReaction[]
 
   @@index([studentId])
+  @@index([proposerId])
+  @@index([classGroupId])
+  @@index([status])
+  @@index([approvedById])
+}
+
+model DebateProposalReaction {
+  id         String   @id @default(cuid())
+  proposalId String
+  userId     String
+  type       String   @default("SUPPORT")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  proposal DebateProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([proposalId, userId])
+  @@index([proposalId])
+  @@index([userId])
 }
 
 model Notification {
-  id           String   @id @default(cuid())
-  userId       String
-  title        String
-  message      String
-  type         String   @default("INFO") // INFO, SUCCESS, WARNING, DANGER, DEBATE_FEEDBACK
-  isRead       Boolean  @default(false)
-  evaluationId String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String   @id @default(cuid())
+  userId          String
+  title           String
+  message         String
+  type            String   @default("INFO") // INFO, SUCCESS, WARNING, DANGER, DEBATE_FEEDBACK, DEBATE_DESIGNATION
+  isRead          Boolean  @default(false)
+  evaluationId    String?
+  debateSessionId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  evaluation DebateEvaluation? @relation(fields: [evaluationId], references: [id], onDelete: SetNull)
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  evaluation    DebateEvaluation? @relation(fields: [evaluationId], references: [id], onDelete: SetNull)
+  debateSession DebateSession?    @relation(fields: [debateSessionId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([isRead])
   @@index([evaluationId])
+  @@index([debateSessionId])
+}
+
+model CalendarEvent {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startsAt    DateTime
+  endsAt      DateTime?
+  type        String    @default("INFO") // DEBATE, PARTY, SPECIAL_CLASS, GENERAL
+  location    String?
+  isImportant Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

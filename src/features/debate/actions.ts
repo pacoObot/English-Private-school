@@ -13,7 +13,14 @@ function text(formData: FormData, key: string) {
 
 type ActionStatus = "created" | "updated" | "deleted" | "error" | "evaluated" | "participant_added" | "participant_removed" | "forbidden";
 
-function redirectBack(path: string, result: ActionStatus) {
+function isRedirectError(error: any): error is Error & { digest: string } {
+  return error && (
+    (typeof error.digest === "string" && error.digest.startsWith("NEXT_REDIRECT")) ||
+    error.message === "NEXT_REDIRECT"
+  );
+}
+
+function redirectBack(path: string, result: ActionStatus): never {
   redirect(`${path}?status=${result}`);
 }
 
@@ -25,6 +32,22 @@ async function requireAdmin() {
   }
 
   const allowedRoles: Role[] = [Role.SUPER_ADMIN, Role.ADMIN];
+
+  if (!allowedRoles.includes(session.role)) {
+    redirect(routeForRole(session.role));
+  }
+
+  return session;
+}
+
+async function requireDebateApprover() {
+  const session = await getCurrentSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  const allowedRoles: Role[] = [Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER];
 
   if (!allowedRoles.includes(session.role)) {
     redirect(routeForRole(session.role));
@@ -53,10 +76,12 @@ async function requireDebateManager(sessionId: string) {
 
   const debate = await prisma.debateSession.findUnique({
     where: { id: sessionId },
-    select: { moderatorId: true }
+    select: { moderatorId: true, moderatorExpiresAt: true }
   });
 
-  if (!debate || (debate.moderatorId !== session.userId && !user?.canModerateDebates)) {
+  const activeDelegation = debate?.moderatorId === session.userId && (!debate.moderatorExpiresAt || debate.moderatorExpiresAt >= new Date());
+
+  if (!debate || (!activeDelegation && !user?.canModerateDebates)) {
     redirectBack(`/debate/${sessionId}`, "forbidden");
   }
 
@@ -70,6 +95,9 @@ export async function createDebateSessionAction(formData: FormData) {
   const capacity = parseInt(text(formData, "capacity") || "15", 10);
   const location = text(formData, "location");
   const instructorId = text(formData, "moderatorId");
+  const moderatorExpiresAtValue = text(formData, "moderatorExpiresAt");
+  const moderatorNote = text(formData, "moderatorNote");
+  const classGroupId = text(formData, "classGroupId");
 
   if (!topic || !startsAtValue || isNaN(capacity)) {
     redirectBack("/debate", "error");
@@ -93,9 +121,28 @@ export async function createDebateSessionAction(formData: FormData) {
       capacity,
       location: location || null,
       moderatorId: instructorId || null,
+      moderatorAssignedById: instructorId ? session.userId : null,
+      moderatorAssignedAt: instructorId ? new Date() : null,
+      moderatorExpiresAt: moderatorExpiresAtValue ? new Date(moderatorExpiresAtValue) : null,
+      moderatorNote: moderatorNote || null,
+      classGroupId: classGroupId || null,
       status: DebateSessionStatus.SCHEDULED
     }
   });
+
+  if (instructorId) {
+    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
+    const locationString = debate.location ? ` em ${debate.location}` : "";
+    await prisma.notification.create({
+      data: {
+        userId: instructorId,
+        title: "Designação de Moderador do Debate",
+        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        type: "DEBATE_DESIGNATION",
+        debateSessionId: debate.id
+      }
+    });
+  }
 
   await prisma.auditLog.create({
     data: {
@@ -108,6 +155,44 @@ export async function createDebateSessionAction(formData: FormData) {
 
   revalidatePath("/debate");
   redirectBack("/debate", "created");
+}
+
+export async function updateDebateSessionDetailsAction(formData: FormData) {
+  const id = text(formData, "id");
+  const topic = text(formData, "topic");
+  const startsAtValue = text(formData, "startsAt");
+  const capacity = parseInt(text(formData, "capacity") || "0", 10);
+  const location = text(formData, "location");
+
+  if (!id || !topic || !startsAtValue || !Number.isFinite(capacity) || capacity < 1) {
+    redirectBack(`/debate/${id}`, "error");
+  }
+
+  const session = await requireDebateManager(id);
+
+  const debate = await prisma.debateSession.update({
+    where: { id },
+    data: {
+      topic,
+      startsAt: new Date(startsAtValue),
+      capacity,
+      location: location || null
+    }
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "debate_session_details_updated",
+      entity: "DebateSession",
+      entityId: id,
+      metadata: { topic: debate.topic }
+    }
+  });
+
+  revalidatePath("/debate");
+  revalidatePath(`/debate/${id}`);
+  redirectBack(`/debate/${id}`, "updated");
 }
 
 export async function addDebateParticipantAction(formData: FormData) {
@@ -154,10 +239,12 @@ export async function addDebateParticipantAction(formData: FormData) {
     });
 
     revalidatePath(`/debate/${sessionId}`);
-    redirectBack(`/debate/${sessionId}`, "participant_added");
-  } catch {
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
     return redirectBack(`/debate/${sessionId}`, "error");
   }
+
+  redirectBack(`/debate/${sessionId}`, "participant_added");
 }
 
 export async function removeDebateParticipantAction(formData: FormData) {
@@ -191,10 +278,12 @@ export async function removeDebateParticipantAction(formData: FormData) {
     });
 
     revalidatePath(`/debate/${sessionId}`);
-    redirectBack(`/debate/${sessionId}`, "participant_removed");
-  } catch {
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
     return redirectBack(`/debate/${sessionId}`, "error");
   }
+
+  redirectBack(`/debate/${sessionId}`, "participant_removed");
 }
 
 export async function saveDebateEvaluationAction(formData: FormData) {
@@ -421,12 +510,13 @@ export async function updateDebateSessionStatusAction(formData: FormData) {
 
 export async function proposeDebateTopic(formData: FormData) {
   const session = await getCurrentSession();
-  if (!session || session.role !== "STUDENT") {
-    return { success: false, message: "Apenas estudantes podem propor temas." };
+  if (!session) {
+    return { success: false, message: "Faça login para sugerir um debate." };
   }
 
-  const topic = formData.get("topic") as string;
-  const reason = formData.get("reason") as string;
+  const topic = text(formData, "topic");
+  const reason = text(formData, "reason");
+  const classGroupId = text(formData, "classGroupId");
 
   if (!topic) return { success: false, message: "O tópico é obrigatório." };
 
@@ -434,13 +524,13 @@ export async function proposeDebateTopic(formData: FormData) {
     where: { userId: session.userId }
   });
 
-  if (!student) return { success: false, message: "Perfil não encontrado." };
-
-  await prisma.debateProposal.create({
+  const proposal = await prisma.debateProposal.create({
     data: {
-      studentId: student.id,
+      studentId: student?.id,
+      proposerId: session.userId,
       topic,
       reason,
+      classGroupId: classGroupId || null,
       status: "PENDING"
     }
   });
@@ -454,8 +544,245 @@ export async function proposeDebateTopic(formData: FormData) {
     }
   });
 
+  const approvers = await prisma.user.findMany({
+    where: { isActive: true, role: { in: [Role.SUPER_ADMIN, Role.ADMIN, Role.TEACHER] } },
+    select: { id: true }
+  });
+
+  if (approvers.length > 0) {
+    await prisma.notification.createMany({
+      data: approvers
+        .filter((user) => user.id !== session.userId)
+        .map((user) => ({
+          userId: user.id,
+          title: "Nova sugestão de debate",
+          message: `${session.name} sugeriu "${proposal.topic}" para a Arena de Debates.`,
+          type: "INFO"
+        }))
+    });
+  }
+
+  revalidatePath("/debate");
   revalidatePath("/student/dashboard");
   return { success: true };
+}
+
+export async function createDebateProposalAction(formData: FormData) {
+  const result = await proposeDebateTopic(formData);
+  redirectBack("/debate", result.success ? "created" : "error");
+}
+
+export async function toggleDebateProposalSupportAction(formData: FormData) {
+  const session = await getCurrentSession();
+  const proposalId = text(formData, "proposalId");
+
+  if (!session || !proposalId) {
+    redirectBack("/debate", "error");
+  }
+
+  const proposal = await prisma.debateProposal.findUnique({
+    where: { id: proposalId },
+    select: { id: true, status: true, proposerId: true, topic: true }
+  });
+
+  if (!proposal || proposal.status !== "PENDING") {
+    redirectBack("/debate", "error");
+  }
+
+  const existing = await prisma.debateProposalReaction.findUnique({
+    where: { proposalId_userId: { proposalId, userId: session.userId } }
+  });
+
+  if (existing) {
+    await prisma.debateProposalReaction.delete({ where: { id: existing.id } });
+  } else {
+    await prisma.debateProposalReaction.create({
+      data: {
+        proposalId,
+        userId: session.userId,
+        type: "SUPPORT"
+      }
+    });
+
+    if (proposal.proposerId !== session.userId) {
+      await prisma.notification.create({
+        data: {
+          userId: proposal.proposerId,
+          title: "Apoio à tua sugestão",
+          message: `${session.name} apoiou a sugestão "${proposal.topic}".`,
+          type: "SUCCESS"
+        }
+      });
+    }
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: existing ? "debate_proposal_support_removed" : "debate_proposal_supported",
+      entity: "DebateProposal",
+      entityId: proposalId
+    }
+  });
+
+  revalidatePath("/debate");
+  redirectBack("/debate", "updated");
+}
+
+export async function approveDebateProposalAction(formData: FormData) {
+  const session = await requireDebateApprover();
+  const proposalId = text(formData, "proposalId");
+  const startsAtValue = text(formData, "startsAt");
+  const capacity = parseInt(text(formData, "capacity") || "15", 10);
+  const location = text(formData, "location");
+  const instructorId = text(formData, "moderatorId");
+  const moderatorExpiresAtValue = text(formData, "moderatorExpiresAt");
+  const moderatorNote = text(formData, "moderatorNote");
+  const classGroupId = text(formData, "classGroupId");
+
+  if (!proposalId || !startsAtValue || !Number.isFinite(capacity) || capacity < 1) {
+    redirectBack("/debate", "error");
+  }
+
+  const proposal = await prisma.debateProposal.findUnique({
+    where: { id: proposalId },
+    include: {
+      proposer: true,
+      reactions: { select: { userId: true } }
+    }
+  });
+
+  if (!proposal || proposal.status !== "PENDING") {
+    redirectBack("/debate", "error");
+  }
+
+  if (instructorId) {
+    const instructor = await prisma.user.findUnique({
+      where: { id: instructorId },
+      select: { id: true, isActive: true }
+    });
+
+    if (!instructor?.isActive) {
+      redirectBack("/debate", "forbidden");
+    }
+  }
+
+  const debate = await prisma.$transaction(async (tx) => {
+    const created = await tx.debateSession.create({
+      data: {
+        topic: proposal.topic,
+        startsAt: new Date(startsAtValue),
+        capacity,
+        location: location || null,
+        status: DebateSessionStatus.SCHEDULED,
+        moderatorId: instructorId || null,
+        sourceProposalId: proposal.id,
+        moderatorAssignedById: instructorId ? session.userId : null,
+        moderatorAssignedAt: instructorId ? new Date() : null,
+        moderatorExpiresAt: moderatorExpiresAtValue ? new Date(moderatorExpiresAtValue) : null,
+        moderatorNote: moderatorNote || null,
+        classGroupId: classGroupId || proposal.classGroupId || null
+      }
+    });
+
+    await tx.debateProposal.update({
+      where: { id: proposal.id },
+      data: {
+        status: "APPROVED",
+        approvedById: session.userId,
+        approvedAt: new Date(),
+        convertedSessionId: created.id
+      }
+    });
+
+    await tx.auditLog.create({
+      data: {
+        actorId: session.userId,
+        action: "debate_proposal_approved",
+        entity: "DebateProposal",
+        entityId: proposal.id,
+        metadata: { sessionId: created.id, instructorId: instructorId || null }
+      }
+    });
+
+    return created;
+  });
+
+  const notifyUserIds = new Set<string>([proposal.proposerId, ...proposal.reactions.map((reaction) => reaction.userId)]);
+  notifyUserIds.delete(session.userId);
+  if (instructorId) {
+    notifyUserIds.delete(instructorId);
+  }
+
+  if (notifyUserIds.size > 0) {
+    await prisma.notification.createMany({
+      data: Array.from(notifyUserIds).map((userId) => ({
+        userId,
+        title: "Sugestão de debate aprovada",
+        message: `A sugestão "${debate.topic}" foi aprovada e virou uma sessão da Arena de Debates.`,
+        type: "SUCCESS"
+      }))
+    });
+  }
+
+  if (instructorId) {
+    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
+    const locationString = debate.location ? ` em ${debate.location}` : "";
+    await prisma.notification.create({
+      data: {
+        userId: instructorId,
+        title: "Designação de Moderador do Debate",
+        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        type: "DEBATE_DESIGNATION",
+        debateSessionId: debate.id
+      }
+    });
+  }
+
+  revalidatePath("/debate");
+  revalidatePath(`/debate/${debate.id}`);
+  redirectBack("/debate", "created");
+}
+
+export async function rejectDebateProposalAction(formData: FormData) {
+  const session = await requireDebateApprover();
+  const proposalId = text(formData, "proposalId");
+
+  if (!proposalId) {
+    redirectBack("/debate", "error");
+  }
+
+  const proposal = await prisma.debateProposal.update({
+    where: { id: proposalId },
+    data: {
+      status: "REJECTED",
+      approvedById: session.userId,
+      approvedAt: new Date()
+    }
+  });
+
+  if (proposal.proposerId !== session.userId) {
+    await prisma.notification.create({
+      data: {
+        userId: proposal.proposerId,
+        title: "Sugestão de debate revista",
+        message: `A sugestão "${proposal.topic}" foi revista e não será agendada neste momento.`,
+        type: "WARNING"
+      }
+    });
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "debate_proposal_rejected",
+      entity: "DebateProposal",
+      entityId: proposalId
+    }
+  });
+
+  revalidatePath("/debate");
+  redirectBack("/debate", "updated");
 }
 
 // ── Confirmação de leitura pelo estudante ──
@@ -530,3 +857,64 @@ export async function toggleDebateModeratorAction(formData: FormData) {
   revalidatePath("/debate");
   redirectBack("/admin/staff", "updated");
 }
+
+export async function assignDebateInstructorAction(formData: FormData) {
+  const id = text(formData, "id");
+  const instructorId = text(formData, "moderatorId");
+  const returnTo = text(formData, "returnTo") || `/debate/${id}`;
+
+  if (!id) {
+    redirectBack(returnTo, "error");
+  }
+
+  const session = await requireAdmin();
+
+  if (instructorId) {
+    const instructor = await prisma.user.findUnique({
+      where: { id: instructorId },
+      select: { id: true, role: true, isActive: true }
+    });
+
+    if (!instructor || !instructor.isActive || !([Role.TEACHER, Role.STUDENT] as Role[]).includes(instructor.role)) {
+      redirectBack(returnTo, "forbidden");
+    }
+  }
+
+  const debate = await prisma.debateSession.update({
+    where: { id },
+    data: {
+      moderatorId: instructorId || null,
+      moderatorAssignedById: instructorId ? session.userId : null,
+      moderatorAssignedAt: instructorId ? new Date() : null
+    }
+  });
+
+  if (instructorId) {
+    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
+    const locationString = debate.location ? ` em ${debate.location}` : "";
+    await prisma.notification.create({
+      data: {
+        userId: instructorId,
+        title: "Designação de Moderador do Debate",
+        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        type: "DEBATE_DESIGNATION",
+        debateSessionId: debate.id
+      }
+    });
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "debate_instructor_assigned",
+      entity: "DebateSession",
+      entityId: id,
+      metadata: { instructorId: instructorId || null }
+    }
+  });
+
+  revalidatePath("/debate");
+  revalidatePath(`/debate/${id}`);
+  redirectBack(returnTo, "updated");
+}
+

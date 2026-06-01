@@ -261,6 +261,12 @@ exports.Prisma.DebateSessionScalarFieldEnum = {
   location: 'location',
   status: 'status',
   moderatorId: 'moderatorId',
+  sourceProposalId: 'sourceProposalId',
+  moderatorAssignedById: 'moderatorAssignedById',
+  moderatorAssignedAt: 'moderatorAssignedAt',
+  moderatorExpiresAt: 'moderatorExpiresAt',
+  moderatorNote: 'moderatorNote',
+  classGroupId: 'classGroupId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -301,9 +307,23 @@ exports.Prisma.AuditLogScalarFieldEnum = {
 exports.Prisma.DebateProposalScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
+  proposerId: 'proposerId',
   topic: 'topic',
   reason: 'reason',
   status: 'status',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  convertedSessionId: 'convertedSessionId',
+  classGroupId: 'classGroupId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DebateProposalReactionScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  userId: 'userId',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -316,6 +336,20 @@ exports.Prisma.NotificationScalarFieldEnum = {
   type: 'type',
   isRead: 'isRead',
   evaluationId: 'evaluationId',
+  debateSessionId: 'debateSessionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CalendarEventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  type: 'type',
+  location: 'location',
+  isImportant: 'isImportant',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -396,7 +430,9 @@ exports.Prisma.ModelName = {
   DebateEvaluation: 'DebateEvaluation',
   AuditLog: 'AuditLog',
   DebateProposal: 'DebateProposal',
-  Notification: 'Notification'
+  DebateProposalReaction: 'DebateProposalReaction',
+  Notification: 'Notification',
+  CalendarEvent: 'CalendarEvent'
 };
 
 /**

@@ -16,6 +16,9 @@ type StaffPageProps = {
     tab?: string;
     newCode?: string;
     newName?: string;
+    missing?: string;
+    invalid?: string;
+    duplicate?: string;
   };
 };
 
@@ -34,36 +37,14 @@ export default async function StaffPage({ searchParams }: StaffPageProps) {
   return (
     <DashboardLayout navItems={adminNavigation("/admin/staff")} title="Gestão de Staff" subtitle="Administração e corpo docente" context="Super Admin" darkSidebar>
       <div className="space-y-5">
-        <ActionNotice status={searchParams?.status} />
-
-        {/* ── Credenciais do novo staff ── */}
-        {showCredentials ? (
-          <div className="rounded-3xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 shadow-lg animate-in fade-in slide-in-from-top-2 duration-500">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-white">
-                <CheckCircle size={24} />
-              </div>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-lg font-black text-emerald-900">
-                  Membro de staff criado com sucesso!
-                </h3>
-                <p className="text-sm font-bold text-emerald-700">
-                  {newName} foi registado. Partilhe as credenciais de acesso:
-                </p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-emerald-200 bg-white px-4 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Identificador</p>
-                    <p className="mt-1 text-lg font-black text-navy tracking-wide">{newCode}</p>
-                  </div>
-                  <div className="rounded-2xl border border-emerald-200 bg-white px-4 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Senha Inicial</p>
-                    <p className="mt-1 text-lg font-black text-navy tracking-wide">{DEFAULT_PASSWORD}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
+        <ActionNotice 
+          status={searchParams?.status} 
+          newCode={searchParams?.newCode}
+          newName={searchParams?.newName}
+          missing={searchParams?.missing}
+          invalid={searchParams?.invalid}
+          duplicate={searchParams?.duplicate}
+        />
 
         {/* ── Abas ── */}
         <div className="flex gap-2">

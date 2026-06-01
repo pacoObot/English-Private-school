@@ -3,8 +3,7 @@
 .gitignore
 .gitattributes
 
-# Node
-node_modules
+# Node (node_modules NÃO ignorado - é copiado para build offline-first)
 npm-debug.log
 npm-error.log
 yarn-error.log

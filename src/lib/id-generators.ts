@@ -3,12 +3,13 @@ import { prisma } from "./prisma";
 export async function generateStudentCode(): Promise<string> {
   const currentYear = new Date().getFullYear();
   
-  // Find the last student code for the current year
+  // Find the last student code for the current year (matching both DPS- and DEL-)
   const lastStudent = await prisma.studentProfile.findFirst({
     where: {
-      studentCode: {
-        startsWith: `DEL-${currentYear}-`
-      }
+      OR: [
+        { studentCode: { startsWith: `DPS-${currentYear}-` } },
+        { studentCode: { startsWith: `DEL-${currentYear}-` } }
+      ]
     },
     orderBy: {
       studentCode: 'desc'
@@ -18,14 +19,14 @@ export async function generateStudentCode(): Promise<string> {
   let nextNumber = 1;
   if (lastStudent && lastStudent.studentCode) {
     const parts = lastStudent.studentCode.split('-');
-    const lastNumber = parseInt(parts[2], 10);
+    const lastNumber = parseInt(parts[parts.length - 1], 10);
     if (!isNaN(lastNumber)) {
       nextNumber = lastNumber + 1;
     }
   }
 
-  // Format: DEL-YYYY-XXXX
-  return `DEL-${currentYear}-${nextNumber.toString().padStart(4, '0')}`;
+  // Format: DPS-YYYY-XXXX
+  return `DPS-${currentYear}-${nextNumber.toString().padStart(4, '0')}`;
 }
 
 export async function generateStudentNumber(): Promise<string> {

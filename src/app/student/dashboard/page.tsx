@@ -36,6 +36,34 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
   const debateEvals = student?.debateEvaluations ?? [];
   const debateAvg = debateEvals.length > 0 ? debateEvals.reduce((sum, ev) => sum + ev.fluency + ev.argumentation + ev.posture, 0) / (debateEvals.length * 3) : 0;
 
+  // Habilidades reais baseadas em avaliações académicas e debates
+  let speakingPercentage = 0;
+  if (debateEvals.length > 0) {
+    speakingPercentage = debateAvg * 10;
+  } else {
+    const speakingGrades = student?.grades.filter(g => 
+      /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+    ) ?? [];
+    if (speakingGrades.length > 0) {
+      speakingPercentage = (speakingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / speakingGrades.length) * 100;
+    }
+  }
+
+  const writingGrades = student?.grades.filter(g => 
+    /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title)
+  ) ?? [];
+  
+  let writingPercentage = 0;
+  if (writingGrades.length > 0) {
+    writingPercentage = (writingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / writingGrades.length) * 100;
+  } else if (student?.grades && student.grades.length > 0) {
+    const academicGrades = student.grades.filter(g => 
+      !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+    );
+    const gradesToUse = academicGrades.length > 0 ? academicGrades : student.grades;
+    writingPercentage = (gradesToUse.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / gradesToUse.length) * 100;
+  }
+
   const upcomingDebates = await prisma.debateSession.findMany({
     where: { 
       startsAt: { gte: new Date() },
@@ -88,8 +116,8 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
                 Seu progresso de <span className="italic text-rose-600">Fluência</span> está evoluindo.
               </h3>
               <div className="mt-6 space-y-4 max-w-md">
-                <Progress label="Speaking Skills" value={`${(debateAvg * 10).toFixed(0)}%`} tone="bg-navy" />
-                <Progress label="Writing Mastery" value="0%" tone="bg-rose-600" />
+                <Progress label="Speaking Skills" value={`${speakingPercentage.toFixed(0)}%`} tone="bg-navy" />
+                <Progress label="Writing Mastery" value={`${writingPercentage.toFixed(0)}%`} tone="bg-rose-600" />
               </div>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">

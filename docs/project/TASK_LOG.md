@@ -1,6 +1,239 @@
 # Historico de Tarefas
-2:
-3: ---
+
+---
+
+## 2026-06-01 09:42 SAST - Calendário Académico e Melhorias na Arena de Debates
+
+Resumo:
+- **Página de Calendário Académico (Admin/Estudante)**: Adicionado CRUD e listagem visual de eventos na plataforma admin e feed timeline de eventos no estudante.
+- **Melhorias na Arena de Debates**: Adicionados cartões de rendimento dos últimos 10/20 debates, além de detalhes expansíveis do historial (`<details>`).
+- **Navegação**: Ícone de calendário e links acrescentados às barras laterais.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Passou sem erros de tipo.
+- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo.
+
+---
+
+## 2026-06-01 09:12 SAST - Integração de Habilidades Dinâmicas (Speaking & Writing) em Tempo Real
+
+Resumo:
+- **Cálculo Realimentado no Aluno**: Substituído o valor estático `"0%"` de `Writing Mastery` pelo cálculo real normalizado a partir de notas no histórico de avaliações de escrita. Speaking Skills agora calcula a média ponderada de debates orais com fallback para notas orais.
+- **Bento Card de Habilidades em Notas**: Adicionada a nova secção **Desenvolvimento de Habilidades** na rota `/student/grades`, permitindo que o aluno veja a sua evolução instantaneamente a cada nota ou debate lançado.
+- **Radar de Talentos Administrador**: A aba Talentos de `/admin/students` foi redesenhada para carregar e ponderar tanto Speaking quanto Writing, classificando o ranking pela **Proficiência Geral** do aluno e exibindo barras de progresso horizontais elegantes.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Passou sem erros de tipo.
+- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo (36 rotas compiladas com sucesso).
+
+---
+
+## 2026-05-29 16:45 SAST - Notificações Formais de Designação de Instrutor e Atalho na Arena de Debates
+
+Resumo:
+- **Prisma Schema & Relacionamento**: Adicionada a coluna opcional `debateSessionId` com o respetivo relacionamento `debateSession` à tabela `Notification` no Prisma schema. Aplicada a migração no Docker dev.
+- **Notificação Formal**: Criado um modelo de mensagem formal de designação para o instrutor contendo o tema do debate, data, hora e local da sessão de debate.
+- **Atalho Direto**: Implementada a renderização de um botão de atalho estilizado **Avaliar Participantes** (azul marinho, ícone `GraduationCap`) no centro de notificações (`NotificationCenter`) que redireciona o instrutor diretamente para a Arena Debate onde ele atuará como moderador.
+- **Correção de Redirecionamentos na Arena**: Ajustadas as Server Actions de participante do debate para relançar erros de redirect internos e não darem falhas falsas de sucesso.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Passou sem erros de tipo.
+- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo.
+
+---
+
+## 2026-05-29 16:35 SAST - Refino de Credenciais, Cópia Individual, Arena Debate e Correção de Redirecionamento em Server Actions
+
+Resumo:
+- **Resolução do Bug de Redirecionamento**: Implementada a função auxiliar `isRedirectError` em `actions.ts` de modo a relançar os erros de redirect interno do Next.js. Isto corrige o bug onde qualquer criação bem-sucedida (aluno, matrícula, staff) caía no catch de `handlePrismaError` e redirecionava com erro (`status=error`).
+- **Opções de Cópia Individual**: Adicionados botões individuais de cópia para o Código de Estudante (Username/ID) e a Senha Inicial no popup global `ActionNotice` para os casos de registo (`status=created`) e inscrição (`status=enrolled`).
+- **Fluxo Sugerido de Matrícula**: Criada a sugestão visual e textual explícita de matrícula recomendada ao registar um novo aluno.
+- **Navegação Direta**: Adicionado o botão para navegar diretamente para a **Arena Debate** a partir do popup de registo e inscrição.
+- **Dados Reais na Inscrição**: Garantido que a matrícula exibe dados de acesso reais e as respetivas opções de cópia.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Passou sem erros de tipo.
+- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo (36 rotas otimizadas).
+
+---
+
+## 2026-05-29 15:55 SAST - Correção das Regras de Hooks no ActionNotice e Documentação de Erros
+
+Resumo:
+- Corrigido erro de hooks condicionais ("Rendered more hooks than during the previous render") no componente `ActionNotice` (linha 202, `useEffect`), movendo a lógica do autohide, a verificação de modal estratégico (`isStrategicModal`) e o manipulador de fecho (`handleClose`) para cima do retorno antecipado `return null`.
+- Criado o arquivo técnico [VALIDATION_ERRORS.md](file:///home/paco/Trabalhos_UJAC/Delson_PS/docs/project/VALIDATION_ERRORS.md) detalhando cada caso de erro de validação (campos obrigatórios em falta, formato inválido de e-mail e conflitos/duplicidades de base de dados Prisma) com a correspondente explicação e instruções de resolução expostas ao utilizador.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros de tipagem.
+- `npm run build`: ✅ Construído com sucesso em modo de produção sem avisos de hooks.
+
+---
+
+## 2026-05-29 15:30 SAST - Refino de Popups, Validação de Erros Detalhada e Organização de Contactos
+
+Resumo:
+- Reformulada a lógica de sincronização no componente `ActionNotice` com as props e URL, eliminando bugs de estado obsoleto ("estado preso") e garantindo que erros e sucessos deem feedback de forma fiel.
+- Atualizada a mensagem de registo de estudantes bem-sucedido para destacar a criação de perfil e sugerir a matrícula inteligente na aba ao lado de forma interativa.
+- Criado container visual no popup `ActionNotice` para listar de forma estruturada e em linguagem amigável todas as causas do erro (campos em falta, formatos inválidos ou duplicidades).
+- Redesenhado o formulário de estudantes na aba `registar` com uma seção dedicada e isolada para "Contactos e Encarregado" com visual profissional (moldura, ícone de telefone `Phone` e cabeçalho próprio).
+- Atualizadas as Server Actions de estudantes, staff e matrículas para realizar validações estruturadas dos campos obrigatórios e direcionar o mapeamento exato de erros.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros de tipagem.
+- `npm run build`: ✅ Construído com sucesso e otimizado (36 rotas geradas).
+
+---
+
+## 2026-05-29 15:15 SAST - Popups de Feedback Visual e Unificação de Fluxos
+
+Resumo:
+- Implementados Popups de Feedback Visual globais a partir do redesenho do componente `ActionNotice` para exibição de modais com overlay e desfoque.
+- Unificada a exibição de credenciais temporárias de acesso para novos alunos e staff diretamente nos popups.
+- Integração refinada com a matrícula inteligente e criação de staff sem perda de contexto na navegação.
+- Adicionado relatório visual detalhado para relatórios de importação em lote via CSV.
+- Corrigida a tipagem da página de estudantes (`StudentsPageProps`) no TypeScript.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros de tipagem.
+- `npm run build`: ✅ Construído com sucesso e otimizado (36 rotas geradas).
+
+---
+
+## 2026-05-28 15:10 SAST - Simplificação dos Fluxos Académicos e de Debates
+
+Resumo:
+- Ajustado o fluxo de registo de novos alunos para que o e-mail seja opcional, permitindo que utilizadores sem e-mail sejam inscritos.
+- Adicionado um painel verde de credenciais e instruções de login contendo o Código de Acesso gerado e a senha padrão `Delson@2026`.
+- Implementado o botão "Matricular este Aluno Agora" com redirecionamento e pré-seleção automática do aluno no formulário de matrícula.
+- Implementado o formulário de designação rápida de instrutores diretamente na linha da tabela de debates em `/debate`.
+- Refinadas as mensagens de sucesso para "Inscrição realizada com sucesso!" e "Matrícula realizada com sucesso!".
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros de tipagem.
+- `npm run build`: ✅ Construído com sucesso e otimizado.
+
+---
+
+## 2026-05-28 14:50 SAST - Docker Offline e Guia de Teste da Arena de Debates
+
+Resumo:
+- Ajustada a configuração do Docker para utilizar a imagem local `node:20-alpine`, permitindo builds offline e evitando falhas de rede no ambiente de desenvolvimento.
+- Criado o [Guia de Teste Manual](file:///home/paco/Trabalhos_UJAC/Delson_PS/docs/project/walkthrough_manual_testing.md) detalhando as credenciais de teste para todos os perfis e os passos sequenciais para simular o agendamento de debates, avaliação pelo instrutor e a confirmação de feedback pelo estudante.
+- Verificado o estado dos serviços Docker e Prisma Migrations: ambos ativos, estáveis e saudáveis.
+
+Validacoes:
+- `scripts/start-safe.sh status`: ✅ Base de dados PostgreSQL e app de desenvolvimento ativas e saudáveis.
+- `Prisma Migrations`: ✅ Todas as 8 migrações aplicadas.
+- Teste de Conectividade: ✅ Servidor local na porta 3000 responde com sucesso redirecionando para `/login`.
+
+Pendencias:
+- Nenhuma para esta etapa de startup.
+
+Proxima acao:
+- Executar os testes manuais descritos no guia para validar o ciclo completo na interface gráfica.
+
+---
+
+## 2026-05-19 13:45 SAST - Arena de Debates: Fluxo Público e Interligado
+
+Resumo:
+- Consolidado o workflow da Arena de Debates, que transforma o modelo num formato participativo com Sugestões Públicas na rota `/debate`.
+- Funcionalidade completa: Utilizadores podem enviar ideias, que aparecem como "Sugeridas" onde a comunidade pode "Apoiar".
+- Approvers (Admins, Professores) podem aprovar sugestões criando imediatamente uma `DebateSession` parametrizada, onde definem local, lotação e instrutor delegado.
+- A função de "Instrutor Temporário" é gerida dinamicamente no Prisma: Alunos de excelência ou professores ganham super-poderes num debate específico, permitindo avaliarem fluência, argumentação e postura dos colegas com uma data limite (`moderatorExpiresAt`).
+- Criação de closed-loop notifications: Os participantes avaliados recebem push alerts para conferir as notas no seu portal (`/student/debates`) e quando fazem "Certo, recebido", o instrutor tem confirmação visual da leitura.
+- Todos os guard rails implementados para evitar falhas de permissão. Identity e design responsivo (Navy e Crimson) mantidos limpos e com zero clicks redundantes.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros.
+- `npm run lint`: ✅ Sem impeditivos.
+- `npm run build`: ✅ Sucesso (Rotas Otimizadas).
+- Revisão de fluxo: ✅ Alinhada com as Fases 1-6 especificadas no plano de aprovação.
+
+Pendencias:
+- Ideia Futura (Fase 7 - Leitura ótica de assinaturas para presenças) arquivada no backlog.
+- Sincronização de pagamentos UNIEXE (espera chaves de prod).
+
+Proxima acao:
+- Subir containers locais e navegar os portais autenticado para ensaiar UAT ao vivo com as equipas.
+
+## 2026-05-19 12:48 SAST - UX professor/teacher e fluxo de poucos cliques
+
+Resumo:
+- Transformado `/teacher/dashboard` em painel operacional com atalhos diretos para chamada, notas, fichas e debate.
+- Dashboard docente agora usa turma em foco, resumo real e rodape com turma/horario atribuidos.
+- `/teacher/grades` e `/teacher/attendance` pre-selecionam uma turma e usam formulario GET real para mudar turma.
+- Turmas em notas/presencas ficam filtradas pelo professor quando a role e `TEACHER`.
+- `/teacher/materials` passa a listar cursos/materiais ligados ao professor e mostra quem publicou cada ficha.
+- Professores so conseguem remover/editar materiais proprios; actions reforcadas para validar escopo no servidor.
+- `DebateArena` mostra estado vazio claro quando nao ha sessao designada e respeita falhas da action ao publicar avaliacao.
+- `.gitignore` atualizado com `.next-*` para ignorar artefatos de build renomeados por problemas de permissao.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros.
+- `npm run lint -- --no-cache`: ✅ Sem erros; 2 avisos antigos de `<img>` em `src/app/login/page.tsx`.
+- `npm run build`: ✅ Sucesso, 36 rotas geradas.
+- `npm test -- --runInBand`: ✅ 8/8 testes passando.
+
+Observacoes:
+- O build voltou a encontrar ficheiros root-owned dentro de `.next`. O diretorio foi renomeado para `.next-mixed-owned-20260519-ux`; nao foi possivel apagar sem sudo.
+
+Pendencias:
+- Fazer UAT manual responsivo das telas docentes.
+- Comparar com o prototipo visual da role professor e ajustar micro-layout se necessario.
+- Fazer UAT completo do feedback de debate ate confirmacao pelo aluno.
+
+Proxima acao:
+- Subir a app com `scripts/start-safe.sh dev` e testar o fluxo professor com dados seed atualizados.
+
+## 2026-05-19 12:38 SAST - Refino de fluxos reais, instrutor de debate e seed
+
+Resumo:
+- Corrigido acesso a `/debate` para permitir estudantes quando forem participantes ou instrutores designados, mantendo as permissoes finas nas paginas/actions.
+- Corrigida listagem de sessoes de debate para usar `moderatorId` como `User.id`.
+- Corrigido JSX quebrado em `/debate/[id]`, que impedia o typecheck/build.
+- Refeito `prisma/seed.ts` com dados demonstrativos relacionais e sem rotulos explicitos de teste/ficticio.
+- Melhorado o dashboard Super Admin com pendencias reais: feedback por confirmar, sessoes sem instrutor e materiais recentes.
+- Ajustado dashboard docente para avaliar apenas participantes da sessao designada e removida unidade `MT` de media academica.
+- Corrigida auth da rota `/api/v1/materials` e criacao automatica da pasta de uploads de materiais.
+
+Validacoes:
+- `npx tsc --noEmit`: ✅ Zero erros.
+- `npm run lint -- --no-cache`: ✅ Sem erros; 2 avisos antigos de `<img>` em `src/app/login/page.tsx`.
+- `npm test -- --runInBand`: ✅ 8/8 testes passando.
+- `npm run build`: ✅ Sucesso, 36 rotas geradas.
+
+Observacoes:
+- `.next` estava com permissoes de `root` e bloqueou o primeiro build. O diretorio antigo foi renomeado para `.next-root-owned-20260519`; o build criou um `.next` novo utilizavel.
+
+Pendencias:
+- UAT manual do fluxo Super Admin -> instrutor -> feedback -> confirmacao do aluno.
+- Redesenhar a tela professor/teacher com apoio do prototipo para reduzir cliques e separar melhor as acoes.
+- Validar responsividade nas telas alteradas.
+
+Proxima acao:
+- Avancar para a fase de UX da role professor/teacher e validar o fluxo completo com dados seed atualizados.
+
+## 2026-05-19 12:00 SAST - CRUD de Fichas (Study Materials)
+
+Resumo:
+- Adicionado upload físico de ficheiros na ação `createStudyMaterialAction` e criada `updateStudyMaterialAction`.
+- Atualizada UI do Portal Docente (`/teacher/materials`) para permitir enviar e fazer download de ficheiros de estudo (PDF, DOCX).
+- Atualizada UI do Portal Estudante (`/student/materials`) para habilitar o link real de download de fichas.
+- Criada nova rota `/admin/materials` para gestão global de fichas por parte do Super Admin.
+- Criada rota API `/api/v1/materials` para suporte a integrações externas (UNIEXE).
+
+Validacoes:
+- `scripts/start-safe.sh dev`: ✅ Projeto e Docker iniciados com sucesso.
+- Interface Teacher/Admin/Student: ✅ Atualizadas.
+- Upload Ficheiros: ✅ Diretorias locais configuradas em `public/uploads/materials`.
+
+Pendencias:
+- Integrar com Storage Cloud (S3/Vercel Blob) caso o volume de dados em disco seja um problema em produção.
+
+Proxima acao:
+- Validar envio de material com diferentes tipos de arquivo via UI.
+
 
 ## 2026-05-12 09:55 SAST - Preparação para Handoff e Desenvolvimento Local
 

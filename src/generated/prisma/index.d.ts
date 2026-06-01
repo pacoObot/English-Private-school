@@ -94,10 +94,20 @@ export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
  */
 export type DebateProposal = $Result.DefaultSelection<Prisma.$DebateProposalPayload>
 /**
+ * Model DebateProposalReaction
+ * 
+ */
+export type DebateProposalReaction = $Result.DefaultSelection<Prisma.$DebateProposalReactionPayload>
+/**
  * Model Notification
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model CalendarEvent
+ * 
+ */
+export type CalendarEvent = $Result.DefaultSelection<Prisma.$CalendarEventPayload>
 
 /**
  * Enums
@@ -457,6 +467,16 @@ export class PrismaClient<
   get debateProposal(): Prisma.DebateProposalDelegate<ExtArgs>;
 
   /**
+   * `prisma.debateProposalReaction`: Exposes CRUD operations for the **DebateProposalReaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DebateProposalReactions
+    * const debateProposalReactions = await prisma.debateProposalReaction.findMany()
+    * ```
+    */
+  get debateProposalReaction(): Prisma.DebateProposalReactionDelegate<ExtArgs>;
+
+  /**
    * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
     * Example usage:
     * ```ts
@@ -465,6 +485,16 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.calendarEvent`: Exposes CRUD operations for the **CalendarEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CalendarEvents
+    * const calendarEvents = await prisma.calendarEvent.findMany()
+    * ```
+    */
+  get calendarEvent(): Prisma.CalendarEventDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -922,7 +952,9 @@ export namespace Prisma {
     DebateEvaluation: 'DebateEvaluation',
     AuditLog: 'AuditLog',
     DebateProposal: 'DebateProposal',
-    Notification: 'Notification'
+    DebateProposalReaction: 'DebateProposalReaction',
+    Notification: 'Notification',
+    CalendarEvent: 'CalendarEvent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -938,7 +970,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "receipt" | "debateSession" | "debateParticipant" | "debateEvaluation" | "auditLog" | "debateProposal" | "notification"
+      modelProps: "user" | "studentProfile" | "teacherProfile" | "course" | "classGroup" | "enrollment" | "attendance" | "grade" | "studyMaterial" | "invoice" | "receipt" | "debateSession" | "debateParticipant" | "debateEvaluation" | "auditLog" | "debateProposal" | "debateProposalReaction" | "notification" | "calendarEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2062,6 +2094,76 @@ export namespace Prisma {
           }
         }
       }
+      DebateProposalReaction: {
+        payload: Prisma.$DebateProposalReactionPayload<ExtArgs>
+        fields: Prisma.DebateProposalReactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DebateProposalReactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DebateProposalReactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          findFirst: {
+            args: Prisma.DebateProposalReactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DebateProposalReactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          findMany: {
+            args: Prisma.DebateProposalReactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>[]
+          }
+          create: {
+            args: Prisma.DebateProposalReactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          createMany: {
+            args: Prisma.DebateProposalReactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DebateProposalReactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>[]
+          }
+          delete: {
+            args: Prisma.DebateProposalReactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          update: {
+            args: Prisma.DebateProposalReactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.DebateProposalReactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DebateProposalReactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DebateProposalReactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DebateProposalReactionPayload>
+          }
+          aggregate: {
+            args: Prisma.DebateProposalReactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDebateProposalReaction>
+          }
+          groupBy: {
+            args: Prisma.DebateProposalReactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DebateProposalReactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DebateProposalReactionCountArgs<ExtArgs>
+            result: $Utils.Optional<DebateProposalReactionCountAggregateOutputType> | number
+          }
+        }
+      }
       Notification: {
         payload: Prisma.$NotificationPayload<ExtArgs>
         fields: Prisma.NotificationFieldRefs
@@ -2129,6 +2231,76 @@ export namespace Prisma {
           count: {
             args: Prisma.NotificationCountArgs<ExtArgs>
             result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      CalendarEvent: {
+        payload: Prisma.$CalendarEventPayload<ExtArgs>
+        fields: Prisma.CalendarEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CalendarEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CalendarEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          findFirst: {
+            args: Prisma.CalendarEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CalendarEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          findMany: {
+            args: Prisma.CalendarEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>[]
+          }
+          create: {
+            args: Prisma.CalendarEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          createMany: {
+            args: Prisma.CalendarEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CalendarEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>[]
+          }
+          delete: {
+            args: Prisma.CalendarEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          update: {
+            args: Prisma.CalendarEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.CalendarEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CalendarEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.CalendarEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          aggregate: {
+            args: Prisma.CalendarEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCalendarEvent>
+          }
+          groupBy: {
+            args: Prisma.CalendarEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CalendarEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CalendarEventCountArgs<ExtArgs>
+            result: $Utils.Optional<CalendarEventCountAggregateOutputType> | number
           }
         }
       }
@@ -2296,14 +2468,22 @@ export namespace Prisma {
     auditLogs: number
     notifications: number
     moderatedDebates: number
+    assignedDebateSessions: number
     debateEvaluationsGiven: number
+    debateProposals: number
+    approvedDebateProposals: number
+    debateProposalReactions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     moderatedDebates?: boolean | UserCountOutputTypeCountModeratedDebatesArgs
+    assignedDebateSessions?: boolean | UserCountOutputTypeCountAssignedDebateSessionsArgs
     debateEvaluationsGiven?: boolean | UserCountOutputTypeCountDebateEvaluationsGivenArgs
+    debateProposals?: boolean | UserCountOutputTypeCountDebateProposalsArgs
+    approvedDebateProposals?: boolean | UserCountOutputTypeCountApprovedDebateProposalsArgs
+    debateProposalReactions?: boolean | UserCountOutputTypeCountDebateProposalReactionsArgs
   }
 
   // Custom InputTypes
@@ -2341,8 +2521,36 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountAssignedDebateSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountDebateEvaluationsGivenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DebateEvaluationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDebateProposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountApprovedDebateProposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDebateProposalReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalReactionWhereInput
   }
 
 
@@ -2537,12 +2745,16 @@ export namespace Prisma {
     enrollments: number
     attendances: number
     grades: number
+    debates: number
+    proposals: number
   }
 
   export type ClassGroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollments?: boolean | ClassGroupCountOutputTypeCountEnrollmentsArgs
     attendances?: boolean | ClassGroupCountOutputTypeCountAttendancesArgs
     grades?: boolean | ClassGroupCountOutputTypeCountGradesArgs
+    debates?: boolean | ClassGroupCountOutputTypeCountDebatesArgs
+    proposals?: boolean | ClassGroupCountOutputTypeCountProposalsArgs
   }
 
   // Custom InputTypes
@@ -2575,6 +2787,20 @@ export namespace Prisma {
    */
   export type ClassGroupCountOutputTypeCountGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GradeWhereInput
+  }
+
+  /**
+   * ClassGroupCountOutputType without action
+   */
+  export type ClassGroupCountOutputTypeCountDebatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateSessionWhereInput
+  }
+
+  /**
+   * ClassGroupCountOutputType without action
+   */
+  export type ClassGroupCountOutputTypeCountProposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalWhereInput
   }
 
 
@@ -2616,11 +2842,13 @@ export namespace Prisma {
   export type DebateSessionCountOutputType = {
     evaluations: number
     participants: number
+    notifications: number
   }
 
   export type DebateSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | DebateSessionCountOutputTypeCountEvaluationsArgs
     participants?: boolean | DebateSessionCountOutputTypeCountParticipantsArgs
+    notifications?: boolean | DebateSessionCountOutputTypeCountNotificationsArgs
   }
 
   // Custom InputTypes
@@ -2646,6 +2874,13 @@ export namespace Prisma {
    */
   export type DebateSessionCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DebateParticipantWhereInput
+  }
+
+  /**
+   * DebateSessionCountOutputType without action
+   */
+  export type DebateSessionCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
 
@@ -2677,6 +2912,37 @@ export namespace Prisma {
    */
   export type DebateEvaluationCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+
+  /**
+   * Count Type DebateProposalCountOutputType
+   */
+
+  export type DebateProposalCountOutputType = {
+    reactions: number
+  }
+
+  export type DebateProposalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reactions?: boolean | DebateProposalCountOutputTypeCountReactionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DebateProposalCountOutputType without action
+   */
+  export type DebateProposalCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalCountOutputType
+     */
+    select?: DebateProposalCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DebateProposalCountOutputType without action
+   */
+  export type DebateProposalCountOutputTypeCountReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalReactionWhereInput
   }
 
 
@@ -2893,7 +3159,11 @@ export namespace Prisma {
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     moderatedDebates?: boolean | User$moderatedDebatesArgs<ExtArgs>
+    assignedDebateSessions?: boolean | User$assignedDebateSessionsArgs<ExtArgs>
     debateEvaluationsGiven?: boolean | User$debateEvaluationsGivenArgs<ExtArgs>
+    debateProposals?: boolean | User$debateProposalsArgs<ExtArgs>
+    approvedDebateProposals?: boolean | User$approvedDebateProposalsArgs<ExtArgs>
+    debateProposalReactions?: boolean | User$debateProposalReactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2929,7 +3199,11 @@ export namespace Prisma {
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     moderatedDebates?: boolean | User$moderatedDebatesArgs<ExtArgs>
+    assignedDebateSessions?: boolean | User$assignedDebateSessionsArgs<ExtArgs>
     debateEvaluationsGiven?: boolean | User$debateEvaluationsGivenArgs<ExtArgs>
+    debateProposals?: boolean | User$debateProposalsArgs<ExtArgs>
+    approvedDebateProposals?: boolean | User$approvedDebateProposalsArgs<ExtArgs>
+    debateProposalReactions?: boolean | User$debateProposalReactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2942,7 +3216,11 @@ export namespace Prisma {
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       moderatedDebates: Prisma.$DebateSessionPayload<ExtArgs>[]
+      assignedDebateSessions: Prisma.$DebateSessionPayload<ExtArgs>[]
       debateEvaluationsGiven: Prisma.$DebateEvaluationPayload<ExtArgs>[]
+      debateProposals: Prisma.$DebateProposalPayload<ExtArgs>[]
+      approvedDebateProposals: Prisma.$DebateProposalPayload<ExtArgs>[]
+      debateProposalReactions: Prisma.$DebateProposalReactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3324,7 +3602,11 @@ export namespace Prisma {
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany"> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany"> | Null>
     moderatedDebates<T extends User$moderatedDebatesArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedDebatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    assignedDebateSessions<T extends User$assignedDebateSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedDebateSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findMany"> | Null>
     debateEvaluationsGiven<T extends User$debateEvaluationsGivenArgs<ExtArgs> = {}>(args?: Subset<T, User$debateEvaluationsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findMany"> | Null>
+    debateProposals<T extends User$debateProposalsArgs<ExtArgs> = {}>(args?: Subset<T, User$debateProposalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalPayload<ExtArgs>, T, "findMany"> | Null>
+    approvedDebateProposals<T extends User$approvedDebateProposalsArgs<ExtArgs> = {}>(args?: Subset<T, User$approvedDebateProposalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalPayload<ExtArgs>, T, "findMany"> | Null>
+    debateProposalReactions<T extends User$debateProposalReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$debateProposalReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3768,6 +4050,26 @@ export namespace Prisma {
   }
 
   /**
+   * User.assignedDebateSessions
+   */
+  export type User$assignedDebateSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateSession
+     */
+    select?: DebateSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionInclude<ExtArgs> | null
+    where?: DebateSessionWhereInput
+    orderBy?: DebateSessionOrderByWithRelationInput | DebateSessionOrderByWithRelationInput[]
+    cursor?: DebateSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateSessionScalarFieldEnum | DebateSessionScalarFieldEnum[]
+  }
+
+  /**
    * User.debateEvaluationsGiven
    */
   export type User$debateEvaluationsGivenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3785,6 +4087,66 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DebateEvaluationScalarFieldEnum | DebateEvaluationScalarFieldEnum[]
+  }
+
+  /**
+   * User.debateProposals
+   */
+  export type User$debateProposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposal
+     */
+    select?: DebateProposalSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalInclude<ExtArgs> | null
+    where?: DebateProposalWhereInput
+    orderBy?: DebateProposalOrderByWithRelationInput | DebateProposalOrderByWithRelationInput[]
+    cursor?: DebateProposalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateProposalScalarFieldEnum | DebateProposalScalarFieldEnum[]
+  }
+
+  /**
+   * User.approvedDebateProposals
+   */
+  export type User$approvedDebateProposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposal
+     */
+    select?: DebateProposalSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalInclude<ExtArgs> | null
+    where?: DebateProposalWhereInput
+    orderBy?: DebateProposalOrderByWithRelationInput | DebateProposalOrderByWithRelationInput[]
+    cursor?: DebateProposalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateProposalScalarFieldEnum | DebateProposalScalarFieldEnum[]
+  }
+
+  /**
+   * User.debateProposalReactions
+   */
+  export type User$debateProposalReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    where?: DebateProposalReactionWhereInput
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    cursor?: DebateProposalReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateProposalReactionScalarFieldEnum | DebateProposalReactionScalarFieldEnum[]
   }
 
   /**
@@ -7225,6 +7587,8 @@ export namespace Prisma {
     enrollments?: boolean | ClassGroup$enrollmentsArgs<ExtArgs>
     attendances?: boolean | ClassGroup$attendancesArgs<ExtArgs>
     grades?: boolean | ClassGroup$gradesArgs<ExtArgs>
+    debates?: boolean | ClassGroup$debatesArgs<ExtArgs>
+    proposals?: boolean | ClassGroup$proposalsArgs<ExtArgs>
     _count?: boolean | ClassGroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["classGroup"]>
 
@@ -7262,6 +7626,8 @@ export namespace Prisma {
     enrollments?: boolean | ClassGroup$enrollmentsArgs<ExtArgs>
     attendances?: boolean | ClassGroup$attendancesArgs<ExtArgs>
     grades?: boolean | ClassGroup$gradesArgs<ExtArgs>
+    debates?: boolean | ClassGroup$debatesArgs<ExtArgs>
+    proposals?: boolean | ClassGroup$proposalsArgs<ExtArgs>
     _count?: boolean | ClassGroupCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClassGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7277,6 +7643,8 @@ export namespace Prisma {
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
       attendances: Prisma.$AttendancePayload<ExtArgs>[]
       grades: Prisma.$GradePayload<ExtArgs>[]
+      debates: Prisma.$DebateSessionPayload<ExtArgs>[]
+      proposals: Prisma.$DebateProposalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7658,6 +8026,8 @@ export namespace Prisma {
     enrollments<T extends ClassGroup$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, ClassGroup$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany"> | Null>
     attendances<T extends ClassGroup$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, ClassGroup$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany"> | Null>
     grades<T extends ClassGroup$gradesArgs<ExtArgs> = {}>(args?: Subset<T, ClassGroup$gradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findMany"> | Null>
+    debates<T extends ClassGroup$debatesArgs<ExtArgs> = {}>(args?: Subset<T, ClassGroup$debatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    proposals<T extends ClassGroup$proposalsArgs<ExtArgs> = {}>(args?: Subset<T, ClassGroup$proposalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8087,6 +8457,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GradeScalarFieldEnum | GradeScalarFieldEnum[]
+  }
+
+  /**
+   * ClassGroup.debates
+   */
+  export type ClassGroup$debatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateSession
+     */
+    select?: DebateSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionInclude<ExtArgs> | null
+    where?: DebateSessionWhereInput
+    orderBy?: DebateSessionOrderByWithRelationInput | DebateSessionOrderByWithRelationInput[]
+    cursor?: DebateSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateSessionScalarFieldEnum | DebateSessionScalarFieldEnum[]
+  }
+
+  /**
+   * ClassGroup.proposals
+   */
+  export type ClassGroup$proposalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposal
+     */
+    select?: DebateProposalSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalInclude<ExtArgs> | null
+    where?: DebateProposalWhereInput
+    orderBy?: DebateProposalOrderByWithRelationInput | DebateProposalOrderByWithRelationInput[]
+    cursor?: DebateProposalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateProposalScalarFieldEnum | DebateProposalScalarFieldEnum[]
   }
 
   /**
@@ -14245,6 +14655,12 @@ export namespace Prisma {
     location: string | null
     status: $Enums.DebateSessionStatus | null
     moderatorId: string | null
+    sourceProposalId: string | null
+    moderatorAssignedById: string | null
+    moderatorAssignedAt: Date | null
+    moderatorExpiresAt: Date | null
+    moderatorNote: string | null
+    classGroupId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14257,6 +14673,12 @@ export namespace Prisma {
     location: string | null
     status: $Enums.DebateSessionStatus | null
     moderatorId: string | null
+    sourceProposalId: string | null
+    moderatorAssignedById: string | null
+    moderatorAssignedAt: Date | null
+    moderatorExpiresAt: Date | null
+    moderatorNote: string | null
+    classGroupId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14269,6 +14691,12 @@ export namespace Prisma {
     location: number
     status: number
     moderatorId: number
+    sourceProposalId: number
+    moderatorAssignedById: number
+    moderatorAssignedAt: number
+    moderatorExpiresAt: number
+    moderatorNote: number
+    classGroupId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -14291,6 +14719,12 @@ export namespace Prisma {
     location?: true
     status?: true
     moderatorId?: true
+    sourceProposalId?: true
+    moderatorAssignedById?: true
+    moderatorAssignedAt?: true
+    moderatorExpiresAt?: true
+    moderatorNote?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14303,6 +14737,12 @@ export namespace Prisma {
     location?: true
     status?: true
     moderatorId?: true
+    sourceProposalId?: true
+    moderatorAssignedById?: true
+    moderatorAssignedAt?: true
+    moderatorExpiresAt?: true
+    moderatorNote?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14315,6 +14755,12 @@ export namespace Prisma {
     location?: true
     status?: true
     moderatorId?: true
+    sourceProposalId?: true
+    moderatorAssignedById?: true
+    moderatorAssignedAt?: true
+    moderatorExpiresAt?: true
+    moderatorNote?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14414,6 +14860,12 @@ export namespace Prisma {
     location: string | null
     status: $Enums.DebateSessionStatus
     moderatorId: string | null
+    sourceProposalId: string | null
+    moderatorAssignedById: string | null
+    moderatorAssignedAt: Date | null
+    moderatorExpiresAt: Date | null
+    moderatorNote: string | null
+    classGroupId: string | null
     createdAt: Date
     updatedAt: Date
     _count: DebateSessionCountAggregateOutputType | null
@@ -14445,11 +14897,21 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     moderatorId?: boolean
+    sourceProposalId?: boolean
+    moderatorAssignedById?: boolean
+    moderatorAssignedAt?: boolean
+    moderatorExpiresAt?: boolean
+    moderatorNote?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
+    moderatorAssignedBy?: boolean | DebateSession$moderatorAssignedByArgs<ExtArgs>
+    sourceProposal?: boolean | DebateSession$sourceProposalArgs<ExtArgs>
+    classGroup?: boolean | DebateSession$classGroupArgs<ExtArgs>
     evaluations?: boolean | DebateSession$evaluationsArgs<ExtArgs>
     participants?: boolean | DebateSession$participantsArgs<ExtArgs>
+    notifications?: boolean | DebateSession$notificationsArgs<ExtArgs>
     _count?: boolean | DebateSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debateSession"]>
 
@@ -14461,9 +14923,18 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     moderatorId?: boolean
+    sourceProposalId?: boolean
+    moderatorAssignedById?: boolean
+    moderatorAssignedAt?: boolean
+    moderatorExpiresAt?: boolean
+    moderatorNote?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
+    moderatorAssignedBy?: boolean | DebateSession$moderatorAssignedByArgs<ExtArgs>
+    sourceProposal?: boolean | DebateSession$sourceProposalArgs<ExtArgs>
+    classGroup?: boolean | DebateSession$classGroupArgs<ExtArgs>
   }, ExtArgs["result"]["debateSession"]>
 
   export type DebateSessionSelectScalar = {
@@ -14474,26 +14945,43 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     moderatorId?: boolean
+    sourceProposalId?: boolean
+    moderatorAssignedById?: boolean
+    moderatorAssignedAt?: boolean
+    moderatorExpiresAt?: boolean
+    moderatorNote?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type DebateSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
+    moderatorAssignedBy?: boolean | DebateSession$moderatorAssignedByArgs<ExtArgs>
+    sourceProposal?: boolean | DebateSession$sourceProposalArgs<ExtArgs>
+    classGroup?: boolean | DebateSession$classGroupArgs<ExtArgs>
     evaluations?: boolean | DebateSession$evaluationsArgs<ExtArgs>
     participants?: boolean | DebateSession$participantsArgs<ExtArgs>
+    notifications?: boolean | DebateSession$notificationsArgs<ExtArgs>
     _count?: boolean | DebateSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DebateSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     moderator?: boolean | DebateSession$moderatorArgs<ExtArgs>
+    moderatorAssignedBy?: boolean | DebateSession$moderatorAssignedByArgs<ExtArgs>
+    sourceProposal?: boolean | DebateSession$sourceProposalArgs<ExtArgs>
+    classGroup?: boolean | DebateSession$classGroupArgs<ExtArgs>
   }
 
   export type $DebateSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DebateSession"
     objects: {
       moderator: Prisma.$UserPayload<ExtArgs> | null
+      moderatorAssignedBy: Prisma.$UserPayload<ExtArgs> | null
+      sourceProposal: Prisma.$DebateProposalPayload<ExtArgs> | null
+      classGroup: Prisma.$ClassGroupPayload<ExtArgs> | null
       evaluations: Prisma.$DebateEvaluationPayload<ExtArgs>[]
       participants: Prisma.$DebateParticipantPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14503,6 +14991,12 @@ export namespace Prisma {
       location: string | null
       status: $Enums.DebateSessionStatus
       moderatorId: string | null
+      sourceProposalId: string | null
+      moderatorAssignedById: string | null
+      moderatorAssignedAt: Date | null
+      moderatorExpiresAt: Date | null
+      moderatorNote: string | null
+      classGroupId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["debateSession"]>
@@ -14870,8 +15364,12 @@ export namespace Prisma {
   export interface Prisma__DebateSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     moderator<T extends DebateSession$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    moderatorAssignedBy<T extends DebateSession$moderatorAssignedByArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$moderatorAssignedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    sourceProposal<T extends DebateSession$sourceProposalArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$sourceProposalArgs<ExtArgs>>): Prisma__DebateProposalClient<$Result.GetResult<Prisma.$DebateProposalPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    classGroup<T extends DebateSession$classGroupArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$classGroupArgs<ExtArgs>>): Prisma__ClassGroupClient<$Result.GetResult<Prisma.$ClassGroupPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     evaluations<T extends DebateSession$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findMany"> | Null>
     participants<T extends DebateSession$participantsArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateParticipantPayload<ExtArgs>, T, "findMany"> | Null>
+    notifications<T extends DebateSession$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, DebateSession$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14908,6 +15406,12 @@ export namespace Prisma {
     readonly location: FieldRef<"DebateSession", 'String'>
     readonly status: FieldRef<"DebateSession", 'DebateSessionStatus'>
     readonly moderatorId: FieldRef<"DebateSession", 'String'>
+    readonly sourceProposalId: FieldRef<"DebateSession", 'String'>
+    readonly moderatorAssignedById: FieldRef<"DebateSession", 'String'>
+    readonly moderatorAssignedAt: FieldRef<"DebateSession", 'DateTime'>
+    readonly moderatorExpiresAt: FieldRef<"DebateSession", 'DateTime'>
+    readonly moderatorNote: FieldRef<"DebateSession", 'String'>
+    readonly classGroupId: FieldRef<"DebateSession", 'String'>
     readonly createdAt: FieldRef<"DebateSession", 'DateTime'>
     readonly updatedAt: FieldRef<"DebateSession", 'DateTime'>
   }
@@ -15243,6 +15747,51 @@ export namespace Prisma {
   }
 
   /**
+   * DebateSession.moderatorAssignedBy
+   */
+  export type DebateSession$moderatorAssignedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * DebateSession.sourceProposal
+   */
+  export type DebateSession$sourceProposalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposal
+     */
+    select?: DebateProposalSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalInclude<ExtArgs> | null
+    where?: DebateProposalWhereInput
+  }
+
+  /**
+   * DebateSession.classGroup
+   */
+  export type DebateSession$classGroupArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClassGroup
+     */
+    select?: ClassGroupSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClassGroupInclude<ExtArgs> | null
+    where?: ClassGroupWhereInput
+  }
+
+  /**
    * DebateSession.evaluations
    */
   export type DebateSession$evaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15280,6 +15829,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DebateParticipantScalarFieldEnum | DebateParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * DebateSession.notifications
+   */
+  export type DebateSession$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -18329,9 +18898,14 @@ export namespace Prisma {
   export type DebateProposalMinAggregateOutputType = {
     id: string | null
     studentId: string | null
+    proposerId: string | null
     topic: string | null
     reason: string | null
     status: string | null
+    approvedById: string | null
+    approvedAt: Date | null
+    convertedSessionId: string | null
+    classGroupId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18339,9 +18913,14 @@ export namespace Prisma {
   export type DebateProposalMaxAggregateOutputType = {
     id: string | null
     studentId: string | null
+    proposerId: string | null
     topic: string | null
     reason: string | null
     status: string | null
+    approvedById: string | null
+    approvedAt: Date | null
+    convertedSessionId: string | null
+    classGroupId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18349,9 +18928,14 @@ export namespace Prisma {
   export type DebateProposalCountAggregateOutputType = {
     id: number
     studentId: number
+    proposerId: number
     topic: number
     reason: number
     status: number
+    approvedById: number
+    approvedAt: number
+    convertedSessionId: number
+    classGroupId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -18361,9 +18945,14 @@ export namespace Prisma {
   export type DebateProposalMinAggregateInputType = {
     id?: true
     studentId?: true
+    proposerId?: true
     topic?: true
     reason?: true
     status?: true
+    approvedById?: true
+    approvedAt?: true
+    convertedSessionId?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -18371,9 +18960,14 @@ export namespace Prisma {
   export type DebateProposalMaxAggregateInputType = {
     id?: true
     studentId?: true
+    proposerId?: true
     topic?: true
     reason?: true
     status?: true
+    approvedById?: true
+    approvedAt?: true
+    convertedSessionId?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -18381,9 +18975,14 @@ export namespace Prisma {
   export type DebateProposalCountAggregateInputType = {
     id?: true
     studentId?: true
+    proposerId?: true
     topic?: true
     reason?: true
     status?: true
+    approvedById?: true
+    approvedAt?: true
+    convertedSessionId?: true
+    classGroupId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -18463,10 +19062,15 @@ export namespace Prisma {
 
   export type DebateProposalGroupByOutputType = {
     id: string
-    studentId: string
+    studentId: string | null
+    proposerId: string
     topic: string
     reason: string | null
     status: string
+    approvedById: string | null
+    approvedAt: Date | null
+    convertedSessionId: string | null
+    classGroupId: string | null
     createdAt: Date
     updatedAt: Date
     _count: DebateProposalCountAggregateOutputType | null
@@ -18491,53 +19095,96 @@ export namespace Prisma {
   export type DebateProposalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     studentId?: boolean
+    proposerId?: boolean
     topic?: boolean
     reason?: boolean
     status?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    convertedSessionId?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    student?: boolean | DebateProposal$studentArgs<ExtArgs>
+    proposer?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | DebateProposal$approvedByArgs<ExtArgs>
+    convertedSession?: boolean | DebateProposal$convertedSessionArgs<ExtArgs>
+    classGroup?: boolean | DebateProposal$classGroupArgs<ExtArgs>
+    reactions?: boolean | DebateProposal$reactionsArgs<ExtArgs>
+    _count?: boolean | DebateProposalCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["debateProposal"]>
 
   export type DebateProposalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     studentId?: boolean
+    proposerId?: boolean
     topic?: boolean
     reason?: boolean
     status?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    convertedSessionId?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    student?: boolean | DebateProposal$studentArgs<ExtArgs>
+    proposer?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | DebateProposal$approvedByArgs<ExtArgs>
+    classGroup?: boolean | DebateProposal$classGroupArgs<ExtArgs>
   }, ExtArgs["result"]["debateProposal"]>
 
   export type DebateProposalSelectScalar = {
     id?: boolean
     studentId?: boolean
+    proposerId?: boolean
     topic?: boolean
     reason?: boolean
     status?: boolean
+    approvedById?: boolean
+    approvedAt?: boolean
+    convertedSessionId?: boolean
+    classGroupId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type DebateProposalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    student?: boolean | DebateProposal$studentArgs<ExtArgs>
+    proposer?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | DebateProposal$approvedByArgs<ExtArgs>
+    convertedSession?: boolean | DebateProposal$convertedSessionArgs<ExtArgs>
+    classGroup?: boolean | DebateProposal$classGroupArgs<ExtArgs>
+    reactions?: boolean | DebateProposal$reactionsArgs<ExtArgs>
+    _count?: boolean | DebateProposalCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DebateProposalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    student?: boolean | DebateProposal$studentArgs<ExtArgs>
+    proposer?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | DebateProposal$approvedByArgs<ExtArgs>
+    classGroup?: boolean | DebateProposal$classGroupArgs<ExtArgs>
   }
 
   export type $DebateProposalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DebateProposal"
     objects: {
-      student: Prisma.$StudentProfilePayload<ExtArgs>
+      student: Prisma.$StudentProfilePayload<ExtArgs> | null
+      proposer: Prisma.$UserPayload<ExtArgs>
+      approvedBy: Prisma.$UserPayload<ExtArgs> | null
+      convertedSession: Prisma.$DebateSessionPayload<ExtArgs> | null
+      classGroup: Prisma.$ClassGroupPayload<ExtArgs> | null
+      reactions: Prisma.$DebateProposalReactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      studentId: string
+      studentId: string | null
+      proposerId: string
       topic: string
       reason: string | null
       status: string
+      approvedById: string | null
+      approvedAt: Date | null
+      convertedSessionId: string | null
+      classGroupId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["debateProposal"]>
@@ -18904,7 +19551,12 @@ export namespace Prisma {
    */
   export interface Prisma__DebateProposalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    student<T extends DebateProposal$studentArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposal$studentArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    proposer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    approvedBy<T extends DebateProposal$approvedByArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposal$approvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    convertedSession<T extends DebateProposal$convertedSessionArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposal$convertedSessionArgs<ExtArgs>>): Prisma__DebateSessionClient<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    classGroup<T extends DebateProposal$classGroupArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposal$classGroupArgs<ExtArgs>>): Prisma__ClassGroupClient<$Result.GetResult<Prisma.$ClassGroupPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    reactions<T extends DebateProposal$reactionsArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposal$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18936,9 +19588,14 @@ export namespace Prisma {
   interface DebateProposalFieldRefs {
     readonly id: FieldRef<"DebateProposal", 'String'>
     readonly studentId: FieldRef<"DebateProposal", 'String'>
+    readonly proposerId: FieldRef<"DebateProposal", 'String'>
     readonly topic: FieldRef<"DebateProposal", 'String'>
     readonly reason: FieldRef<"DebateProposal", 'String'>
     readonly status: FieldRef<"DebateProposal", 'String'>
+    readonly approvedById: FieldRef<"DebateProposal", 'String'>
+    readonly approvedAt: FieldRef<"DebateProposal", 'DateTime'>
+    readonly convertedSessionId: FieldRef<"DebateProposal", 'String'>
+    readonly classGroupId: FieldRef<"DebateProposal", 'String'>
     readonly createdAt: FieldRef<"DebateProposal", 'DateTime'>
     readonly updatedAt: FieldRef<"DebateProposal", 'DateTime'>
   }
@@ -19259,6 +19916,86 @@ export namespace Prisma {
   }
 
   /**
+   * DebateProposal.student
+   */
+  export type DebateProposal$studentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    where?: StudentProfileWhereInput
+  }
+
+  /**
+   * DebateProposal.approvedBy
+   */
+  export type DebateProposal$approvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * DebateProposal.convertedSession
+   */
+  export type DebateProposal$convertedSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateSession
+     */
+    select?: DebateSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionInclude<ExtArgs> | null
+    where?: DebateSessionWhereInput
+  }
+
+  /**
+   * DebateProposal.classGroup
+   */
+  export type DebateProposal$classGroupArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClassGroup
+     */
+    select?: ClassGroupSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClassGroupInclude<ExtArgs> | null
+    where?: ClassGroupWhereInput
+  }
+
+  /**
+   * DebateProposal.reactions
+   */
+  export type DebateProposal$reactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    where?: DebateProposalReactionWhereInput
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    cursor?: DebateProposalReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DebateProposalReactionScalarFieldEnum | DebateProposalReactionScalarFieldEnum[]
+  }
+
+  /**
    * DebateProposal without action
    */
   export type DebateProposalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19270,6 +20007,957 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DebateProposalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DebateProposalReaction
+   */
+
+  export type AggregateDebateProposalReaction = {
+    _count: DebateProposalReactionCountAggregateOutputType | null
+    _min: DebateProposalReactionMinAggregateOutputType | null
+    _max: DebateProposalReactionMaxAggregateOutputType | null
+  }
+
+  export type DebateProposalReactionMinAggregateOutputType = {
+    id: string | null
+    proposalId: string | null
+    userId: string | null
+    type: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DebateProposalReactionMaxAggregateOutputType = {
+    id: string | null
+    proposalId: string | null
+    userId: string | null
+    type: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DebateProposalReactionCountAggregateOutputType = {
+    id: number
+    proposalId: number
+    userId: number
+    type: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DebateProposalReactionMinAggregateInputType = {
+    id?: true
+    proposalId?: true
+    userId?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DebateProposalReactionMaxAggregateInputType = {
+    id?: true
+    proposalId?: true
+    userId?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DebateProposalReactionCountAggregateInputType = {
+    id?: true
+    proposalId?: true
+    userId?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DebateProposalReactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DebateProposalReaction to aggregate.
+     */
+    where?: DebateProposalReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateProposalReactions to fetch.
+     */
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DebateProposalReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateProposalReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateProposalReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DebateProposalReactions
+    **/
+    _count?: true | DebateProposalReactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DebateProposalReactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DebateProposalReactionMaxAggregateInputType
+  }
+
+  export type GetDebateProposalReactionAggregateType<T extends DebateProposalReactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateDebateProposalReaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDebateProposalReaction[P]>
+      : GetScalarType<T[P], AggregateDebateProposalReaction[P]>
+  }
+
+
+
+
+  export type DebateProposalReactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DebateProposalReactionWhereInput
+    orderBy?: DebateProposalReactionOrderByWithAggregationInput | DebateProposalReactionOrderByWithAggregationInput[]
+    by: DebateProposalReactionScalarFieldEnum[] | DebateProposalReactionScalarFieldEnum
+    having?: DebateProposalReactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DebateProposalReactionCountAggregateInputType | true
+    _min?: DebateProposalReactionMinAggregateInputType
+    _max?: DebateProposalReactionMaxAggregateInputType
+  }
+
+  export type DebateProposalReactionGroupByOutputType = {
+    id: string
+    proposalId: string
+    userId: string
+    type: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DebateProposalReactionCountAggregateOutputType | null
+    _min: DebateProposalReactionMinAggregateOutputType | null
+    _max: DebateProposalReactionMaxAggregateOutputType | null
+  }
+
+  type GetDebateProposalReactionGroupByPayload<T extends DebateProposalReactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DebateProposalReactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DebateProposalReactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DebateProposalReactionGroupByOutputType[P]>
+            : GetScalarType<T[P], DebateProposalReactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DebateProposalReactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proposalId?: boolean
+    userId?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    proposal?: boolean | DebateProposalDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debateProposalReaction"]>
+
+  export type DebateProposalReactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    proposalId?: boolean
+    userId?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    proposal?: boolean | DebateProposalDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["debateProposalReaction"]>
+
+  export type DebateProposalReactionSelectScalar = {
+    id?: boolean
+    proposalId?: boolean
+    userId?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DebateProposalReactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    proposal?: boolean | DebateProposalDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DebateProposalReactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    proposal?: boolean | DebateProposalDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DebateProposalReactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DebateProposalReaction"
+    objects: {
+      proposal: Prisma.$DebateProposalPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      proposalId: string
+      userId: string
+      type: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["debateProposalReaction"]>
+    composites: {}
+  }
+
+  type DebateProposalReactionGetPayload<S extends boolean | null | undefined | DebateProposalReactionDefaultArgs> = $Result.GetResult<Prisma.$DebateProposalReactionPayload, S>
+
+  type DebateProposalReactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DebateProposalReactionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DebateProposalReactionCountAggregateInputType | true
+    }
+
+  export interface DebateProposalReactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DebateProposalReaction'], meta: { name: 'DebateProposalReaction' } }
+    /**
+     * Find zero or one DebateProposalReaction that matches the filter.
+     * @param {DebateProposalReactionFindUniqueArgs} args - Arguments to find a DebateProposalReaction
+     * @example
+     * // Get one DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DebateProposalReactionFindUniqueArgs>(args: SelectSubset<T, DebateProposalReactionFindUniqueArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one DebateProposalReaction that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {DebateProposalReactionFindUniqueOrThrowArgs} args - Arguments to find a DebateProposalReaction
+     * @example
+     * // Get one DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DebateProposalReactionFindUniqueOrThrowArgs>(args: SelectSubset<T, DebateProposalReactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first DebateProposalReaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionFindFirstArgs} args - Arguments to find a DebateProposalReaction
+     * @example
+     * // Get one DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DebateProposalReactionFindFirstArgs>(args?: SelectSubset<T, DebateProposalReactionFindFirstArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first DebateProposalReaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionFindFirstOrThrowArgs} args - Arguments to find a DebateProposalReaction
+     * @example
+     * // Get one DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DebateProposalReactionFindFirstOrThrowArgs>(args?: SelectSubset<T, DebateProposalReactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more DebateProposalReactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DebateProposalReactions
+     * const debateProposalReactions = await prisma.debateProposalReaction.findMany()
+     * 
+     * // Get first 10 DebateProposalReactions
+     * const debateProposalReactions = await prisma.debateProposalReaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const debateProposalReactionWithIdOnly = await prisma.debateProposalReaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DebateProposalReactionFindManyArgs>(args?: SelectSubset<T, DebateProposalReactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a DebateProposalReaction.
+     * @param {DebateProposalReactionCreateArgs} args - Arguments to create a DebateProposalReaction.
+     * @example
+     * // Create one DebateProposalReaction
+     * const DebateProposalReaction = await prisma.debateProposalReaction.create({
+     *   data: {
+     *     // ... data to create a DebateProposalReaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends DebateProposalReactionCreateArgs>(args: SelectSubset<T, DebateProposalReactionCreateArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many DebateProposalReactions.
+     * @param {DebateProposalReactionCreateManyArgs} args - Arguments to create many DebateProposalReactions.
+     * @example
+     * // Create many DebateProposalReactions
+     * const debateProposalReaction = await prisma.debateProposalReaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DebateProposalReactionCreateManyArgs>(args?: SelectSubset<T, DebateProposalReactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DebateProposalReactions and returns the data saved in the database.
+     * @param {DebateProposalReactionCreateManyAndReturnArgs} args - Arguments to create many DebateProposalReactions.
+     * @example
+     * // Create many DebateProposalReactions
+     * const debateProposalReaction = await prisma.debateProposalReaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DebateProposalReactions and only return the `id`
+     * const debateProposalReactionWithIdOnly = await prisma.debateProposalReaction.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DebateProposalReactionCreateManyAndReturnArgs>(args?: SelectSubset<T, DebateProposalReactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a DebateProposalReaction.
+     * @param {DebateProposalReactionDeleteArgs} args - Arguments to delete one DebateProposalReaction.
+     * @example
+     * // Delete one DebateProposalReaction
+     * const DebateProposalReaction = await prisma.debateProposalReaction.delete({
+     *   where: {
+     *     // ... filter to delete one DebateProposalReaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DebateProposalReactionDeleteArgs>(args: SelectSubset<T, DebateProposalReactionDeleteArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one DebateProposalReaction.
+     * @param {DebateProposalReactionUpdateArgs} args - Arguments to update one DebateProposalReaction.
+     * @example
+     * // Update one DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DebateProposalReactionUpdateArgs>(args: SelectSubset<T, DebateProposalReactionUpdateArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more DebateProposalReactions.
+     * @param {DebateProposalReactionDeleteManyArgs} args - Arguments to filter DebateProposalReactions to delete.
+     * @example
+     * // Delete a few DebateProposalReactions
+     * const { count } = await prisma.debateProposalReaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DebateProposalReactionDeleteManyArgs>(args?: SelectSubset<T, DebateProposalReactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DebateProposalReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DebateProposalReactions
+     * const debateProposalReaction = await prisma.debateProposalReaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DebateProposalReactionUpdateManyArgs>(args: SelectSubset<T, DebateProposalReactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DebateProposalReaction.
+     * @param {DebateProposalReactionUpsertArgs} args - Arguments to update or create a DebateProposalReaction.
+     * @example
+     * // Update or create a DebateProposalReaction
+     * const debateProposalReaction = await prisma.debateProposalReaction.upsert({
+     *   create: {
+     *     // ... data to create a DebateProposalReaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DebateProposalReaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DebateProposalReactionUpsertArgs>(args: SelectSubset<T, DebateProposalReactionUpsertArgs<ExtArgs>>): Prisma__DebateProposalReactionClient<$Result.GetResult<Prisma.$DebateProposalReactionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of DebateProposalReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionCountArgs} args - Arguments to filter DebateProposalReactions to count.
+     * @example
+     * // Count the number of DebateProposalReactions
+     * const count = await prisma.debateProposalReaction.count({
+     *   where: {
+     *     // ... the filter for the DebateProposalReactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends DebateProposalReactionCountArgs>(
+      args?: Subset<T, DebateProposalReactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DebateProposalReactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DebateProposalReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DebateProposalReactionAggregateArgs>(args: Subset<T, DebateProposalReactionAggregateArgs>): Prisma.PrismaPromise<GetDebateProposalReactionAggregateType<T>>
+
+    /**
+     * Group by DebateProposalReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DebateProposalReactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DebateProposalReactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DebateProposalReactionGroupByArgs['orderBy'] }
+        : { orderBy?: DebateProposalReactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DebateProposalReactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDebateProposalReactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DebateProposalReaction model
+   */
+  readonly fields: DebateProposalReactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DebateProposalReaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DebateProposalReactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    proposal<T extends DebateProposalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DebateProposalDefaultArgs<ExtArgs>>): Prisma__DebateProposalClient<$Result.GetResult<Prisma.$DebateProposalPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DebateProposalReaction model
+   */ 
+  interface DebateProposalReactionFieldRefs {
+    readonly id: FieldRef<"DebateProposalReaction", 'String'>
+    readonly proposalId: FieldRef<"DebateProposalReaction", 'String'>
+    readonly userId: FieldRef<"DebateProposalReaction", 'String'>
+    readonly type: FieldRef<"DebateProposalReaction", 'String'>
+    readonly createdAt: FieldRef<"DebateProposalReaction", 'DateTime'>
+    readonly updatedAt: FieldRef<"DebateProposalReaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DebateProposalReaction findUnique
+   */
+  export type DebateProposalReactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateProposalReaction to fetch.
+     */
+    where: DebateProposalReactionWhereUniqueInput
+  }
+
+  /**
+   * DebateProposalReaction findUniqueOrThrow
+   */
+  export type DebateProposalReactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateProposalReaction to fetch.
+     */
+    where: DebateProposalReactionWhereUniqueInput
+  }
+
+  /**
+   * DebateProposalReaction findFirst
+   */
+  export type DebateProposalReactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateProposalReaction to fetch.
+     */
+    where?: DebateProposalReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateProposalReactions to fetch.
+     */
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DebateProposalReactions.
+     */
+    cursor?: DebateProposalReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateProposalReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateProposalReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DebateProposalReactions.
+     */
+    distinct?: DebateProposalReactionScalarFieldEnum | DebateProposalReactionScalarFieldEnum[]
+  }
+
+  /**
+   * DebateProposalReaction findFirstOrThrow
+   */
+  export type DebateProposalReactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateProposalReaction to fetch.
+     */
+    where?: DebateProposalReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateProposalReactions to fetch.
+     */
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DebateProposalReactions.
+     */
+    cursor?: DebateProposalReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateProposalReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateProposalReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DebateProposalReactions.
+     */
+    distinct?: DebateProposalReactionScalarFieldEnum | DebateProposalReactionScalarFieldEnum[]
+  }
+
+  /**
+   * DebateProposalReaction findMany
+   */
+  export type DebateProposalReactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which DebateProposalReactions to fetch.
+     */
+    where?: DebateProposalReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DebateProposalReactions to fetch.
+     */
+    orderBy?: DebateProposalReactionOrderByWithRelationInput | DebateProposalReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DebateProposalReactions.
+     */
+    cursor?: DebateProposalReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DebateProposalReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DebateProposalReactions.
+     */
+    skip?: number
+    distinct?: DebateProposalReactionScalarFieldEnum | DebateProposalReactionScalarFieldEnum[]
+  }
+
+  /**
+   * DebateProposalReaction create
+   */
+  export type DebateProposalReactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DebateProposalReaction.
+     */
+    data: XOR<DebateProposalReactionCreateInput, DebateProposalReactionUncheckedCreateInput>
+  }
+
+  /**
+   * DebateProposalReaction createMany
+   */
+  export type DebateProposalReactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DebateProposalReactions.
+     */
+    data: DebateProposalReactionCreateManyInput | DebateProposalReactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DebateProposalReaction createManyAndReturn
+   */
+  export type DebateProposalReactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many DebateProposalReactions.
+     */
+    data: DebateProposalReactionCreateManyInput | DebateProposalReactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DebateProposalReaction update
+   */
+  export type DebateProposalReactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DebateProposalReaction.
+     */
+    data: XOR<DebateProposalReactionUpdateInput, DebateProposalReactionUncheckedUpdateInput>
+    /**
+     * Choose, which DebateProposalReaction to update.
+     */
+    where: DebateProposalReactionWhereUniqueInput
+  }
+
+  /**
+   * DebateProposalReaction updateMany
+   */
+  export type DebateProposalReactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DebateProposalReactions.
+     */
+    data: XOR<DebateProposalReactionUpdateManyMutationInput, DebateProposalReactionUncheckedUpdateManyInput>
+    /**
+     * Filter which DebateProposalReactions to update
+     */
+    where?: DebateProposalReactionWhereInput
+  }
+
+  /**
+   * DebateProposalReaction upsert
+   */
+  export type DebateProposalReactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DebateProposalReaction to update in case it exists.
+     */
+    where: DebateProposalReactionWhereUniqueInput
+    /**
+     * In case the DebateProposalReaction found by the `where` argument doesn't exist, create a new DebateProposalReaction with this data.
+     */
+    create: XOR<DebateProposalReactionCreateInput, DebateProposalReactionUncheckedCreateInput>
+    /**
+     * In case the DebateProposalReaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DebateProposalReactionUpdateInput, DebateProposalReactionUncheckedUpdateInput>
+  }
+
+  /**
+   * DebateProposalReaction delete
+   */
+  export type DebateProposalReactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
+    /**
+     * Filter which DebateProposalReaction to delete.
+     */
+    where: DebateProposalReactionWhereUniqueInput
+  }
+
+  /**
+   * DebateProposalReaction deleteMany
+   */
+  export type DebateProposalReactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DebateProposalReactions to delete
+     */
+    where?: DebateProposalReactionWhereInput
+  }
+
+  /**
+   * DebateProposalReaction without action
+   */
+  export type DebateProposalReactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateProposalReaction
+     */
+    select?: DebateProposalReactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateProposalReactionInclude<ExtArgs> | null
   }
 
 
@@ -19291,6 +20979,7 @@ export namespace Prisma {
     type: string | null
     isRead: boolean | null
     evaluationId: string | null
+    debateSessionId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19303,6 +20992,7 @@ export namespace Prisma {
     type: string | null
     isRead: boolean | null
     evaluationId: string | null
+    debateSessionId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19315,6 +21005,7 @@ export namespace Prisma {
     type: number
     isRead: number
     evaluationId: number
+    debateSessionId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19329,6 +21020,7 @@ export namespace Prisma {
     type?: true
     isRead?: true
     evaluationId?: true
+    debateSessionId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19341,6 +21033,7 @@ export namespace Prisma {
     type?: true
     isRead?: true
     evaluationId?: true
+    debateSessionId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19353,6 +21046,7 @@ export namespace Prisma {
     type?: true
     isRead?: true
     evaluationId?: true
+    debateSessionId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19438,6 +21132,7 @@ export namespace Prisma {
     type: string
     isRead: boolean
     evaluationId: string | null
+    debateSessionId: string | null
     createdAt: Date
     updatedAt: Date
     _count: NotificationCountAggregateOutputType | null
@@ -19467,10 +21162,12 @@ export namespace Prisma {
     type?: boolean
     isRead?: boolean
     evaluationId?: boolean
+    debateSessionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     evaluation?: boolean | Notification$evaluationArgs<ExtArgs>
+    debateSession?: boolean | Notification$debateSessionArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19481,10 +21178,12 @@ export namespace Prisma {
     type?: boolean
     isRead?: boolean
     evaluationId?: boolean
+    debateSessionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     evaluation?: boolean | Notification$evaluationArgs<ExtArgs>
+    debateSession?: boolean | Notification$debateSessionArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
@@ -19495,6 +21194,7 @@ export namespace Prisma {
     type?: boolean
     isRead?: boolean
     evaluationId?: boolean
+    debateSessionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -19502,10 +21202,12 @@ export namespace Prisma {
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     evaluation?: boolean | Notification$evaluationArgs<ExtArgs>
+    debateSession?: boolean | Notification$debateSessionArgs<ExtArgs>
   }
   export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     evaluation?: boolean | Notification$evaluationArgs<ExtArgs>
+    debateSession?: boolean | Notification$debateSessionArgs<ExtArgs>
   }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19513,6 +21215,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       evaluation: Prisma.$DebateEvaluationPayload<ExtArgs> | null
+      debateSession: Prisma.$DebateSessionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19522,6 +21225,7 @@ export namespace Prisma {
       type: string
       isRead: boolean
       evaluationId: string | null
+      debateSessionId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["notification"]>
@@ -19890,6 +21594,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     evaluation<T extends Notification$evaluationArgs<ExtArgs> = {}>(args?: Subset<T, Notification$evaluationArgs<ExtArgs>>): Prisma__DebateEvaluationClient<$Result.GetResult<Prisma.$DebateEvaluationPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    debateSession<T extends Notification$debateSessionArgs<ExtArgs> = {}>(args?: Subset<T, Notification$debateSessionArgs<ExtArgs>>): Prisma__DebateSessionClient<$Result.GetResult<Prisma.$DebateSessionPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19926,6 +21631,7 @@ export namespace Prisma {
     readonly type: FieldRef<"Notification", 'String'>
     readonly isRead: FieldRef<"Notification", 'Boolean'>
     readonly evaluationId: FieldRef<"Notification", 'String'>
+    readonly debateSessionId: FieldRef<"Notification", 'String'>
     readonly createdAt: FieldRef<"Notification", 'DateTime'>
     readonly updatedAt: FieldRef<"Notification", 'DateTime'>
   }
@@ -20261,6 +21967,21 @@ export namespace Prisma {
   }
 
   /**
+   * Notification.debateSession
+   */
+  export type Notification$debateSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DebateSession
+     */
+    select?: DebateSessionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebateSessionInclude<ExtArgs> | null
+    where?: DebateSessionWhereInput
+  }
+
+  /**
    * Notification without action
    */
   export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20272,6 +21993,944 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CalendarEvent
+   */
+
+  export type AggregateCalendarEvent = {
+    _count: CalendarEventCountAggregateOutputType | null
+    _min: CalendarEventMinAggregateOutputType | null
+    _max: CalendarEventMaxAggregateOutputType | null
+  }
+
+  export type CalendarEventMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    startsAt: Date | null
+    endsAt: Date | null
+    type: string | null
+    location: string | null
+    isImportant: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CalendarEventMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    startsAt: Date | null
+    endsAt: Date | null
+    type: string | null
+    location: string | null
+    isImportant: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CalendarEventCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    startsAt: number
+    endsAt: number
+    type: number
+    location: number
+    isImportant: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CalendarEventMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    startsAt?: true
+    endsAt?: true
+    type?: true
+    location?: true
+    isImportant?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CalendarEventMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    startsAt?: true
+    endsAt?: true
+    type?: true
+    location?: true
+    isImportant?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CalendarEventCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    startsAt?: true
+    endsAt?: true
+    type?: true
+    location?: true
+    isImportant?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CalendarEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CalendarEvent to aggregate.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CalendarEvents
+    **/
+    _count?: true | CalendarEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CalendarEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CalendarEventMaxAggregateInputType
+  }
+
+  export type GetCalendarEventAggregateType<T extends CalendarEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateCalendarEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCalendarEvent[P]>
+      : GetScalarType<T[P], AggregateCalendarEvent[P]>
+  }
+
+
+
+
+  export type CalendarEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalendarEventWhereInput
+    orderBy?: CalendarEventOrderByWithAggregationInput | CalendarEventOrderByWithAggregationInput[]
+    by: CalendarEventScalarFieldEnum[] | CalendarEventScalarFieldEnum
+    having?: CalendarEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CalendarEventCountAggregateInputType | true
+    _min?: CalendarEventMinAggregateInputType
+    _max?: CalendarEventMaxAggregateInputType
+  }
+
+  export type CalendarEventGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    startsAt: Date
+    endsAt: Date | null
+    type: string
+    location: string | null
+    isImportant: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: CalendarEventCountAggregateOutputType | null
+    _min: CalendarEventMinAggregateOutputType | null
+    _max: CalendarEventMaxAggregateOutputType | null
+  }
+
+  type GetCalendarEventGroupByPayload<T extends CalendarEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CalendarEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CalendarEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CalendarEventGroupByOutputType[P]>
+            : GetScalarType<T[P], CalendarEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CalendarEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    type?: boolean
+    location?: boolean
+    isImportant?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["calendarEvent"]>
+
+  export type CalendarEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    type?: boolean
+    location?: boolean
+    isImportant?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["calendarEvent"]>
+
+  export type CalendarEventSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    type?: boolean
+    location?: boolean
+    isImportant?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $CalendarEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CalendarEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      startsAt: Date
+      endsAt: Date | null
+      type: string
+      location: string | null
+      isImportant: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["calendarEvent"]>
+    composites: {}
+  }
+
+  type CalendarEventGetPayload<S extends boolean | null | undefined | CalendarEventDefaultArgs> = $Result.GetResult<Prisma.$CalendarEventPayload, S>
+
+  type CalendarEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CalendarEventFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: CalendarEventCountAggregateInputType | true
+    }
+
+  export interface CalendarEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CalendarEvent'], meta: { name: 'CalendarEvent' } }
+    /**
+     * Find zero or one CalendarEvent that matches the filter.
+     * @param {CalendarEventFindUniqueArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CalendarEventFindUniqueArgs>(args: SelectSubset<T, CalendarEventFindUniqueArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one CalendarEvent that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {CalendarEventFindUniqueOrThrowArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CalendarEventFindUniqueOrThrowArgs>(args: SelectSubset<T, CalendarEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first CalendarEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindFirstArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CalendarEventFindFirstArgs>(args?: SelectSubset<T, CalendarEventFindFirstArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first CalendarEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindFirstOrThrowArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CalendarEventFindFirstOrThrowArgs>(args?: SelectSubset<T, CalendarEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more CalendarEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CalendarEvents
+     * const calendarEvents = await prisma.calendarEvent.findMany()
+     * 
+     * // Get first 10 CalendarEvents
+     * const calendarEvents = await prisma.calendarEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const calendarEventWithIdOnly = await prisma.calendarEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CalendarEventFindManyArgs>(args?: SelectSubset<T, CalendarEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a CalendarEvent.
+     * @param {CalendarEventCreateArgs} args - Arguments to create a CalendarEvent.
+     * @example
+     * // Create one CalendarEvent
+     * const CalendarEvent = await prisma.calendarEvent.create({
+     *   data: {
+     *     // ... data to create a CalendarEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends CalendarEventCreateArgs>(args: SelectSubset<T, CalendarEventCreateArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many CalendarEvents.
+     * @param {CalendarEventCreateManyArgs} args - Arguments to create many CalendarEvents.
+     * @example
+     * // Create many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CalendarEventCreateManyArgs>(args?: SelectSubset<T, CalendarEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CalendarEvents and returns the data saved in the database.
+     * @param {CalendarEventCreateManyAndReturnArgs} args - Arguments to create many CalendarEvents.
+     * @example
+     * // Create many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CalendarEvents and only return the `id`
+     * const calendarEventWithIdOnly = await prisma.calendarEvent.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CalendarEventCreateManyAndReturnArgs>(args?: SelectSubset<T, CalendarEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a CalendarEvent.
+     * @param {CalendarEventDeleteArgs} args - Arguments to delete one CalendarEvent.
+     * @example
+     * // Delete one CalendarEvent
+     * const CalendarEvent = await prisma.calendarEvent.delete({
+     *   where: {
+     *     // ... filter to delete one CalendarEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CalendarEventDeleteArgs>(args: SelectSubset<T, CalendarEventDeleteArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one CalendarEvent.
+     * @param {CalendarEventUpdateArgs} args - Arguments to update one CalendarEvent.
+     * @example
+     * // Update one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CalendarEventUpdateArgs>(args: SelectSubset<T, CalendarEventUpdateArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more CalendarEvents.
+     * @param {CalendarEventDeleteManyArgs} args - Arguments to filter CalendarEvents to delete.
+     * @example
+     * // Delete a few CalendarEvents
+     * const { count } = await prisma.calendarEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CalendarEventDeleteManyArgs>(args?: SelectSubset<T, CalendarEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CalendarEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CalendarEventUpdateManyArgs>(args: SelectSubset<T, CalendarEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one CalendarEvent.
+     * @param {CalendarEventUpsertArgs} args - Arguments to update or create a CalendarEvent.
+     * @example
+     * // Update or create a CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.upsert({
+     *   create: {
+     *     // ... data to create a CalendarEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CalendarEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CalendarEventUpsertArgs>(args: SelectSubset<T, CalendarEventUpsertArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of CalendarEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventCountArgs} args - Arguments to filter CalendarEvents to count.
+     * @example
+     * // Count the number of CalendarEvents
+     * const count = await prisma.calendarEvent.count({
+     *   where: {
+     *     // ... the filter for the CalendarEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends CalendarEventCountArgs>(
+      args?: Subset<T, CalendarEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CalendarEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CalendarEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CalendarEventAggregateArgs>(args: Subset<T, CalendarEventAggregateArgs>): Prisma.PrismaPromise<GetCalendarEventAggregateType<T>>
+
+    /**
+     * Group by CalendarEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CalendarEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CalendarEventGroupByArgs['orderBy'] }
+        : { orderBy?: CalendarEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CalendarEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCalendarEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CalendarEvent model
+   */
+  readonly fields: CalendarEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CalendarEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CalendarEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CalendarEvent model
+   */ 
+  interface CalendarEventFieldRefs {
+    readonly id: FieldRef<"CalendarEvent", 'String'>
+    readonly title: FieldRef<"CalendarEvent", 'String'>
+    readonly description: FieldRef<"CalendarEvent", 'String'>
+    readonly startsAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly endsAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly type: FieldRef<"CalendarEvent", 'String'>
+    readonly location: FieldRef<"CalendarEvent", 'String'>
+    readonly isImportant: FieldRef<"CalendarEvent", 'Boolean'>
+    readonly createdAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly updatedAt: FieldRef<"CalendarEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CalendarEvent findUnique
+   */
+  export type CalendarEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent findUniqueOrThrow
+   */
+  export type CalendarEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent findFirst
+   */
+  export type CalendarEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CalendarEvents.
+     */
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent findFirstOrThrow
+   */
+  export type CalendarEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CalendarEvents.
+     */
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent findMany
+   */
+  export type CalendarEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvents to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent create
+   */
+  export type CalendarEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * The data needed to create a CalendarEvent.
+     */
+    data: XOR<CalendarEventCreateInput, CalendarEventUncheckedCreateInput>
+  }
+
+  /**
+   * CalendarEvent createMany
+   */
+  export type CalendarEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CalendarEvents.
+     */
+    data: CalendarEventCreateManyInput | CalendarEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CalendarEvent createManyAndReturn
+   */
+  export type CalendarEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many CalendarEvents.
+     */
+    data: CalendarEventCreateManyInput | CalendarEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CalendarEvent update
+   */
+  export type CalendarEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * The data needed to update a CalendarEvent.
+     */
+    data: XOR<CalendarEventUpdateInput, CalendarEventUncheckedUpdateInput>
+    /**
+     * Choose, which CalendarEvent to update.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent updateMany
+   */
+  export type CalendarEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CalendarEvents.
+     */
+    data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyInput>
+    /**
+     * Filter which CalendarEvents to update
+     */
+    where?: CalendarEventWhereInput
+  }
+
+  /**
+   * CalendarEvent upsert
+   */
+  export type CalendarEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * The filter to search for the CalendarEvent to update in case it exists.
+     */
+    where: CalendarEventWhereUniqueInput
+    /**
+     * In case the CalendarEvent found by the `where` argument doesn't exist, create a new CalendarEvent with this data.
+     */
+    create: XOR<CalendarEventCreateInput, CalendarEventUncheckedCreateInput>
+    /**
+     * In case the CalendarEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CalendarEventUpdateInput, CalendarEventUncheckedUpdateInput>
+  }
+
+  /**
+   * CalendarEvent delete
+   */
+  export type CalendarEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Filter which CalendarEvent to delete.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent deleteMany
+   */
+  export type CalendarEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CalendarEvents to delete
+     */
+    where?: CalendarEventWhereInput
+  }
+
+  /**
+   * CalendarEvent without action
+   */
+  export type CalendarEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
   }
 
 
@@ -20461,6 +23120,12 @@ export namespace Prisma {
     location: 'location',
     status: 'status',
     moderatorId: 'moderatorId',
+    sourceProposalId: 'sourceProposalId',
+    moderatorAssignedById: 'moderatorAssignedById',
+    moderatorAssignedAt: 'moderatorAssignedAt',
+    moderatorExpiresAt: 'moderatorExpiresAt',
+    moderatorNote: 'moderatorNote',
+    classGroupId: 'classGroupId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -20513,14 +23178,31 @@ export namespace Prisma {
   export const DebateProposalScalarFieldEnum: {
     id: 'id',
     studentId: 'studentId',
+    proposerId: 'proposerId',
     topic: 'topic',
     reason: 'reason',
     status: 'status',
+    approvedById: 'approvedById',
+    approvedAt: 'approvedAt',
+    convertedSessionId: 'convertedSessionId',
+    classGroupId: 'classGroupId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type DebateProposalScalarFieldEnum = (typeof DebateProposalScalarFieldEnum)[keyof typeof DebateProposalScalarFieldEnum]
+
+
+  export const DebateProposalReactionScalarFieldEnum: {
+    id: 'id',
+    proposalId: 'proposalId',
+    userId: 'userId',
+    type: 'type',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DebateProposalReactionScalarFieldEnum = (typeof DebateProposalReactionScalarFieldEnum)[keyof typeof DebateProposalReactionScalarFieldEnum]
 
 
   export const NotificationScalarFieldEnum: {
@@ -20531,11 +23213,28 @@ export namespace Prisma {
     type: 'type',
     isRead: 'isRead',
     evaluationId: 'evaluationId',
+    debateSessionId: 'debateSessionId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const CalendarEventScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    startsAt: 'startsAt',
+    endsAt: 'endsAt',
+    type: 'type',
+    location: 'location',
+    isImportant: 'isImportant',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CalendarEventScalarFieldEnum = (typeof CalendarEventScalarFieldEnum)[keyof typeof CalendarEventScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -20746,7 +23445,11 @@ export namespace Prisma {
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
     moderatedDebates?: DebateSessionListRelationFilter
+    assignedDebateSessions?: DebateSessionListRelationFilter
     debateEvaluationsGiven?: DebateEvaluationListRelationFilter
+    debateProposals?: DebateProposalListRelationFilter
+    approvedDebateProposals?: DebateProposalListRelationFilter
+    debateProposalReactions?: DebateProposalReactionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20765,7 +23468,11 @@ export namespace Prisma {
     auditLogs?: AuditLogOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     moderatedDebates?: DebateSessionOrderByRelationAggregateInput
+    assignedDebateSessions?: DebateSessionOrderByRelationAggregateInput
     debateEvaluationsGiven?: DebateEvaluationOrderByRelationAggregateInput
+    debateProposals?: DebateProposalOrderByRelationAggregateInput
+    approvedDebateProposals?: DebateProposalOrderByRelationAggregateInput
+    debateProposalReactions?: DebateProposalReactionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20787,7 +23494,11 @@ export namespace Prisma {
     auditLogs?: AuditLogListRelationFilter
     notifications?: NotificationListRelationFilter
     moderatedDebates?: DebateSessionListRelationFilter
+    assignedDebateSessions?: DebateSessionListRelationFilter
     debateEvaluationsGiven?: DebateEvaluationListRelationFilter
+    debateProposals?: DebateProposalListRelationFilter
+    approvedDebateProposals?: DebateProposalListRelationFilter
+    debateProposalReactions?: DebateProposalReactionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -21087,6 +23798,8 @@ export namespace Prisma {
     enrollments?: EnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
     grades?: GradeListRelationFilter
+    debates?: DebateSessionListRelationFilter
+    proposals?: DebateProposalListRelationFilter
   }
 
   export type ClassGroupOrderByWithRelationInput = {
@@ -21105,6 +23818,8 @@ export namespace Prisma {
     enrollments?: EnrollmentOrderByRelationAggregateInput
     attendances?: AttendanceOrderByRelationAggregateInput
     grades?: GradeOrderByRelationAggregateInput
+    debates?: DebateSessionOrderByRelationAggregateInput
+    proposals?: DebateProposalOrderByRelationAggregateInput
   }
 
   export type ClassGroupWhereUniqueInput = Prisma.AtLeast<{
@@ -21126,6 +23841,8 @@ export namespace Prisma {
     enrollments?: EnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
     grades?: GradeListRelationFilter
+    debates?: DebateSessionListRelationFilter
+    proposals?: DebateProposalListRelationFilter
   }, "id">
 
   export type ClassGroupOrderByWithAggregationInput = {
@@ -21656,11 +24373,21 @@ export namespace Prisma {
     location?: StringNullableFilter<"DebateSession"> | string | null
     status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
     moderatorId?: StringNullableFilter<"DebateSession"> | string | null
+    sourceProposalId?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedById?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorExpiresAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorNote?: StringNullableFilter<"DebateSession"> | string | null
+    classGroupId?: StringNullableFilter<"DebateSession"> | string | null
     createdAt?: DateTimeFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
     moderator?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    moderatorAssignedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    sourceProposal?: XOR<DebateProposalNullableRelationFilter, DebateProposalWhereInput> | null
+    classGroup?: XOR<ClassGroupNullableRelationFilter, ClassGroupWhereInput> | null
     evaluations?: DebateEvaluationListRelationFilter
     participants?: DebateParticipantListRelationFilter
+    notifications?: NotificationListRelationFilter
   }
 
   export type DebateSessionOrderByWithRelationInput = {
@@ -21671,15 +24398,26 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     status?: SortOrder
     moderatorId?: SortOrderInput | SortOrder
+    sourceProposalId?: SortOrderInput | SortOrder
+    moderatorAssignedById?: SortOrderInput | SortOrder
+    moderatorAssignedAt?: SortOrderInput | SortOrder
+    moderatorExpiresAt?: SortOrderInput | SortOrder
+    moderatorNote?: SortOrderInput | SortOrder
+    classGroupId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     moderator?: UserOrderByWithRelationInput
+    moderatorAssignedBy?: UserOrderByWithRelationInput
+    sourceProposal?: DebateProposalOrderByWithRelationInput
+    classGroup?: ClassGroupOrderByWithRelationInput
     evaluations?: DebateEvaluationOrderByRelationAggregateInput
     participants?: DebateParticipantOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
   }
 
   export type DebateSessionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    sourceProposalId?: string
     AND?: DebateSessionWhereInput | DebateSessionWhereInput[]
     OR?: DebateSessionWhereInput[]
     NOT?: DebateSessionWhereInput | DebateSessionWhereInput[]
@@ -21689,12 +24427,21 @@ export namespace Prisma {
     location?: StringNullableFilter<"DebateSession"> | string | null
     status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
     moderatorId?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedById?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorExpiresAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorNote?: StringNullableFilter<"DebateSession"> | string | null
+    classGroupId?: StringNullableFilter<"DebateSession"> | string | null
     createdAt?: DateTimeFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
     moderator?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    moderatorAssignedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    sourceProposal?: XOR<DebateProposalNullableRelationFilter, DebateProposalWhereInput> | null
+    classGroup?: XOR<ClassGroupNullableRelationFilter, ClassGroupWhereInput> | null
     evaluations?: DebateEvaluationListRelationFilter
     participants?: DebateParticipantListRelationFilter
-  }, "id">
+    notifications?: NotificationListRelationFilter
+  }, "id" | "sourceProposalId">
 
   export type DebateSessionOrderByWithAggregationInput = {
     id?: SortOrder
@@ -21704,6 +24451,12 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     status?: SortOrder
     moderatorId?: SortOrderInput | SortOrder
+    sourceProposalId?: SortOrderInput | SortOrder
+    moderatorAssignedById?: SortOrderInput | SortOrder
+    moderatorAssignedAt?: SortOrderInput | SortOrder
+    moderatorExpiresAt?: SortOrderInput | SortOrder
+    moderatorNote?: SortOrderInput | SortOrder
+    classGroupId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DebateSessionCountOrderByAggregateInput
@@ -21724,6 +24477,12 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
     status?: EnumDebateSessionStatusWithAggregatesFilter<"DebateSession"> | $Enums.DebateSessionStatus
     moderatorId?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
+    sourceProposalId?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
+    moderatorAssignedById?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
+    moderatorAssignedAt?: DateTimeNullableWithAggregatesFilter<"DebateSession"> | Date | string | null
+    moderatorExpiresAt?: DateTimeNullableWithAggregatesFilter<"DebateSession"> | Date | string | null
+    moderatorNote?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
+    classGroupId?: StringNullableWithAggregatesFilter<"DebateSession"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DebateSession"> | Date | string
   }
@@ -21959,24 +24718,44 @@ export namespace Prisma {
     OR?: DebateProposalWhereInput[]
     NOT?: DebateProposalWhereInput | DebateProposalWhereInput[]
     id?: StringFilter<"DebateProposal"> | string
-    studentId?: StringFilter<"DebateProposal"> | string
+    studentId?: StringNullableFilter<"DebateProposal"> | string | null
+    proposerId?: StringFilter<"DebateProposal"> | string
     topic?: StringFilter<"DebateProposal"> | string
     reason?: StringNullableFilter<"DebateProposal"> | string | null
     status?: StringFilter<"DebateProposal"> | string
+    approvedById?: StringNullableFilter<"DebateProposal"> | string | null
+    approvedAt?: DateTimeNullableFilter<"DebateProposal"> | Date | string | null
+    convertedSessionId?: StringNullableFilter<"DebateProposal"> | string | null
+    classGroupId?: StringNullableFilter<"DebateProposal"> | string | null
     createdAt?: DateTimeFilter<"DebateProposal"> | Date | string
     updatedAt?: DateTimeFilter<"DebateProposal"> | Date | string
-    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+    student?: XOR<StudentProfileNullableRelationFilter, StudentProfileWhereInput> | null
+    proposer?: XOR<UserRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    convertedSession?: XOR<DebateSessionNullableRelationFilter, DebateSessionWhereInput> | null
+    classGroup?: XOR<ClassGroupNullableRelationFilter, ClassGroupWhereInput> | null
+    reactions?: DebateProposalReactionListRelationFilter
   }
 
   export type DebateProposalOrderByWithRelationInput = {
     id?: SortOrder
-    studentId?: SortOrder
+    studentId?: SortOrderInput | SortOrder
+    proposerId?: SortOrder
     topic?: SortOrder
     reason?: SortOrderInput | SortOrder
     status?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    convertedSessionId?: SortOrderInput | SortOrder
+    classGroupId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     student?: StudentProfileOrderByWithRelationInput
+    proposer?: UserOrderByWithRelationInput
+    approvedBy?: UserOrderByWithRelationInput
+    convertedSession?: DebateSessionOrderByWithRelationInput
+    classGroup?: ClassGroupOrderByWithRelationInput
+    reactions?: DebateProposalReactionOrderByRelationAggregateInput
   }
 
   export type DebateProposalWhereUniqueInput = Prisma.AtLeast<{
@@ -21984,21 +24763,36 @@ export namespace Prisma {
     AND?: DebateProposalWhereInput | DebateProposalWhereInput[]
     OR?: DebateProposalWhereInput[]
     NOT?: DebateProposalWhereInput | DebateProposalWhereInput[]
-    studentId?: StringFilter<"DebateProposal"> | string
+    studentId?: StringNullableFilter<"DebateProposal"> | string | null
+    proposerId?: StringFilter<"DebateProposal"> | string
     topic?: StringFilter<"DebateProposal"> | string
     reason?: StringNullableFilter<"DebateProposal"> | string | null
     status?: StringFilter<"DebateProposal"> | string
+    approvedById?: StringNullableFilter<"DebateProposal"> | string | null
+    approvedAt?: DateTimeNullableFilter<"DebateProposal"> | Date | string | null
+    convertedSessionId?: StringNullableFilter<"DebateProposal"> | string | null
+    classGroupId?: StringNullableFilter<"DebateProposal"> | string | null
     createdAt?: DateTimeFilter<"DebateProposal"> | Date | string
     updatedAt?: DateTimeFilter<"DebateProposal"> | Date | string
-    student?: XOR<StudentProfileRelationFilter, StudentProfileWhereInput>
+    student?: XOR<StudentProfileNullableRelationFilter, StudentProfileWhereInput> | null
+    proposer?: XOR<UserRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    convertedSession?: XOR<DebateSessionNullableRelationFilter, DebateSessionWhereInput> | null
+    classGroup?: XOR<ClassGroupNullableRelationFilter, ClassGroupWhereInput> | null
+    reactions?: DebateProposalReactionListRelationFilter
   }, "id">
 
   export type DebateProposalOrderByWithAggregationInput = {
     id?: SortOrder
-    studentId?: SortOrder
+    studentId?: SortOrderInput | SortOrder
+    proposerId?: SortOrder
     topic?: SortOrder
     reason?: SortOrderInput | SortOrder
     status?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    convertedSessionId?: SortOrderInput | SortOrder
+    classGroupId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DebateProposalCountOrderByAggregateInput
@@ -22011,12 +24805,81 @@ export namespace Prisma {
     OR?: DebateProposalScalarWhereWithAggregatesInput[]
     NOT?: DebateProposalScalarWhereWithAggregatesInput | DebateProposalScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DebateProposal"> | string
-    studentId?: StringWithAggregatesFilter<"DebateProposal"> | string
+    studentId?: StringNullableWithAggregatesFilter<"DebateProposal"> | string | null
+    proposerId?: StringWithAggregatesFilter<"DebateProposal"> | string
     topic?: StringWithAggregatesFilter<"DebateProposal"> | string
     reason?: StringNullableWithAggregatesFilter<"DebateProposal"> | string | null
     status?: StringWithAggregatesFilter<"DebateProposal"> | string
+    approvedById?: StringNullableWithAggregatesFilter<"DebateProposal"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"DebateProposal"> | Date | string | null
+    convertedSessionId?: StringNullableWithAggregatesFilter<"DebateProposal"> | string | null
+    classGroupId?: StringNullableWithAggregatesFilter<"DebateProposal"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DebateProposal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DebateProposal"> | Date | string
+  }
+
+  export type DebateProposalReactionWhereInput = {
+    AND?: DebateProposalReactionWhereInput | DebateProposalReactionWhereInput[]
+    OR?: DebateProposalReactionWhereInput[]
+    NOT?: DebateProposalReactionWhereInput | DebateProposalReactionWhereInput[]
+    id?: StringFilter<"DebateProposalReaction"> | string
+    proposalId?: StringFilter<"DebateProposalReaction"> | string
+    userId?: StringFilter<"DebateProposalReaction"> | string
+    type?: StringFilter<"DebateProposalReaction"> | string
+    createdAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+    updatedAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+    proposal?: XOR<DebateProposalRelationFilter, DebateProposalWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type DebateProposalReactionOrderByWithRelationInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    proposal?: DebateProposalOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type DebateProposalReactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    proposalId_userId?: DebateProposalReactionProposalIdUserIdCompoundUniqueInput
+    AND?: DebateProposalReactionWhereInput | DebateProposalReactionWhereInput[]
+    OR?: DebateProposalReactionWhereInput[]
+    NOT?: DebateProposalReactionWhereInput | DebateProposalReactionWhereInput[]
+    proposalId?: StringFilter<"DebateProposalReaction"> | string
+    userId?: StringFilter<"DebateProposalReaction"> | string
+    type?: StringFilter<"DebateProposalReaction"> | string
+    createdAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+    updatedAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+    proposal?: XOR<DebateProposalRelationFilter, DebateProposalWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "proposalId_userId">
+
+  export type DebateProposalReactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DebateProposalReactionCountOrderByAggregateInput
+    _max?: DebateProposalReactionMaxOrderByAggregateInput
+    _min?: DebateProposalReactionMinOrderByAggregateInput
+  }
+
+  export type DebateProposalReactionScalarWhereWithAggregatesInput = {
+    AND?: DebateProposalReactionScalarWhereWithAggregatesInput | DebateProposalReactionScalarWhereWithAggregatesInput[]
+    OR?: DebateProposalReactionScalarWhereWithAggregatesInput[]
+    NOT?: DebateProposalReactionScalarWhereWithAggregatesInput | DebateProposalReactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DebateProposalReaction"> | string
+    proposalId?: StringWithAggregatesFilter<"DebateProposalReaction"> | string
+    userId?: StringWithAggregatesFilter<"DebateProposalReaction"> | string
+    type?: StringWithAggregatesFilter<"DebateProposalReaction"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DebateProposalReaction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DebateProposalReaction"> | Date | string
   }
 
   export type NotificationWhereInput = {
@@ -22030,10 +24893,12 @@ export namespace Prisma {
     type?: StringFilter<"Notification"> | string
     isRead?: BoolFilter<"Notification"> | boolean
     evaluationId?: StringNullableFilter<"Notification"> | string | null
+    debateSessionId?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
     evaluation?: XOR<DebateEvaluationNullableRelationFilter, DebateEvaluationWhereInput> | null
+    debateSession?: XOR<DebateSessionNullableRelationFilter, DebateSessionWhereInput> | null
   }
 
   export type NotificationOrderByWithRelationInput = {
@@ -22044,10 +24909,12 @@ export namespace Prisma {
     type?: SortOrder
     isRead?: SortOrder
     evaluationId?: SortOrderInput | SortOrder
+    debateSessionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     evaluation?: DebateEvaluationOrderByWithRelationInput
+    debateSession?: DebateSessionOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -22061,10 +24928,12 @@ export namespace Prisma {
     type?: StringFilter<"Notification"> | string
     isRead?: BoolFilter<"Notification"> | boolean
     evaluationId?: StringNullableFilter<"Notification"> | string | null
+    debateSessionId?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
     evaluation?: XOR<DebateEvaluationNullableRelationFilter, DebateEvaluationWhereInput> | null
+    debateSession?: XOR<DebateSessionNullableRelationFilter, DebateSessionWhereInput> | null
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
@@ -22075,6 +24944,7 @@ export namespace Prisma {
     type?: SortOrder
     isRead?: SortOrder
     evaluationId?: SortOrderInput | SortOrder
+    debateSessionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: NotificationCountOrderByAggregateInput
@@ -22093,8 +24963,86 @@ export namespace Prisma {
     type?: StringWithAggregatesFilter<"Notification"> | string
     isRead?: BoolWithAggregatesFilter<"Notification"> | boolean
     evaluationId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    debateSessionId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
+  }
+
+  export type CalendarEventWhereInput = {
+    AND?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    OR?: CalendarEventWhereInput[]
+    NOT?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    id?: StringFilter<"CalendarEvent"> | string
+    title?: StringFilter<"CalendarEvent"> | string
+    description?: StringNullableFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableFilter<"CalendarEvent"> | Date | string | null
+    type?: StringFilter<"CalendarEvent"> | string
+    location?: StringNullableFilter<"CalendarEvent"> | string | null
+    isImportant?: BoolFilter<"CalendarEvent"> | boolean
+    createdAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+  }
+
+  export type CalendarEventOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    type?: SortOrder
+    location?: SortOrderInput | SortOrder
+    isImportant?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    OR?: CalendarEventWhereInput[]
+    NOT?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    title?: StringFilter<"CalendarEvent"> | string
+    description?: StringNullableFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableFilter<"CalendarEvent"> | Date | string | null
+    type?: StringFilter<"CalendarEvent"> | string
+    location?: StringNullableFilter<"CalendarEvent"> | string | null
+    isImportant?: BoolFilter<"CalendarEvent"> | boolean
+    createdAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+  }, "id">
+
+  export type CalendarEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    type?: SortOrder
+    location?: SortOrderInput | SortOrder
+    isImportant?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CalendarEventCountOrderByAggregateInput
+    _max?: CalendarEventMaxOrderByAggregateInput
+    _min?: CalendarEventMinOrderByAggregateInput
+  }
+
+  export type CalendarEventScalarWhereWithAggregatesInput = {
+    AND?: CalendarEventScalarWhereWithAggregatesInput | CalendarEventScalarWhereWithAggregatesInput[]
+    OR?: CalendarEventScalarWhereWithAggregatesInput[]
+    NOT?: CalendarEventScalarWhereWithAggregatesInput | CalendarEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    title?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    description?: StringNullableWithAggregatesFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableWithAggregatesFilter<"CalendarEvent"> | Date | string | null
+    type?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    location?: StringNullableWithAggregatesFilter<"CalendarEvent"> | string | null
+    isImportant?: BoolWithAggregatesFilter<"CalendarEvent"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -22113,7 +25061,11 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -22132,7 +25084,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -22151,7 +25107,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -22170,7 +25130,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -22507,6 +25471,8 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
     grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateInput = {
@@ -22523,6 +25489,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
     grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUpdateInput = {
@@ -22539,6 +25507,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateInput = {
@@ -22555,6 +25525,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupCreateManyInput = {
@@ -23100,11 +26072,18 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
     evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
     participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionUncheckedCreateInput = {
@@ -23115,10 +26094,17 @@ export namespace Prisma {
     location?: string | null
     status?: $Enums.DebateSessionStatus
     moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
     participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionUpdateInput = {
@@ -23128,11 +26114,18 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
     evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
     participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateInput = {
@@ -23143,10 +26136,17 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
     participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionCreateManyInput = {
@@ -23157,6 +26157,12 @@ export namespace Prisma {
     location?: string | null
     status?: $Enums.DebateSessionStatus
     moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23168,6 +26174,9 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23180,6 +26189,12 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23418,19 +26433,33 @@ export namespace Prisma {
     topic: string
     reason?: string | null
     status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    student: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
   }
 
   export type DebateProposalUncheckedCreateInput = {
     id?: string
-    studentId: string
+    studentId?: string | null
+    proposerId: string
     topic: string
     reason?: string | null
     status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
   }
 
   export type DebateProposalUpdateInput = {
@@ -23438,27 +26467,46 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: StudentProfileUpdateOneRequiredWithoutDebateProposalsNestedInput
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
   }
 
   export type DebateProposalUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
   }
 
   export type DebateProposalCreateManyInput = {
     id?: string
-    studentId: string
+    studentId?: string | null
+    proposerId: string
     topic: string
     reason?: string | null
     status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23468,16 +26516,84 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DebateProposalUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionCreateInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    proposal: DebateProposalCreateNestedOneWithoutReactionsInput
+    user: UserCreateNestedOneWithoutDebateProposalReactionsInput
+  }
+
+  export type DebateProposalReactionUncheckedCreateInput = {
+    id?: string
+    proposalId: string
+    userId: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proposal?: DebateProposalUpdateOneRequiredWithoutReactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutDebateProposalReactionsNestedInput
+  }
+
+  export type DebateProposalReactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionCreateManyInput = {
+    id?: string
+    proposalId: string
+    userId: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23492,6 +26608,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutNotificationsInput
     evaluation?: DebateEvaluationCreateNestedOneWithoutNotificationsInput
+    debateSession?: DebateSessionCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
@@ -23502,6 +26619,7 @@ export namespace Prisma {
     type?: string
     isRead?: boolean
     evaluationId?: string | null
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23516,6 +26634,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
     evaluation?: DebateEvaluationUpdateOneWithoutNotificationsNestedInput
+    debateSession?: DebateSessionUpdateOneWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
@@ -23526,6 +26645,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23538,6 +26658,7 @@ export namespace Prisma {
     type?: string
     isRead?: boolean
     evaluationId?: string | null
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23560,6 +26681,98 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    type?: string
+    location?: string | null
+    isImportant?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    type?: string
+    location?: string | null
+    isImportant?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isImportant?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isImportant?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    type?: string
+    location?: string | null
+    isImportant?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isImportant?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isImportant?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23651,6 +26864,18 @@ export namespace Prisma {
     none?: DebateEvaluationWhereInput
   }
 
+  export type DebateProposalListRelationFilter = {
+    every?: DebateProposalWhereInput
+    some?: DebateProposalWhereInput
+    none?: DebateProposalWhereInput
+  }
+
+  export type DebateProposalReactionListRelationFilter = {
+    every?: DebateProposalReactionWhereInput
+    some?: DebateProposalReactionWhereInput
+    none?: DebateProposalReactionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -23669,6 +26894,14 @@ export namespace Prisma {
   }
 
   export type DebateEvaluationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DebateProposalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DebateProposalReactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23820,12 +27053,6 @@ export namespace Prisma {
     none?: DebateParticipantWhereInput
   }
 
-  export type DebateProposalListRelationFilter = {
-    every?: DebateProposalWhereInput
-    some?: DebateProposalWhereInput
-    none?: DebateProposalWhereInput
-  }
-
   export type EnrollmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -23847,10 +27074,6 @@ export namespace Prisma {
   }
 
   export type DebateParticipantOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DebateProposalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24439,6 +27662,16 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type DebateProposalNullableRelationFilter = {
+    is?: DebateProposalWhereInput | null
+    isNot?: DebateProposalWhereInput | null
+  }
+
+  export type ClassGroupNullableRelationFilter = {
+    is?: ClassGroupWhereInput | null
+    isNot?: ClassGroupWhereInput | null
+  }
+
   export type DebateSessionCountOrderByAggregateInput = {
     id?: SortOrder
     topic?: SortOrder
@@ -24447,6 +27680,12 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     moderatorId?: SortOrder
+    sourceProposalId?: SortOrder
+    moderatorAssignedById?: SortOrder
+    moderatorAssignedAt?: SortOrder
+    moderatorExpiresAt?: SortOrder
+    moderatorNote?: SortOrder
+    classGroupId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24463,6 +27702,12 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     moderatorId?: SortOrder
+    sourceProposalId?: SortOrder
+    moderatorAssignedById?: SortOrder
+    moderatorAssignedAt?: SortOrder
+    moderatorExpiresAt?: SortOrder
+    moderatorNote?: SortOrder
+    classGroupId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24475,6 +27720,12 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     moderatorId?: SortOrder
+    sourceProposalId?: SortOrder
+    moderatorAssignedById?: SortOrder
+    moderatorAssignedAt?: SortOrder
+    moderatorExpiresAt?: SortOrder
+    moderatorNote?: SortOrder
+    classGroupId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24664,12 +27915,22 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type DebateSessionNullableRelationFilter = {
+    is?: DebateSessionWhereInput | null
+    isNot?: DebateSessionWhereInput | null
+  }
+
   export type DebateProposalCountOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
+    proposerId?: SortOrder
     topic?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    convertedSessionId?: SortOrder
+    classGroupId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24677,9 +27938,14 @@ export namespace Prisma {
   export type DebateProposalMaxOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
+    proposerId?: SortOrder
     topic?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    convertedSessionId?: SortOrder
+    classGroupId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24687,9 +27953,51 @@ export namespace Prisma {
   export type DebateProposalMinOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
+    proposerId?: SortOrder
     topic?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    approvedById?: SortOrder
+    approvedAt?: SortOrder
+    convertedSessionId?: SortOrder
+    classGroupId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DebateProposalRelationFilter = {
+    is?: DebateProposalWhereInput
+    isNot?: DebateProposalWhereInput
+  }
+
+  export type DebateProposalReactionProposalIdUserIdCompoundUniqueInput = {
+    proposalId: string
+    userId: string
+  }
+
+  export type DebateProposalReactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DebateProposalReactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DebateProposalReactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    proposalId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24707,6 +28015,7 @@ export namespace Prisma {
     type?: SortOrder
     isRead?: SortOrder
     evaluationId?: SortOrder
+    debateSessionId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24719,6 +28028,7 @@ export namespace Prisma {
     type?: SortOrder
     isRead?: SortOrder
     evaluationId?: SortOrder
+    debateSessionId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24731,6 +28041,46 @@ export namespace Prisma {
     type?: SortOrder
     isRead?: SortOrder
     evaluationId?: SortOrder
+    debateSessionId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    type?: SortOrder
+    location?: SortOrder
+    isImportant?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    type?: SortOrder
+    location?: SortOrder
+    isImportant?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    type?: SortOrder
+    location?: SortOrder
+    isImportant?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24768,11 +28118,39 @@ export namespace Prisma {
     connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
   }
 
+  export type DebateSessionCreateNestedManyWithoutModeratorAssignedByInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput> | DebateSessionCreateWithoutModeratorAssignedByInput[] | DebateSessionUncheckedCreateWithoutModeratorAssignedByInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorAssignedByInput | DebateSessionCreateOrConnectWithoutModeratorAssignedByInput[]
+    createMany?: DebateSessionCreateManyModeratorAssignedByInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
   export type DebateEvaluationCreateNestedManyWithoutEvaluatorInput = {
     create?: XOR<DebateEvaluationCreateWithoutEvaluatorInput, DebateEvaluationUncheckedCreateWithoutEvaluatorInput> | DebateEvaluationCreateWithoutEvaluatorInput[] | DebateEvaluationUncheckedCreateWithoutEvaluatorInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutEvaluatorInput | DebateEvaluationCreateOrConnectWithoutEvaluatorInput[]
     createMany?: DebateEvaluationCreateManyEvaluatorInputEnvelope
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
+  }
+
+  export type DebateProposalCreateNestedManyWithoutProposerInput = {
+    create?: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput> | DebateProposalCreateWithoutProposerInput[] | DebateProposalUncheckedCreateWithoutProposerInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutProposerInput | DebateProposalCreateOrConnectWithoutProposerInput[]
+    createMany?: DebateProposalCreateManyProposerInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+  }
+
+  export type DebateProposalCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput> | DebateProposalCreateWithoutApprovedByInput[] | DebateProposalUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutApprovedByInput | DebateProposalCreateOrConnectWithoutApprovedByInput[]
+    createMany?: DebateProposalCreateManyApprovedByInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+  }
+
+  export type DebateProposalReactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput> | DebateProposalReactionCreateWithoutUserInput[] | DebateProposalReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutUserInput | DebateProposalReactionCreateOrConnectWithoutUserInput[]
+    createMany?: DebateProposalReactionCreateManyUserInputEnvelope
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
   }
 
   export type StudentProfileUncheckedCreateNestedOneWithoutUserInput = {
@@ -24808,11 +28186,39 @@ export namespace Prisma {
     connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
   }
 
+  export type DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput> | DebateSessionCreateWithoutModeratorAssignedByInput[] | DebateSessionUncheckedCreateWithoutModeratorAssignedByInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorAssignedByInput | DebateSessionCreateOrConnectWithoutModeratorAssignedByInput[]
+    createMany?: DebateSessionCreateManyModeratorAssignedByInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
   export type DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput = {
     create?: XOR<DebateEvaluationCreateWithoutEvaluatorInput, DebateEvaluationUncheckedCreateWithoutEvaluatorInput> | DebateEvaluationCreateWithoutEvaluatorInput[] | DebateEvaluationUncheckedCreateWithoutEvaluatorInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutEvaluatorInput | DebateEvaluationCreateOrConnectWithoutEvaluatorInput[]
     createMany?: DebateEvaluationCreateManyEvaluatorInputEnvelope
     connect?: DebateEvaluationWhereUniqueInput | DebateEvaluationWhereUniqueInput[]
+  }
+
+  export type DebateProposalUncheckedCreateNestedManyWithoutProposerInput = {
+    create?: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput> | DebateProposalCreateWithoutProposerInput[] | DebateProposalUncheckedCreateWithoutProposerInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutProposerInput | DebateProposalCreateOrConnectWithoutProposerInput[]
+    createMany?: DebateProposalCreateManyProposerInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+  }
+
+  export type DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput> | DebateProposalCreateWithoutApprovedByInput[] | DebateProposalUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutApprovedByInput | DebateProposalCreateOrConnectWithoutApprovedByInput[]
+    createMany?: DebateProposalCreateManyApprovedByInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+  }
+
+  export type DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput> | DebateProposalReactionCreateWithoutUserInput[] | DebateProposalReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutUserInput | DebateProposalReactionCreateOrConnectWithoutUserInput[]
+    createMany?: DebateProposalReactionCreateManyUserInputEnvelope
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24897,6 +28303,20 @@ export namespace Prisma {
     deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
   }
 
+  export type DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput> | DebateSessionCreateWithoutModeratorAssignedByInput[] | DebateSessionUncheckedCreateWithoutModeratorAssignedByInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorAssignedByInput | DebateSessionCreateOrConnectWithoutModeratorAssignedByInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutModeratorAssignedByInput | DebateSessionUpsertWithWhereUniqueWithoutModeratorAssignedByInput[]
+    createMany?: DebateSessionCreateManyModeratorAssignedByInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutModeratorAssignedByInput | DebateSessionUpdateWithWhereUniqueWithoutModeratorAssignedByInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutModeratorAssignedByInput | DebateSessionUpdateManyWithWhereWithoutModeratorAssignedByInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
   export type DebateEvaluationUpdateManyWithoutEvaluatorNestedInput = {
     create?: XOR<DebateEvaluationCreateWithoutEvaluatorInput, DebateEvaluationUncheckedCreateWithoutEvaluatorInput> | DebateEvaluationCreateWithoutEvaluatorInput[] | DebateEvaluationUncheckedCreateWithoutEvaluatorInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutEvaluatorInput | DebateEvaluationCreateOrConnectWithoutEvaluatorInput[]
@@ -24909,6 +28329,48 @@ export namespace Prisma {
     update?: DebateEvaluationUpdateWithWhereUniqueWithoutEvaluatorInput | DebateEvaluationUpdateWithWhereUniqueWithoutEvaluatorInput[]
     updateMany?: DebateEvaluationUpdateManyWithWhereWithoutEvaluatorInput | DebateEvaluationUpdateManyWithWhereWithoutEvaluatorInput[]
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
+  }
+
+  export type DebateProposalUpdateManyWithoutProposerNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput> | DebateProposalCreateWithoutProposerInput[] | DebateProposalUncheckedCreateWithoutProposerInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutProposerInput | DebateProposalCreateOrConnectWithoutProposerInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutProposerInput | DebateProposalUpsertWithWhereUniqueWithoutProposerInput[]
+    createMany?: DebateProposalCreateManyProposerInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutProposerInput | DebateProposalUpdateWithWhereUniqueWithoutProposerInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutProposerInput | DebateProposalUpdateManyWithWhereWithoutProposerInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+  }
+
+  export type DebateProposalUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput> | DebateProposalCreateWithoutApprovedByInput[] | DebateProposalUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutApprovedByInput | DebateProposalCreateOrConnectWithoutApprovedByInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutApprovedByInput | DebateProposalUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: DebateProposalCreateManyApprovedByInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutApprovedByInput | DebateProposalUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutApprovedByInput | DebateProposalUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+  }
+
+  export type DebateProposalReactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput> | DebateProposalReactionCreateWithoutUserInput[] | DebateProposalReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutUserInput | DebateProposalReactionCreateOrConnectWithoutUserInput[]
+    upsert?: DebateProposalReactionUpsertWithWhereUniqueWithoutUserInput | DebateProposalReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DebateProposalReactionCreateManyUserInputEnvelope
+    set?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    disconnect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    delete?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    update?: DebateProposalReactionUpdateWithWhereUniqueWithoutUserInput | DebateProposalReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DebateProposalReactionUpdateManyWithWhereWithoutUserInput | DebateProposalReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
   }
 
   export type StudentProfileUncheckedUpdateOneWithoutUserNestedInput = {
@@ -24973,6 +28435,20 @@ export namespace Prisma {
     deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
   }
 
+  export type DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput> | DebateSessionCreateWithoutModeratorAssignedByInput[] | DebateSessionUncheckedCreateWithoutModeratorAssignedByInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutModeratorAssignedByInput | DebateSessionCreateOrConnectWithoutModeratorAssignedByInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutModeratorAssignedByInput | DebateSessionUpsertWithWhereUniqueWithoutModeratorAssignedByInput[]
+    createMany?: DebateSessionCreateManyModeratorAssignedByInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutModeratorAssignedByInput | DebateSessionUpdateWithWhereUniqueWithoutModeratorAssignedByInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutModeratorAssignedByInput | DebateSessionUpdateManyWithWhereWithoutModeratorAssignedByInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
   export type DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput = {
     create?: XOR<DebateEvaluationCreateWithoutEvaluatorInput, DebateEvaluationUncheckedCreateWithoutEvaluatorInput> | DebateEvaluationCreateWithoutEvaluatorInput[] | DebateEvaluationUncheckedCreateWithoutEvaluatorInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutEvaluatorInput | DebateEvaluationCreateOrConnectWithoutEvaluatorInput[]
@@ -24985,6 +28461,48 @@ export namespace Prisma {
     update?: DebateEvaluationUpdateWithWhereUniqueWithoutEvaluatorInput | DebateEvaluationUpdateWithWhereUniqueWithoutEvaluatorInput[]
     updateMany?: DebateEvaluationUpdateManyWithWhereWithoutEvaluatorInput | DebateEvaluationUpdateManyWithWhereWithoutEvaluatorInput[]
     deleteMany?: DebateEvaluationScalarWhereInput | DebateEvaluationScalarWhereInput[]
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutProposerNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput> | DebateProposalCreateWithoutProposerInput[] | DebateProposalUncheckedCreateWithoutProposerInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutProposerInput | DebateProposalCreateOrConnectWithoutProposerInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutProposerInput | DebateProposalUpsertWithWhereUniqueWithoutProposerInput[]
+    createMany?: DebateProposalCreateManyProposerInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutProposerInput | DebateProposalUpdateWithWhereUniqueWithoutProposerInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutProposerInput | DebateProposalUpdateManyWithWhereWithoutProposerInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput> | DebateProposalCreateWithoutApprovedByInput[] | DebateProposalUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutApprovedByInput | DebateProposalCreateOrConnectWithoutApprovedByInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutApprovedByInput | DebateProposalUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: DebateProposalCreateManyApprovedByInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutApprovedByInput | DebateProposalUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutApprovedByInput | DebateProposalUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+  }
+
+  export type DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput> | DebateProposalReactionCreateWithoutUserInput[] | DebateProposalReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutUserInput | DebateProposalReactionCreateOrConnectWithoutUserInput[]
+    upsert?: DebateProposalReactionUpsertWithWhereUniqueWithoutUserInput | DebateProposalReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DebateProposalReactionCreateManyUserInputEnvelope
+    set?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    disconnect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    delete?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    update?: DebateProposalReactionUpdateWithWhereUniqueWithoutUserInput | DebateProposalReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DebateProposalReactionUpdateManyWithWhereWithoutUserInput | DebateProposalReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutStudentProfileInput = {
@@ -25594,6 +29112,20 @@ export namespace Prisma {
     connect?: GradeWhereUniqueInput | GradeWhereUniqueInput[]
   }
 
+  export type DebateSessionCreateNestedManyWithoutClassGroupInput = {
+    create?: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput> | DebateSessionCreateWithoutClassGroupInput[] | DebateSessionUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutClassGroupInput | DebateSessionCreateOrConnectWithoutClassGroupInput[]
+    createMany?: DebateSessionCreateManyClassGroupInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
+  export type DebateProposalCreateNestedManyWithoutClassGroupInput = {
+    create?: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput> | DebateProposalCreateWithoutClassGroupInput[] | DebateProposalUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutClassGroupInput | DebateProposalCreateOrConnectWithoutClassGroupInput[]
+    createMany?: DebateProposalCreateManyClassGroupInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+  }
+
   export type EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput = {
     create?: XOR<EnrollmentCreateWithoutClassGroupInput, EnrollmentUncheckedCreateWithoutClassGroupInput> | EnrollmentCreateWithoutClassGroupInput[] | EnrollmentUncheckedCreateWithoutClassGroupInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassGroupInput | EnrollmentCreateOrConnectWithoutClassGroupInput[]
@@ -25613,6 +29145,20 @@ export namespace Prisma {
     connectOrCreate?: GradeCreateOrConnectWithoutClassGroupInput | GradeCreateOrConnectWithoutClassGroupInput[]
     createMany?: GradeCreateManyClassGroupInputEnvelope
     connect?: GradeWhereUniqueInput | GradeWhereUniqueInput[]
+  }
+
+  export type DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput = {
+    create?: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput> | DebateSessionCreateWithoutClassGroupInput[] | DebateSessionUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutClassGroupInput | DebateSessionCreateOrConnectWithoutClassGroupInput[]
+    createMany?: DebateSessionCreateManyClassGroupInputEnvelope
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+  }
+
+  export type DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput = {
+    create?: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput> | DebateProposalCreateWithoutClassGroupInput[] | DebateProposalUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutClassGroupInput | DebateProposalCreateOrConnectWithoutClassGroupInput[]
+    createMany?: DebateProposalCreateManyClassGroupInputEnvelope
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -25679,6 +29225,34 @@ export namespace Prisma {
     deleteMany?: GradeScalarWhereInput | GradeScalarWhereInput[]
   }
 
+  export type DebateSessionUpdateManyWithoutClassGroupNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput> | DebateSessionCreateWithoutClassGroupInput[] | DebateSessionUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutClassGroupInput | DebateSessionCreateOrConnectWithoutClassGroupInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutClassGroupInput | DebateSessionUpsertWithWhereUniqueWithoutClassGroupInput[]
+    createMany?: DebateSessionCreateManyClassGroupInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutClassGroupInput | DebateSessionUpdateWithWhereUniqueWithoutClassGroupInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutClassGroupInput | DebateSessionUpdateManyWithWhereWithoutClassGroupInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
+  export type DebateProposalUpdateManyWithoutClassGroupNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput> | DebateProposalCreateWithoutClassGroupInput[] | DebateProposalUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutClassGroupInput | DebateProposalCreateOrConnectWithoutClassGroupInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutClassGroupInput | DebateProposalUpsertWithWhereUniqueWithoutClassGroupInput[]
+    createMany?: DebateProposalCreateManyClassGroupInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutClassGroupInput | DebateProposalUpdateWithWhereUniqueWithoutClassGroupInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutClassGroupInput | DebateProposalUpdateManyWithWhereWithoutClassGroupInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+  }
+
   export type EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput = {
     create?: XOR<EnrollmentCreateWithoutClassGroupInput, EnrollmentUncheckedCreateWithoutClassGroupInput> | EnrollmentCreateWithoutClassGroupInput[] | EnrollmentUncheckedCreateWithoutClassGroupInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutClassGroupInput | EnrollmentCreateOrConnectWithoutClassGroupInput[]
@@ -25719,6 +29293,34 @@ export namespace Prisma {
     update?: GradeUpdateWithWhereUniqueWithoutClassGroupInput | GradeUpdateWithWhereUniqueWithoutClassGroupInput[]
     updateMany?: GradeUpdateManyWithWhereWithoutClassGroupInput | GradeUpdateManyWithWhereWithoutClassGroupInput[]
     deleteMany?: GradeScalarWhereInput | GradeScalarWhereInput[]
+  }
+
+  export type DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput> | DebateSessionCreateWithoutClassGroupInput[] | DebateSessionUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutClassGroupInput | DebateSessionCreateOrConnectWithoutClassGroupInput[]
+    upsert?: DebateSessionUpsertWithWhereUniqueWithoutClassGroupInput | DebateSessionUpsertWithWhereUniqueWithoutClassGroupInput[]
+    createMany?: DebateSessionCreateManyClassGroupInputEnvelope
+    set?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    disconnect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    delete?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    connect?: DebateSessionWhereUniqueInput | DebateSessionWhereUniqueInput[]
+    update?: DebateSessionUpdateWithWhereUniqueWithoutClassGroupInput | DebateSessionUpdateWithWhereUniqueWithoutClassGroupInput[]
+    updateMany?: DebateSessionUpdateManyWithWhereWithoutClassGroupInput | DebateSessionUpdateManyWithWhereWithoutClassGroupInput[]
+    deleteMany?: DebateSessionScalarWhereInput | DebateSessionScalarWhereInput[]
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput> | DebateProposalCreateWithoutClassGroupInput[] | DebateProposalUncheckedCreateWithoutClassGroupInput[]
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutClassGroupInput | DebateProposalCreateOrConnectWithoutClassGroupInput[]
+    upsert?: DebateProposalUpsertWithWhereUniqueWithoutClassGroupInput | DebateProposalUpsertWithWhereUniqueWithoutClassGroupInput[]
+    createMany?: DebateProposalCreateManyClassGroupInputEnvelope
+    set?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    disconnect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    delete?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    connect?: DebateProposalWhereUniqueInput | DebateProposalWhereUniqueInput[]
+    update?: DebateProposalUpdateWithWhereUniqueWithoutClassGroupInput | DebateProposalUpdateWithWhereUniqueWithoutClassGroupInput[]
+    updateMany?: DebateProposalUpdateManyWithWhereWithoutClassGroupInput | DebateProposalUpdateManyWithWhereWithoutClassGroupInput[]
+    deleteMany?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
   }
 
   export type StudentProfileCreateNestedOneWithoutEnrollmentsInput = {
@@ -26015,6 +29617,24 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutAssignedDebateSessionsInput = {
+    create?: XOR<UserCreateWithoutAssignedDebateSessionsInput, UserUncheckedCreateWithoutAssignedDebateSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedDebateSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DebateProposalCreateNestedOneWithoutConvertedSessionInput = {
+    create?: XOR<DebateProposalCreateWithoutConvertedSessionInput, DebateProposalUncheckedCreateWithoutConvertedSessionInput>
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutConvertedSessionInput
+    connect?: DebateProposalWhereUniqueInput
+  }
+
+  export type ClassGroupCreateNestedOneWithoutDebatesInput = {
+    create?: XOR<ClassGroupCreateWithoutDebatesInput, ClassGroupUncheckedCreateWithoutDebatesInput>
+    connectOrCreate?: ClassGroupCreateOrConnectWithoutDebatesInput
+    connect?: ClassGroupWhereUniqueInput
+  }
+
   export type DebateEvaluationCreateNestedManyWithoutSessionInput = {
     create?: XOR<DebateEvaluationCreateWithoutSessionInput, DebateEvaluationUncheckedCreateWithoutSessionInput> | DebateEvaluationCreateWithoutSessionInput[] | DebateEvaluationUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutSessionInput | DebateEvaluationCreateOrConnectWithoutSessionInput[]
@@ -26027,6 +29647,13 @@ export namespace Prisma {
     connectOrCreate?: DebateParticipantCreateOrConnectWithoutSessionInput | DebateParticipantCreateOrConnectWithoutSessionInput[]
     createMany?: DebateParticipantCreateManySessionInputEnvelope
     connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutDebateSessionInput = {
+    create?: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput> | NotificationCreateWithoutDebateSessionInput[] | NotificationUncheckedCreateWithoutDebateSessionInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDebateSessionInput | NotificationCreateOrConnectWithoutDebateSessionInput[]
+    createMany?: NotificationCreateManyDebateSessionInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput = {
@@ -26043,6 +29670,13 @@ export namespace Prisma {
     connect?: DebateParticipantWhereUniqueInput | DebateParticipantWhereUniqueInput[]
   }
 
+  export type NotificationUncheckedCreateNestedManyWithoutDebateSessionInput = {
+    create?: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput> | NotificationCreateWithoutDebateSessionInput[] | NotificationUncheckedCreateWithoutDebateSessionInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDebateSessionInput | NotificationCreateOrConnectWithoutDebateSessionInput[]
+    createMany?: NotificationCreateManyDebateSessionInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type EnumDebateSessionStatusFieldUpdateOperationsInput = {
     set?: $Enums.DebateSessionStatus
   }
@@ -26055,6 +29689,36 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModeratedDebatesInput, UserUpdateWithoutModeratedDebatesInput>, UserUncheckedUpdateWithoutModeratedDebatesInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedDebateSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedDebateSessionsInput, UserUncheckedCreateWithoutAssignedDebateSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedDebateSessionsInput
+    upsert?: UserUpsertWithoutAssignedDebateSessionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedDebateSessionsInput, UserUpdateWithoutAssignedDebateSessionsInput>, UserUncheckedUpdateWithoutAssignedDebateSessionsInput>
+  }
+
+  export type DebateProposalUpdateOneWithoutConvertedSessionNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutConvertedSessionInput, DebateProposalUncheckedCreateWithoutConvertedSessionInput>
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutConvertedSessionInput
+    upsert?: DebateProposalUpsertWithoutConvertedSessionInput
+    disconnect?: DebateProposalWhereInput | boolean
+    delete?: DebateProposalWhereInput | boolean
+    connect?: DebateProposalWhereUniqueInput
+    update?: XOR<XOR<DebateProposalUpdateToOneWithWhereWithoutConvertedSessionInput, DebateProposalUpdateWithoutConvertedSessionInput>, DebateProposalUncheckedUpdateWithoutConvertedSessionInput>
+  }
+
+  export type ClassGroupUpdateOneWithoutDebatesNestedInput = {
+    create?: XOR<ClassGroupCreateWithoutDebatesInput, ClassGroupUncheckedCreateWithoutDebatesInput>
+    connectOrCreate?: ClassGroupCreateOrConnectWithoutDebatesInput
+    upsert?: ClassGroupUpsertWithoutDebatesInput
+    disconnect?: ClassGroupWhereInput | boolean
+    delete?: ClassGroupWhereInput | boolean
+    connect?: ClassGroupWhereUniqueInput
+    update?: XOR<XOR<ClassGroupUpdateToOneWithWhereWithoutDebatesInput, ClassGroupUpdateWithoutDebatesInput>, ClassGroupUncheckedUpdateWithoutDebatesInput>
   }
 
   export type DebateEvaluationUpdateManyWithoutSessionNestedInput = {
@@ -26085,6 +29749,20 @@ export namespace Prisma {
     deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutDebateSessionNestedInput = {
+    create?: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput> | NotificationCreateWithoutDebateSessionInput[] | NotificationUncheckedCreateWithoutDebateSessionInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDebateSessionInput | NotificationCreateOrConnectWithoutDebateSessionInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutDebateSessionInput | NotificationUpsertWithWhereUniqueWithoutDebateSessionInput[]
+    createMany?: NotificationCreateManyDebateSessionInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutDebateSessionInput | NotificationUpdateWithWhereUniqueWithoutDebateSessionInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutDebateSessionInput | NotificationUpdateManyWithWhereWithoutDebateSessionInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput = {
     create?: XOR<DebateEvaluationCreateWithoutSessionInput, DebateEvaluationUncheckedCreateWithoutSessionInput> | DebateEvaluationCreateWithoutSessionInput[] | DebateEvaluationUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutSessionInput | DebateEvaluationCreateOrConnectWithoutSessionInput[]
@@ -26111,6 +29789,20 @@ export namespace Prisma {
     update?: DebateParticipantUpdateWithWhereUniqueWithoutSessionInput | DebateParticipantUpdateWithWhereUniqueWithoutSessionInput[]
     updateMany?: DebateParticipantUpdateManyWithWhereWithoutSessionInput | DebateParticipantUpdateManyWithWhereWithoutSessionInput[]
     deleteMany?: DebateParticipantScalarWhereInput | DebateParticipantScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput = {
+    create?: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput> | NotificationCreateWithoutDebateSessionInput[] | NotificationUncheckedCreateWithoutDebateSessionInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDebateSessionInput | NotificationCreateOrConnectWithoutDebateSessionInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutDebateSessionInput | NotificationUpsertWithWhereUniqueWithoutDebateSessionInput[]
+    createMany?: NotificationCreateManyDebateSessionInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutDebateSessionInput | NotificationUpdateWithWhereUniqueWithoutDebateSessionInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutDebateSessionInput | NotificationUpdateManyWithWhereWithoutDebateSessionInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type DebateSessionCreateNestedOneWithoutParticipantsInput = {
@@ -26249,12 +29941,162 @@ export namespace Prisma {
     connect?: StudentProfileWhereUniqueInput
   }
 
-  export type StudentProfileUpdateOneRequiredWithoutDebateProposalsNestedInput = {
+  export type UserCreateNestedOneWithoutDebateProposalsInput = {
+    create?: XOR<UserCreateWithoutDebateProposalsInput, UserUncheckedCreateWithoutDebateProposalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDebateProposalsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutApprovedDebateProposalsInput = {
+    create?: XOR<UserCreateWithoutApprovedDebateProposalsInput, UserUncheckedCreateWithoutApprovedDebateProposalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApprovedDebateProposalsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DebateSessionCreateNestedOneWithoutSourceProposalInput = {
+    create?: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutSourceProposalInput
+    connect?: DebateSessionWhereUniqueInput
+  }
+
+  export type ClassGroupCreateNestedOneWithoutProposalsInput = {
+    create?: XOR<ClassGroupCreateWithoutProposalsInput, ClassGroupUncheckedCreateWithoutProposalsInput>
+    connectOrCreate?: ClassGroupCreateOrConnectWithoutProposalsInput
+    connect?: ClassGroupWhereUniqueInput
+  }
+
+  export type DebateProposalReactionCreateNestedManyWithoutProposalInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput> | DebateProposalReactionCreateWithoutProposalInput[] | DebateProposalReactionUncheckedCreateWithoutProposalInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutProposalInput | DebateProposalReactionCreateOrConnectWithoutProposalInput[]
+    createMany?: DebateProposalReactionCreateManyProposalInputEnvelope
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+  }
+
+  export type DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput = {
+    create?: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutSourceProposalInput
+    connect?: DebateSessionWhereUniqueInput
+  }
+
+  export type DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput> | DebateProposalReactionCreateWithoutProposalInput[] | DebateProposalReactionUncheckedCreateWithoutProposalInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutProposalInput | DebateProposalReactionCreateOrConnectWithoutProposalInput[]
+    createMany?: DebateProposalReactionCreateManyProposalInputEnvelope
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+  }
+
+  export type StudentProfileUpdateOneWithoutDebateProposalsNestedInput = {
     create?: XOR<StudentProfileCreateWithoutDebateProposalsInput, StudentProfileUncheckedCreateWithoutDebateProposalsInput>
     connectOrCreate?: StudentProfileCreateOrConnectWithoutDebateProposalsInput
     upsert?: StudentProfileUpsertWithoutDebateProposalsInput
+    disconnect?: StudentProfileWhereInput | boolean
+    delete?: StudentProfileWhereInput | boolean
     connect?: StudentProfileWhereUniqueInput
     update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutDebateProposalsInput, StudentProfileUpdateWithoutDebateProposalsInput>, StudentProfileUncheckedUpdateWithoutDebateProposalsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDebateProposalsNestedInput = {
+    create?: XOR<UserCreateWithoutDebateProposalsInput, UserUncheckedCreateWithoutDebateProposalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDebateProposalsInput
+    upsert?: UserUpsertWithoutDebateProposalsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDebateProposalsInput, UserUpdateWithoutDebateProposalsInput>, UserUncheckedUpdateWithoutDebateProposalsInput>
+  }
+
+  export type UserUpdateOneWithoutApprovedDebateProposalsNestedInput = {
+    create?: XOR<UserCreateWithoutApprovedDebateProposalsInput, UserUncheckedCreateWithoutApprovedDebateProposalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApprovedDebateProposalsInput
+    upsert?: UserUpsertWithoutApprovedDebateProposalsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApprovedDebateProposalsInput, UserUpdateWithoutApprovedDebateProposalsInput>, UserUncheckedUpdateWithoutApprovedDebateProposalsInput>
+  }
+
+  export type DebateSessionUpdateOneWithoutSourceProposalNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutSourceProposalInput
+    upsert?: DebateSessionUpsertWithoutSourceProposalInput
+    disconnect?: DebateSessionWhereInput | boolean
+    delete?: DebateSessionWhereInput | boolean
+    connect?: DebateSessionWhereUniqueInput
+    update?: XOR<XOR<DebateSessionUpdateToOneWithWhereWithoutSourceProposalInput, DebateSessionUpdateWithoutSourceProposalInput>, DebateSessionUncheckedUpdateWithoutSourceProposalInput>
+  }
+
+  export type ClassGroupUpdateOneWithoutProposalsNestedInput = {
+    create?: XOR<ClassGroupCreateWithoutProposalsInput, ClassGroupUncheckedCreateWithoutProposalsInput>
+    connectOrCreate?: ClassGroupCreateOrConnectWithoutProposalsInput
+    upsert?: ClassGroupUpsertWithoutProposalsInput
+    disconnect?: ClassGroupWhereInput | boolean
+    delete?: ClassGroupWhereInput | boolean
+    connect?: ClassGroupWhereUniqueInput
+    update?: XOR<XOR<ClassGroupUpdateToOneWithWhereWithoutProposalsInput, ClassGroupUpdateWithoutProposalsInput>, ClassGroupUncheckedUpdateWithoutProposalsInput>
+  }
+
+  export type DebateProposalReactionUpdateManyWithoutProposalNestedInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput> | DebateProposalReactionCreateWithoutProposalInput[] | DebateProposalReactionUncheckedCreateWithoutProposalInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutProposalInput | DebateProposalReactionCreateOrConnectWithoutProposalInput[]
+    upsert?: DebateProposalReactionUpsertWithWhereUniqueWithoutProposalInput | DebateProposalReactionUpsertWithWhereUniqueWithoutProposalInput[]
+    createMany?: DebateProposalReactionCreateManyProposalInputEnvelope
+    set?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    disconnect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    delete?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    update?: DebateProposalReactionUpdateWithWhereUniqueWithoutProposalInput | DebateProposalReactionUpdateWithWhereUniqueWithoutProposalInput[]
+    updateMany?: DebateProposalReactionUpdateManyWithWhereWithoutProposalInput | DebateProposalReactionUpdateManyWithWhereWithoutProposalInput[]
+    deleteMany?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
+  }
+
+  export type DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutSourceProposalInput
+    upsert?: DebateSessionUpsertWithoutSourceProposalInput
+    disconnect?: DebateSessionWhereInput | boolean
+    delete?: DebateSessionWhereInput | boolean
+    connect?: DebateSessionWhereUniqueInput
+    update?: XOR<XOR<DebateSessionUpdateToOneWithWhereWithoutSourceProposalInput, DebateSessionUpdateWithoutSourceProposalInput>, DebateSessionUncheckedUpdateWithoutSourceProposalInput>
+  }
+
+  export type DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput = {
+    create?: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput> | DebateProposalReactionCreateWithoutProposalInput[] | DebateProposalReactionUncheckedCreateWithoutProposalInput[]
+    connectOrCreate?: DebateProposalReactionCreateOrConnectWithoutProposalInput | DebateProposalReactionCreateOrConnectWithoutProposalInput[]
+    upsert?: DebateProposalReactionUpsertWithWhereUniqueWithoutProposalInput | DebateProposalReactionUpsertWithWhereUniqueWithoutProposalInput[]
+    createMany?: DebateProposalReactionCreateManyProposalInputEnvelope
+    set?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    disconnect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    delete?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    connect?: DebateProposalReactionWhereUniqueInput | DebateProposalReactionWhereUniqueInput[]
+    update?: DebateProposalReactionUpdateWithWhereUniqueWithoutProposalInput | DebateProposalReactionUpdateWithWhereUniqueWithoutProposalInput[]
+    updateMany?: DebateProposalReactionUpdateManyWithWhereWithoutProposalInput | DebateProposalReactionUpdateManyWithWhereWithoutProposalInput[]
+    deleteMany?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
+  }
+
+  export type DebateProposalCreateNestedOneWithoutReactionsInput = {
+    create?: XOR<DebateProposalCreateWithoutReactionsInput, DebateProposalUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutReactionsInput
+    connect?: DebateProposalWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDebateProposalReactionsInput = {
+    create?: XOR<UserCreateWithoutDebateProposalReactionsInput, UserUncheckedCreateWithoutDebateProposalReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDebateProposalReactionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DebateProposalUpdateOneRequiredWithoutReactionsNestedInput = {
+    create?: XOR<DebateProposalCreateWithoutReactionsInput, DebateProposalUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: DebateProposalCreateOrConnectWithoutReactionsInput
+    upsert?: DebateProposalUpsertWithoutReactionsInput
+    connect?: DebateProposalWhereUniqueInput
+    update?: XOR<XOR<DebateProposalUpdateToOneWithWhereWithoutReactionsInput, DebateProposalUpdateWithoutReactionsInput>, DebateProposalUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDebateProposalReactionsNestedInput = {
+    create?: XOR<UserCreateWithoutDebateProposalReactionsInput, UserUncheckedCreateWithoutDebateProposalReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDebateProposalReactionsInput
+    upsert?: UserUpsertWithoutDebateProposalReactionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDebateProposalReactionsInput, UserUpdateWithoutDebateProposalReactionsInput>, UserUncheckedUpdateWithoutDebateProposalReactionsInput>
   }
 
   export type UserCreateNestedOneWithoutNotificationsInput = {
@@ -26267,6 +30109,12 @@ export namespace Prisma {
     create?: XOR<DebateEvaluationCreateWithoutNotificationsInput, DebateEvaluationUncheckedCreateWithoutNotificationsInput>
     connectOrCreate?: DebateEvaluationCreateOrConnectWithoutNotificationsInput
     connect?: DebateEvaluationWhereUniqueInput
+  }
+
+  export type DebateSessionCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<DebateSessionCreateWithoutNotificationsInput, DebateSessionUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutNotificationsInput
+    connect?: DebateSessionWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
@@ -26285,6 +30133,16 @@ export namespace Prisma {
     delete?: DebateEvaluationWhereInput | boolean
     connect?: DebateEvaluationWhereUniqueInput
     update?: XOR<XOR<DebateEvaluationUpdateToOneWithWhereWithoutNotificationsInput, DebateEvaluationUpdateWithoutNotificationsInput>, DebateEvaluationUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type DebateSessionUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<DebateSessionCreateWithoutNotificationsInput, DebateSessionUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: DebateSessionCreateOrConnectWithoutNotificationsInput
+    upsert?: DebateSessionUpsertWithoutNotificationsInput
+    disconnect?: DebateSessionWhereInput | boolean
+    delete?: DebateSessionWhereInput | boolean
+    connect?: DebateSessionWhereUniqueInput
+    update?: XOR<XOR<DebateSessionUpdateToOneWithWhereWithoutNotificationsInput, DebateSessionUpdateWithoutNotificationsInput>, DebateSessionUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -26693,6 +30551,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     evaluation?: DebateEvaluationCreateNestedOneWithoutNotificationsInput
+    debateSession?: DebateSessionCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateWithoutUserInput = {
@@ -26702,6 +30561,7 @@ export namespace Prisma {
     type?: string
     isRead?: boolean
     evaluationId?: string | null
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26723,10 +30583,17 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
     evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
     participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionUncheckedCreateWithoutModeratorInput = {
@@ -26736,10 +30603,17 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
     participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionCreateOrConnectWithoutModeratorInput = {
@@ -26749,6 +30623,56 @@ export namespace Prisma {
 
   export type DebateSessionCreateManyModeratorInputEnvelope = {
     data: DebateSessionCreateManyModeratorInput | DebateSessionCreateManyModeratorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateSessionCreateWithoutModeratorAssignedByInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutModeratorAssignedByInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutModeratorAssignedByInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput>
+  }
+
+  export type DebateSessionCreateManyModeratorAssignedByInputEnvelope = {
+    data: DebateSessionCreateManyModeratorAssignedByInput | DebateSessionCreateManyModeratorAssignedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -26789,6 +30713,116 @@ export namespace Prisma {
 
   export type DebateEvaluationCreateManyEvaluatorInputEnvelope = {
     data: DebateEvaluationCreateManyEvaluatorInput | DebateEvaluationCreateManyEvaluatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateProposalCreateWithoutProposerInput = {
+    id?: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalUncheckedCreateWithoutProposerInput = {
+    id?: string
+    studentId?: string | null
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalCreateOrConnectWithoutProposerInput = {
+    where: DebateProposalWhereUniqueInput
+    create: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput>
+  }
+
+  export type DebateProposalCreateManyProposerInputEnvelope = {
+    data: DebateProposalCreateManyProposerInput | DebateProposalCreateManyProposerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateProposalCreateWithoutApprovedByInput = {
+    id?: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalUncheckedCreateWithoutApprovedByInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalCreateOrConnectWithoutApprovedByInput = {
+    where: DebateProposalWhereUniqueInput
+    create: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type DebateProposalCreateManyApprovedByInputEnvelope = {
+    data: DebateProposalCreateManyApprovedByInput | DebateProposalCreateManyApprovedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateProposalReactionCreateWithoutUserInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    proposal: DebateProposalCreateNestedOneWithoutReactionsInput
+  }
+
+  export type DebateProposalReactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    proposalId: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionCreateOrConnectWithoutUserInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    create: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type DebateProposalReactionCreateManyUserInputEnvelope = {
+    data: DebateProposalReactionCreateManyUserInput | DebateProposalReactionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -26931,6 +30965,7 @@ export namespace Prisma {
     type?: StringFilter<"Notification"> | string
     isRead?: BoolFilter<"Notification"> | boolean
     evaluationId?: StringNullableFilter<"Notification"> | string | null
+    debateSessionId?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
   }
@@ -26962,8 +30997,30 @@ export namespace Prisma {
     location?: StringNullableFilter<"DebateSession"> | string | null
     status?: EnumDebateSessionStatusFilter<"DebateSession"> | $Enums.DebateSessionStatus
     moderatorId?: StringNullableFilter<"DebateSession"> | string | null
+    sourceProposalId?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedById?: StringNullableFilter<"DebateSession"> | string | null
+    moderatorAssignedAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorExpiresAt?: DateTimeNullableFilter<"DebateSession"> | Date | string | null
+    moderatorNote?: StringNullableFilter<"DebateSession"> | string | null
+    classGroupId?: StringNullableFilter<"DebateSession"> | string | null
     createdAt?: DateTimeFilter<"DebateSession"> | Date | string
     updatedAt?: DateTimeFilter<"DebateSession"> | Date | string
+  }
+
+  export type DebateSessionUpsertWithWhereUniqueWithoutModeratorAssignedByInput = {
+    where: DebateSessionWhereUniqueInput
+    update: XOR<DebateSessionUpdateWithoutModeratorAssignedByInput, DebateSessionUncheckedUpdateWithoutModeratorAssignedByInput>
+    create: XOR<DebateSessionCreateWithoutModeratorAssignedByInput, DebateSessionUncheckedCreateWithoutModeratorAssignedByInput>
+  }
+
+  export type DebateSessionUpdateWithWhereUniqueWithoutModeratorAssignedByInput = {
+    where: DebateSessionWhereUniqueInput
+    data: XOR<DebateSessionUpdateWithoutModeratorAssignedByInput, DebateSessionUncheckedUpdateWithoutModeratorAssignedByInput>
+  }
+
+  export type DebateSessionUpdateManyWithWhereWithoutModeratorAssignedByInput = {
+    where: DebateSessionScalarWhereInput
+    data: XOR<DebateSessionUpdateManyMutationInput, DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByInput>
   }
 
   export type DebateEvaluationUpsertWithWhereUniqueWithoutEvaluatorInput = {
@@ -27000,6 +31057,84 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
   }
 
+  export type DebateProposalUpsertWithWhereUniqueWithoutProposerInput = {
+    where: DebateProposalWhereUniqueInput
+    update: XOR<DebateProposalUpdateWithoutProposerInput, DebateProposalUncheckedUpdateWithoutProposerInput>
+    create: XOR<DebateProposalCreateWithoutProposerInput, DebateProposalUncheckedCreateWithoutProposerInput>
+  }
+
+  export type DebateProposalUpdateWithWhereUniqueWithoutProposerInput = {
+    where: DebateProposalWhereUniqueInput
+    data: XOR<DebateProposalUpdateWithoutProposerInput, DebateProposalUncheckedUpdateWithoutProposerInput>
+  }
+
+  export type DebateProposalUpdateManyWithWhereWithoutProposerInput = {
+    where: DebateProposalScalarWhereInput
+    data: XOR<DebateProposalUpdateManyMutationInput, DebateProposalUncheckedUpdateManyWithoutProposerInput>
+  }
+
+  export type DebateProposalScalarWhereInput = {
+    AND?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+    OR?: DebateProposalScalarWhereInput[]
+    NOT?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
+    id?: StringFilter<"DebateProposal"> | string
+    studentId?: StringNullableFilter<"DebateProposal"> | string | null
+    proposerId?: StringFilter<"DebateProposal"> | string
+    topic?: StringFilter<"DebateProposal"> | string
+    reason?: StringNullableFilter<"DebateProposal"> | string | null
+    status?: StringFilter<"DebateProposal"> | string
+    approvedById?: StringNullableFilter<"DebateProposal"> | string | null
+    approvedAt?: DateTimeNullableFilter<"DebateProposal"> | Date | string | null
+    convertedSessionId?: StringNullableFilter<"DebateProposal"> | string | null
+    classGroupId?: StringNullableFilter<"DebateProposal"> | string | null
+    createdAt?: DateTimeFilter<"DebateProposal"> | Date | string
+    updatedAt?: DateTimeFilter<"DebateProposal"> | Date | string
+  }
+
+  export type DebateProposalUpsertWithWhereUniqueWithoutApprovedByInput = {
+    where: DebateProposalWhereUniqueInput
+    update: XOR<DebateProposalUpdateWithoutApprovedByInput, DebateProposalUncheckedUpdateWithoutApprovedByInput>
+    create: XOR<DebateProposalCreateWithoutApprovedByInput, DebateProposalUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type DebateProposalUpdateWithWhereUniqueWithoutApprovedByInput = {
+    where: DebateProposalWhereUniqueInput
+    data: XOR<DebateProposalUpdateWithoutApprovedByInput, DebateProposalUncheckedUpdateWithoutApprovedByInput>
+  }
+
+  export type DebateProposalUpdateManyWithWhereWithoutApprovedByInput = {
+    where: DebateProposalScalarWhereInput
+    data: XOR<DebateProposalUpdateManyMutationInput, DebateProposalUncheckedUpdateManyWithoutApprovedByInput>
+  }
+
+  export type DebateProposalReactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    update: XOR<DebateProposalReactionUpdateWithoutUserInput, DebateProposalReactionUncheckedUpdateWithoutUserInput>
+    create: XOR<DebateProposalReactionCreateWithoutUserInput, DebateProposalReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type DebateProposalReactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    data: XOR<DebateProposalReactionUpdateWithoutUserInput, DebateProposalReactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DebateProposalReactionUpdateManyWithWhereWithoutUserInput = {
+    where: DebateProposalReactionScalarWhereInput
+    data: XOR<DebateProposalReactionUpdateManyMutationInput, DebateProposalReactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DebateProposalReactionScalarWhereInput = {
+    AND?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
+    OR?: DebateProposalReactionScalarWhereInput[]
+    NOT?: DebateProposalReactionScalarWhereInput | DebateProposalReactionScalarWhereInput[]
+    id?: StringFilter<"DebateProposalReaction"> | string
+    proposalId?: StringFilter<"DebateProposalReaction"> | string
+    userId?: StringFilter<"DebateProposalReaction"> | string
+    type?: StringFilter<"DebateProposalReaction"> | string
+    createdAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+    updatedAt?: DateTimeFilter<"DebateProposalReaction"> | Date | string
+  }
+
   export type UserCreateWithoutStudentProfileInput = {
     id?: string
     name: string
@@ -27015,7 +31150,11 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -27033,7 +31172,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -27272,17 +31415,31 @@ export namespace Prisma {
     topic: string
     reason?: string | null
     status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
   }
 
   export type DebateProposalUncheckedCreateWithoutStudentInput = {
     id?: string
+    proposerId: string
     topic: string
     reason?: string | null
     status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
   }
 
   export type DebateProposalCreateOrConnectWithoutStudentInput = {
@@ -27321,7 +31478,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -27339,7 +31500,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EnrollmentUpsertWithWhereUniqueWithoutStudentInput = {
@@ -27555,19 +31720,6 @@ export namespace Prisma {
     data: XOR<DebateProposalUpdateManyMutationInput, DebateProposalUncheckedUpdateManyWithoutStudentInput>
   }
 
-  export type DebateProposalScalarWhereInput = {
-    AND?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
-    OR?: DebateProposalScalarWhereInput[]
-    NOT?: DebateProposalScalarWhereInput | DebateProposalScalarWhereInput[]
-    id?: StringFilter<"DebateProposal"> | string
-    studentId?: StringFilter<"DebateProposal"> | string
-    topic?: StringFilter<"DebateProposal"> | string
-    reason?: StringNullableFilter<"DebateProposal"> | string | null
-    status?: StringFilter<"DebateProposal"> | string
-    createdAt?: DateTimeFilter<"DebateProposal"> | Date | string
-    updatedAt?: DateTimeFilter<"DebateProposal"> | Date | string
-  }
-
   export type UserCreateWithoutTeacherProfileInput = {
     id?: string
     name: string
@@ -27583,7 +31735,11 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -27601,7 +31757,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -27622,6 +31782,8 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
     grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateWithoutTeacherInput = {
@@ -27637,6 +31799,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
     grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupCreateOrConnectWithoutTeacherInput = {
@@ -27707,7 +31871,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -27725,7 +31893,11 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ClassGroupUpsertWithWhereUniqueWithoutTeacherInput = {
@@ -27804,6 +31976,8 @@ export namespace Prisma {
     enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
     grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateWithoutCourseInput = {
@@ -27819,6 +31993,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
     grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupCreateOrConnectWithoutCourseInput = {
@@ -28097,6 +32273,98 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DebateSessionCreateWithoutClassGroupInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutClassGroupInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutClassGroupInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput>
+  }
+
+  export type DebateSessionCreateManyClassGroupInputEnvelope = {
+    data: DebateSessionCreateManyClassGroupInput | DebateSessionCreateManyClassGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebateProposalCreateWithoutClassGroupInput = {
+    id?: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalUncheckedCreateWithoutClassGroupInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalCreateOrConnectWithoutClassGroupInput = {
+    where: DebateProposalWhereUniqueInput
+    create: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput>
+  }
+
+  export type DebateProposalCreateManyClassGroupInputEnvelope = {
+    data: DebateProposalCreateManyClassGroupInput | DebateProposalCreateManyClassGroupInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CourseUpsertWithoutClassGroupsInput = {
     update: XOR<CourseUpdateWithoutClassGroupsInput, CourseUncheckedUpdateWithoutClassGroupsInput>
     create: XOR<CourseCreateWithoutClassGroupsInput, CourseUncheckedCreateWithoutClassGroupsInput>
@@ -28215,6 +32483,38 @@ export namespace Prisma {
     data: XOR<GradeUpdateManyMutationInput, GradeUncheckedUpdateManyWithoutClassGroupInput>
   }
 
+  export type DebateSessionUpsertWithWhereUniqueWithoutClassGroupInput = {
+    where: DebateSessionWhereUniqueInput
+    update: XOR<DebateSessionUpdateWithoutClassGroupInput, DebateSessionUncheckedUpdateWithoutClassGroupInput>
+    create: XOR<DebateSessionCreateWithoutClassGroupInput, DebateSessionUncheckedCreateWithoutClassGroupInput>
+  }
+
+  export type DebateSessionUpdateWithWhereUniqueWithoutClassGroupInput = {
+    where: DebateSessionWhereUniqueInput
+    data: XOR<DebateSessionUpdateWithoutClassGroupInput, DebateSessionUncheckedUpdateWithoutClassGroupInput>
+  }
+
+  export type DebateSessionUpdateManyWithWhereWithoutClassGroupInput = {
+    where: DebateSessionScalarWhereInput
+    data: XOR<DebateSessionUpdateManyMutationInput, DebateSessionUncheckedUpdateManyWithoutClassGroupInput>
+  }
+
+  export type DebateProposalUpsertWithWhereUniqueWithoutClassGroupInput = {
+    where: DebateProposalWhereUniqueInput
+    update: XOR<DebateProposalUpdateWithoutClassGroupInput, DebateProposalUncheckedUpdateWithoutClassGroupInput>
+    create: XOR<DebateProposalCreateWithoutClassGroupInput, DebateProposalUncheckedCreateWithoutClassGroupInput>
+  }
+
+  export type DebateProposalUpdateWithWhereUniqueWithoutClassGroupInput = {
+    where: DebateProposalWhereUniqueInput
+    data: XOR<DebateProposalUpdateWithoutClassGroupInput, DebateProposalUncheckedUpdateWithoutClassGroupInput>
+  }
+
+  export type DebateProposalUpdateManyWithWhereWithoutClassGroupInput = {
+    where: DebateProposalScalarWhereInput
+    data: XOR<DebateProposalUpdateManyMutationInput, DebateProposalUncheckedUpdateManyWithoutClassGroupInput>
+  }
+
   export type StudentProfileCreateWithoutEnrollmentsInput = {
     id?: string
     studentNumber: string
@@ -28302,6 +32602,8 @@ export namespace Prisma {
     teacher?: TeacherProfileCreateNestedOneWithoutClassGroupsInput
     attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
     grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateWithoutEnrollmentsInput = {
@@ -28317,6 +32619,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
     grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupCreateOrConnectWithoutEnrollmentsInput = {
@@ -28470,6 +32774,8 @@ export namespace Prisma {
     teacher?: TeacherProfileUpdateOneWithoutClassGroupsNestedInput
     attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateWithoutEnrollmentsInput = {
@@ -28485,6 +32791,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type InvoiceUpsertWithWhereUniqueWithoutEnrollmentInput = {
@@ -28559,6 +32867,8 @@ export namespace Prisma {
     teacher?: TeacherProfileCreateNestedOneWithoutClassGroupsInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
     grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateWithoutAttendancesInput = {
@@ -28574,6 +32884,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
     grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupCreateOrConnectWithoutAttendancesInput = {
@@ -28654,6 +32966,8 @@ export namespace Prisma {
     teacher?: TeacherProfileUpdateOneWithoutClassGroupsNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateWithoutAttendancesInput = {
@@ -28669,6 +32983,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type StudentProfileCreateWithoutGradesInput = {
@@ -28727,6 +33043,8 @@ export namespace Prisma {
     teacher?: TeacherProfileCreateNestedOneWithoutClassGroupsInput
     enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupUncheckedCreateWithoutGradesInput = {
@@ -28742,6 +33060,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
   }
 
   export type ClassGroupCreateOrConnectWithoutGradesInput = {
@@ -28822,6 +33142,8 @@ export namespace Prisma {
     teacher?: TeacherProfileUpdateOneWithoutClassGroupsNestedInput
     enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateWithoutGradesInput = {
@@ -28837,6 +33159,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type CourseCreateWithoutStudyMaterialsInput = {
@@ -29354,7 +33678,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedDebatesInput = {
@@ -29372,12 +33700,141 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedDebatesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutModeratedDebatesInput, UserUncheckedCreateWithoutModeratedDebatesInput>
+  }
+
+  export type UserCreateWithoutAssignedDebateSessionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedDebateSessionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedDebateSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedDebateSessionsInput, UserUncheckedCreateWithoutAssignedDebateSessionsInput>
+  }
+
+  export type DebateProposalCreateWithoutConvertedSessionInput = {
+    id?: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+    reactions?: DebateProposalReactionCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalUncheckedCreateWithoutConvertedSessionInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutProposalInput
+  }
+
+  export type DebateProposalCreateOrConnectWithoutConvertedSessionInput = {
+    where: DebateProposalWhereUniqueInput
+    create: XOR<DebateProposalCreateWithoutConvertedSessionInput, DebateProposalUncheckedCreateWithoutConvertedSessionInput>
+  }
+
+  export type ClassGroupCreateWithoutDebatesInput = {
+    id?: string
+    name: string
+    room?: string | null
+    schedule: string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutClassGroupsInput
+    teacher?: TeacherProfileCreateNestedOneWithoutClassGroupsInput
+    enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
+    attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
+    grades?: GradeCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalCreateNestedManyWithoutClassGroupInput
+  }
+
+  export type ClassGroupUncheckedCreateWithoutDebatesInput = {
+    id?: string
+    name: string
+    room?: string | null
+    schedule: string
+    courseId: string
+    teacherId?: string | null
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
+    grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    proposals?: DebateProposalUncheckedCreateNestedManyWithoutClassGroupInput
+  }
+
+  export type ClassGroupCreateOrConnectWithoutDebatesInput = {
+    where: ClassGroupWhereUniqueInput
+    create: XOR<ClassGroupCreateWithoutDebatesInput, ClassGroupUncheckedCreateWithoutDebatesInput>
   }
 
   export type DebateEvaluationCreateWithoutSessionInput = {
@@ -29442,6 +33899,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificationCreateWithoutDebateSessionInput = {
+    id?: string
+    title: string
+    message: string
+    type?: string
+    isRead?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    evaluation?: DebateEvaluationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutDebateSessionInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    type?: string
+    isRead?: boolean
+    evaluationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutDebateSessionInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput>
+  }
+
+  export type NotificationCreateManyDebateSessionInputEnvelope = {
+    data: NotificationCreateManyDebateSessionInput | NotificationCreateManyDebateSessionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutModeratedDebatesInput = {
     update: XOR<UserUpdateWithoutModeratedDebatesInput, UserUncheckedUpdateWithoutModeratedDebatesInput>
     create: XOR<UserCreateWithoutModeratedDebatesInput, UserUncheckedCreateWithoutModeratedDebatesInput>
@@ -29468,7 +33959,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedDebatesInput = {
@@ -29486,7 +33981,154 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedDebateSessionsInput = {
+    update: XOR<UserUpdateWithoutAssignedDebateSessionsInput, UserUncheckedUpdateWithoutAssignedDebateSessionsInput>
+    create: XOR<UserCreateWithoutAssignedDebateSessionsInput, UserUncheckedCreateWithoutAssignedDebateSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedDebateSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedDebateSessionsInput, UserUncheckedUpdateWithoutAssignedDebateSessionsInput>
+  }
+
+  export type UserUpdateWithoutAssignedDebateSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedDebateSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DebateProposalUpsertWithoutConvertedSessionInput = {
+    update: XOR<DebateProposalUpdateWithoutConvertedSessionInput, DebateProposalUncheckedUpdateWithoutConvertedSessionInput>
+    create: XOR<DebateProposalCreateWithoutConvertedSessionInput, DebateProposalUncheckedCreateWithoutConvertedSessionInput>
+    where?: DebateProposalWhereInput
+  }
+
+  export type DebateProposalUpdateToOneWithWhereWithoutConvertedSessionInput = {
+    where?: DebateProposalWhereInput
+    data: XOR<DebateProposalUpdateWithoutConvertedSessionInput, DebateProposalUncheckedUpdateWithoutConvertedSessionInput>
+  }
+
+  export type DebateProposalUpdateWithoutConvertedSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateWithoutConvertedSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
+  }
+
+  export type ClassGroupUpsertWithoutDebatesInput = {
+    update: XOR<ClassGroupUpdateWithoutDebatesInput, ClassGroupUncheckedUpdateWithoutDebatesInput>
+    create: XOR<ClassGroupCreateWithoutDebatesInput, ClassGroupUncheckedCreateWithoutDebatesInput>
+    where?: ClassGroupWhereInput
+  }
+
+  export type ClassGroupUpdateToOneWithWhereWithoutDebatesInput = {
+    where?: ClassGroupWhereInput
+    data: XOR<ClassGroupUpdateWithoutDebatesInput, ClassGroupUncheckedUpdateWithoutDebatesInput>
+  }
+
+  export type ClassGroupUpdateWithoutDebatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: StringFieldUpdateOperationsInput | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutClassGroupsNestedInput
+    teacher?: TeacherProfileUpdateOneWithoutClassGroupsNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
+    attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
+    grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
+  }
+
+  export type ClassGroupUncheckedUpdateWithoutDebatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type DebateEvaluationUpsertWithWhereUniqueWithoutSessionInput = {
@@ -29521,6 +34163,22 @@ export namespace Prisma {
     data: XOR<DebateParticipantUpdateManyMutationInput, DebateParticipantUncheckedUpdateManyWithoutSessionInput>
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutDebateSessionInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutDebateSessionInput, NotificationUncheckedUpdateWithoutDebateSessionInput>
+    create: XOR<NotificationCreateWithoutDebateSessionInput, NotificationUncheckedCreateWithoutDebateSessionInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutDebateSessionInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutDebateSessionInput, NotificationUncheckedUpdateWithoutDebateSessionInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutDebateSessionInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutDebateSessionInput>
+  }
+
   export type DebateSessionCreateWithoutParticipantsInput = {
     id?: string
     topic: string
@@ -29528,10 +34186,17 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
     evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionUncheckedCreateWithoutParticipantsInput = {
@@ -29542,9 +34207,16 @@ export namespace Prisma {
     location?: string | null
     status?: $Enums.DebateSessionStatus
     moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionCreateOrConnectWithoutParticipantsInput = {
@@ -29613,10 +34285,17 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
     evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateWithoutParticipantsInput = {
@@ -29627,9 +34306,16 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type StudentProfileUpsertWithoutDebateParticipationsInput = {
@@ -29688,10 +34374,17 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
     participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionUncheckedCreateWithoutEvaluationsInput = {
@@ -29702,9 +34395,16 @@ export namespace Prisma {
     location?: string | null
     status?: $Enums.DebateSessionStatus
     moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
   }
 
   export type DebateSessionCreateOrConnectWithoutEvaluationsInput = {
@@ -29771,6 +34471,10 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDebateEvaluationsGivenInput = {
@@ -29789,6 +34493,10 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDebateEvaluationsGivenInput = {
@@ -29805,6 +34513,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutNotificationsInput
+    debateSession?: DebateSessionCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateWithoutEvaluationInput = {
@@ -29814,6 +34523,7 @@ export namespace Prisma {
     message: string
     type?: string
     isRead?: boolean
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29846,10 +34556,17 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
     participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateWithoutEvaluationsInput = {
@@ -29860,9 +34577,16 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
     moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type StudentProfileUpsertWithoutDebateEvaluationsInput = {
@@ -29941,6 +34665,10 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDebateEvaluationsGivenInput = {
@@ -29959,6 +34687,10 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type NotificationUpsertWithWhereUniqueWithoutEvaluationInput = {
@@ -29992,7 +34724,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -30010,7 +34746,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -30044,7 +34784,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -30062,7 +34806,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StudentProfileCreateWithoutDebateProposalsInput = {
@@ -30106,6 +34854,214 @@ export namespace Prisma {
   export type StudentProfileCreateOrConnectWithoutDebateProposalsInput = {
     where: StudentProfileWhereUniqueInput
     create: XOR<StudentProfileCreateWithoutDebateProposalsInput, StudentProfileUncheckedCreateWithoutDebateProposalsInput>
+  }
+
+  export type UserCreateWithoutDebateProposalsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDebateProposalsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDebateProposalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDebateProposalsInput, UserUncheckedCreateWithoutDebateProposalsInput>
+  }
+
+  export type UserCreateWithoutApprovedDebateProposalsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutApprovedDebateProposalsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutApprovedDebateProposalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutApprovedDebateProposalsInput, UserUncheckedCreateWithoutApprovedDebateProposalsInput>
+  }
+
+  export type DebateSessionCreateWithoutSourceProposalInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+    notifications?: NotificationCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutSourceProposalInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDebateSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutSourceProposalInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+  }
+
+  export type ClassGroupCreateWithoutProposalsInput = {
+    id?: string
+    name: string
+    room?: string | null
+    schedule: string
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutClassGroupsInput
+    teacher?: TeacherProfileCreateNestedOneWithoutClassGroupsInput
+    enrollments?: EnrollmentCreateNestedManyWithoutClassGroupInput
+    attendances?: AttendanceCreateNestedManyWithoutClassGroupInput
+    grades?: GradeCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionCreateNestedManyWithoutClassGroupInput
+  }
+
+  export type ClassGroupUncheckedCreateWithoutProposalsInput = {
+    id?: string
+    name: string
+    room?: string | null
+    schedule: string
+    courseId: string
+    teacherId?: string | null
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutClassGroupInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutClassGroupInput
+    grades?: GradeUncheckedCreateNestedManyWithoutClassGroupInput
+    debates?: DebateSessionUncheckedCreateNestedManyWithoutClassGroupInput
+  }
+
+  export type ClassGroupCreateOrConnectWithoutProposalsInput = {
+    where: ClassGroupWhereUniqueInput
+    create: XOR<ClassGroupCreateWithoutProposalsInput, ClassGroupUncheckedCreateWithoutProposalsInput>
+  }
+
+  export type DebateProposalReactionCreateWithoutProposalInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDebateProposalReactionsInput
+  }
+
+  export type DebateProposalReactionUncheckedCreateWithoutProposalInput = {
+    id?: string
+    userId: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionCreateOrConnectWithoutProposalInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    create: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput>
+  }
+
+  export type DebateProposalReactionCreateManyProposalInputEnvelope = {
+    data: DebateProposalReactionCreateManyProposalInput | DebateProposalReactionCreateManyProposalInput[]
+    skipDuplicates?: boolean
   }
 
   export type StudentProfileUpsertWithoutDebateProposalsInput = {
@@ -30157,6 +35113,412 @@ export namespace Prisma {
     debateParticipations?: DebateParticipantUncheckedUpdateManyWithoutStudentNestedInput
   }
 
+  export type UserUpsertWithoutDebateProposalsInput = {
+    update: XOR<UserUpdateWithoutDebateProposalsInput, UserUncheckedUpdateWithoutDebateProposalsInput>
+    create: XOR<UserCreateWithoutDebateProposalsInput, UserUncheckedCreateWithoutDebateProposalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDebateProposalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDebateProposalsInput, UserUncheckedUpdateWithoutDebateProposalsInput>
+  }
+
+  export type UserUpdateWithoutDebateProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDebateProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutApprovedDebateProposalsInput = {
+    update: XOR<UserUpdateWithoutApprovedDebateProposalsInput, UserUncheckedUpdateWithoutApprovedDebateProposalsInput>
+    create: XOR<UserCreateWithoutApprovedDebateProposalsInput, UserUncheckedCreateWithoutApprovedDebateProposalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutApprovedDebateProposalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutApprovedDebateProposalsInput, UserUncheckedUpdateWithoutApprovedDebateProposalsInput>
+  }
+
+  export type UserUpdateWithoutApprovedDebateProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutApprovedDebateProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DebateSessionUpsertWithoutSourceProposalInput = {
+    update: XOR<DebateSessionUpdateWithoutSourceProposalInput, DebateSessionUncheckedUpdateWithoutSourceProposalInput>
+    create: XOR<DebateSessionCreateWithoutSourceProposalInput, DebateSessionUncheckedCreateWithoutSourceProposalInput>
+    where?: DebateSessionWhereInput
+  }
+
+  export type DebateSessionUpdateToOneWithWhereWithoutSourceProposalInput = {
+    where?: DebateSessionWhereInput
+    data: XOR<DebateSessionUpdateWithoutSourceProposalInput, DebateSessionUncheckedUpdateWithoutSourceProposalInput>
+  }
+
+  export type DebateSessionUpdateWithoutSourceProposalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutSourceProposalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type ClassGroupUpsertWithoutProposalsInput = {
+    update: XOR<ClassGroupUpdateWithoutProposalsInput, ClassGroupUncheckedUpdateWithoutProposalsInput>
+    create: XOR<ClassGroupCreateWithoutProposalsInput, ClassGroupUncheckedCreateWithoutProposalsInput>
+    where?: ClassGroupWhereInput
+  }
+
+  export type ClassGroupUpdateToOneWithWhereWithoutProposalsInput = {
+    where?: ClassGroupWhereInput
+    data: XOR<ClassGroupUpdateWithoutProposalsInput, ClassGroupUncheckedUpdateWithoutProposalsInput>
+  }
+
+  export type ClassGroupUpdateWithoutProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: StringFieldUpdateOperationsInput | string
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutClassGroupsNestedInput
+    teacher?: TeacherProfileUpdateOneWithoutClassGroupsNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
+    attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
+    grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+  }
+
+  export type ClassGroupUncheckedUpdateWithoutProposalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    schedule?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    teacherId?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+  }
+
+  export type DebateProposalReactionUpsertWithWhereUniqueWithoutProposalInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    update: XOR<DebateProposalReactionUpdateWithoutProposalInput, DebateProposalReactionUncheckedUpdateWithoutProposalInput>
+    create: XOR<DebateProposalReactionCreateWithoutProposalInput, DebateProposalReactionUncheckedCreateWithoutProposalInput>
+  }
+
+  export type DebateProposalReactionUpdateWithWhereUniqueWithoutProposalInput = {
+    where: DebateProposalReactionWhereUniqueInput
+    data: XOR<DebateProposalReactionUpdateWithoutProposalInput, DebateProposalReactionUncheckedUpdateWithoutProposalInput>
+  }
+
+  export type DebateProposalReactionUpdateManyWithWhereWithoutProposalInput = {
+    where: DebateProposalReactionScalarWhereInput
+    data: XOR<DebateProposalReactionUpdateManyMutationInput, DebateProposalReactionUncheckedUpdateManyWithoutProposalInput>
+  }
+
+  export type DebateProposalCreateWithoutReactionsInput = {
+    id?: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student?: StudentProfileCreateNestedOneWithoutDebateProposalsInput
+    proposer: UserCreateNestedOneWithoutDebateProposalsInput
+    approvedBy?: UserCreateNestedOneWithoutApprovedDebateProposalsInput
+    convertedSession?: DebateSessionCreateNestedOneWithoutSourceProposalInput
+    classGroup?: ClassGroupCreateNestedOneWithoutProposalsInput
+  }
+
+  export type DebateProposalUncheckedCreateWithoutReactionsInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    convertedSession?: DebateSessionUncheckedCreateNestedOneWithoutSourceProposalInput
+  }
+
+  export type DebateProposalCreateOrConnectWithoutReactionsInput = {
+    where: DebateProposalWhereUniqueInput
+    create: XOR<DebateProposalCreateWithoutReactionsInput, DebateProposalUncheckedCreateWithoutReactionsInput>
+  }
+
+  export type UserCreateWithoutDebateProposalReactionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutDebateProposalReactionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    passwordHash: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    isActive?: boolean
+    canModerateDebates?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutDebateProposalReactionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDebateProposalReactionsInput, UserUncheckedCreateWithoutDebateProposalReactionsInput>
+  }
+
+  export type DebateProposalUpsertWithoutReactionsInput = {
+    update: XOR<DebateProposalUpdateWithoutReactionsInput, DebateProposalUncheckedUpdateWithoutReactionsInput>
+    create: XOR<DebateProposalCreateWithoutReactionsInput, DebateProposalUncheckedCreateWithoutReactionsInput>
+    where?: DebateProposalWhereInput
+  }
+
+  export type DebateProposalUpdateToOneWithWhereWithoutReactionsInput = {
+    where?: DebateProposalWhereInput
+    data: XOR<DebateProposalUpdateWithoutReactionsInput, DebateProposalUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type DebateProposalUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+  }
+
+  export type UserUpsertWithoutDebateProposalReactionsInput = {
+    update: XOR<UserUpdateWithoutDebateProposalReactionsInput, UserUncheckedUpdateWithoutDebateProposalReactionsInput>
+    create: XOR<UserCreateWithoutDebateProposalReactionsInput, UserUncheckedCreateWithoutDebateProposalReactionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDebateProposalReactionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDebateProposalReactionsInput, UserUncheckedUpdateWithoutDebateProposalReactionsInput>
+  }
+
+  export type UserUpdateWithoutDebateProposalReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDebateProposalReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canModerateDebates?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
+    debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
   export type UserCreateWithoutNotificationsInput = {
     id?: string
     name: string
@@ -30172,7 +35534,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileCreateNestedOneWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutActorInput
     moderatedDebates?: DebateSessionCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -30190,7 +35556,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedCreateNestedOneWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
     moderatedDebates?: DebateSessionUncheckedCreateNestedManyWithoutModeratorInput
+    assignedDebateSessions?: DebateSessionUncheckedCreateNestedManyWithoutModeratorAssignedByInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+    debateProposals?: DebateProposalUncheckedCreateNestedManyWithoutProposerInput
+    approvedDebateProposals?: DebateProposalUncheckedCreateNestedManyWithoutApprovedByInput
+    debateProposalReactions?: DebateProposalReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -30233,6 +35603,51 @@ export namespace Prisma {
     create: XOR<DebateEvaluationCreateWithoutNotificationsInput, DebateEvaluationUncheckedCreateWithoutNotificationsInput>
   }
 
+  export type DebateSessionCreateWithoutNotificationsInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    moderator?: UserCreateNestedOneWithoutModeratedDebatesInput
+    moderatorAssignedBy?: UserCreateNestedOneWithoutAssignedDebateSessionsInput
+    sourceProposal?: DebateProposalCreateNestedOneWithoutConvertedSessionInput
+    classGroup?: ClassGroupCreateNestedOneWithoutDebatesInput
+    evaluations?: DebateEvaluationCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    evaluations?: DebateEvaluationUncheckedCreateNestedManyWithoutSessionInput
+    participants?: DebateParticipantUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type DebateSessionCreateOrConnectWithoutNotificationsInput = {
+    where: DebateSessionWhereUniqueInput
+    create: XOR<DebateSessionCreateWithoutNotificationsInput, DebateSessionUncheckedCreateWithoutNotificationsInput>
+  }
+
   export type UserUpsertWithoutNotificationsInput = {
     update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
     create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
@@ -30259,7 +35674,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUpdateOneWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
     moderatedDebates?: DebateSessionUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -30277,7 +35696,11 @@ export namespace Prisma {
     teacherProfile?: TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
     moderatedDebates?: DebateSessionUncheckedUpdateManyWithoutModeratorNestedInput
+    assignedDebateSessions?: DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByNestedInput
     debateEvaluationsGiven?: DebateEvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+    debateProposals?: DebateProposalUncheckedUpdateManyWithoutProposerNestedInput
+    approvedDebateProposals?: DebateProposalUncheckedUpdateManyWithoutApprovedByNestedInput
+    debateProposalReactions?: DebateProposalReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DebateEvaluationUpsertWithoutNotificationsInput = {
@@ -30321,6 +35744,57 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DebateSessionUpsertWithoutNotificationsInput = {
+    update: XOR<DebateSessionUpdateWithoutNotificationsInput, DebateSessionUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<DebateSessionCreateWithoutNotificationsInput, DebateSessionUncheckedCreateWithoutNotificationsInput>
+    where?: DebateSessionWhereInput
+  }
+
+  export type DebateSessionUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: DebateSessionWhereInput
+    data: XOR<DebateSessionUpdateWithoutNotificationsInput, DebateSessionUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type DebateSessionUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
   export type AuditLogCreateManyActorInput = {
     id?: string
     action: string
@@ -30338,6 +35812,7 @@ export namespace Prisma {
     type?: string
     isRead?: boolean
     evaluationId?: string | null
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30349,6 +35824,29 @@ export namespace Prisma {
     capacity: number
     location?: string | null
     status?: $Enums.DebateSessionStatus
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateSessionCreateManyModeratorAssignedByInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30363,6 +35861,42 @@ export namespace Prisma {
     feedback?: string | null
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalCreateManyProposerInput = {
+    id?: string
+    studentId?: string | null
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalCreateManyApprovedByInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionCreateManyUserInput = {
+    id?: string
+    proposalId: string
+    type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30406,6 +35940,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evaluation?: DebateEvaluationUpdateOneWithoutNotificationsNestedInput
+    debateSession?: DebateSessionUpdateOneWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateWithoutUserInput = {
@@ -30415,6 +35950,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30426,6 +35962,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30437,10 +35974,17 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
     evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
     participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateWithoutModeratorInput = {
@@ -30450,10 +35994,17 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
     participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
   }
 
   export type DebateSessionUncheckedUpdateManyWithoutModeratorInput = {
@@ -30463,6 +36014,69 @@ export namespace Prisma {
     capacity?: IntFieldUpdateOperationsInput | number
     location?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateSessionUpdateWithoutModeratorAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutDebatesNestedInput
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutModeratorAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateManyWithoutModeratorAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30507,6 +36121,122 @@ export namespace Prisma {
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalUpdateWithoutProposerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateWithoutProposerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutProposerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proposal?: DebateProposalUpdateOneRequiredWithoutReactionsNestedInput
+  }
+
+  export type DebateProposalReactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    proposalId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30588,9 +36318,14 @@ export namespace Prisma {
 
   export type DebateProposalCreateManyStudentInput = {
     id?: string
+    proposerId: string
     topic: string
     reason?: string | null
     status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    classGroupId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30831,24 +36566,43 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    classGroup?: ClassGroupUpdateOneWithoutProposalsNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
   }
 
   export type DebateProposalUncheckedUpdateWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    proposerId?: StringFieldUpdateOperationsInput | string
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
   }
 
   export type DebateProposalUncheckedUpdateManyWithoutStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    proposerId?: StringFieldUpdateOperationsInput | string
     topic?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    classGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30889,6 +36643,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateWithoutTeacherInput = {
@@ -30904,6 +36660,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateManyWithoutTeacherInput = {
@@ -30997,6 +36755,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateWithoutCourseInput = {
@@ -31012,6 +36772,8 @@ export namespace Prisma {
     enrollments?: EnrollmentUncheckedUpdateManyWithoutClassGroupNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutClassGroupNestedInput
     grades?: GradeUncheckedUpdateManyWithoutClassGroupNestedInput
+    debates?: DebateSessionUncheckedUpdateManyWithoutClassGroupNestedInput
+    proposals?: DebateProposalUncheckedUpdateManyWithoutClassGroupNestedInput
   }
 
   export type ClassGroupUncheckedUpdateManyWithoutCourseInput = {
@@ -31123,6 +36885,37 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type DebateSessionCreateManyClassGroupInput = {
+    id?: string
+    topic: string
+    startsAt: Date | string
+    capacity: number
+    location?: string | null
+    status?: $Enums.DebateSessionStatus
+    moderatorId?: string | null
+    sourceProposalId?: string | null
+    moderatorAssignedById?: string | null
+    moderatorAssignedAt?: Date | string | null
+    moderatorExpiresAt?: Date | string | null
+    moderatorNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalCreateManyClassGroupInput = {
+    id?: string
+    studentId?: string | null
+    proposerId: string
+    topic: string
+    reason?: string | null
+    status?: string
+    approvedById?: string | null
+    approvedAt?: Date | string | null
+    convertedSessionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type EnrollmentUpdateWithoutClassGroupInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
@@ -31221,6 +37014,109 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DebateSessionUpdateWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneWithoutModeratedDebatesNestedInput
+    moderatorAssignedBy?: UserUpdateOneWithoutAssignedDebateSessionsNestedInput
+    sourceProposal?: DebateProposalUpdateOneWithoutConvertedSessionNestedInput
+    evaluations?: DebateEvaluationUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluations?: DebateEvaluationUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: DebateParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDebateSessionNestedInput
+  }
+
+  export type DebateSessionUncheckedUpdateManyWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDebateSessionStatusFieldUpdateOperationsInput | $Enums.DebateSessionStatus
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProposalId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorAssignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    moderatorNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalUpdateWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneWithoutDebateProposalsNestedInput
+    proposer?: UserUpdateOneRequiredWithoutDebateProposalsNestedInput
+    approvedBy?: UserUpdateOneWithoutApprovedDebateProposalsNestedInput
+    convertedSession?: DebateSessionUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    convertedSession?: DebateSessionUncheckedUpdateOneWithoutSourceProposalNestedInput
+    reactions?: DebateProposalReactionUncheckedUpdateManyWithoutProposalNestedInput
+  }
+
+  export type DebateProposalUncheckedUpdateManyWithoutClassGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: NullableStringFieldUpdateOperationsInput | string | null
+    proposerId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    convertedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InvoiceCreateManyEnrollmentInput = {
     id?: string
     studentId: string
@@ -31291,6 +37187,18 @@ export namespace Prisma {
     joinedAt?: Date | string
   }
 
+  export type NotificationCreateManyDebateSessionInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    type?: string
+    isRead?: boolean
+    evaluationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DebateEvaluationUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     fluency?: IntFieldUpdateOperationsInput | number
@@ -31353,6 +37261,42 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationUpdateWithoutDebateSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    evaluation?: DebateEvaluationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutDebateSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutDebateSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    evaluationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NotificationCreateManyEvaluationInput = {
     id?: string
     userId: string
@@ -31360,6 +37304,7 @@ export namespace Prisma {
     message: string
     type?: string
     isRead?: boolean
+    debateSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -31373,6 +37318,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    debateSession?: DebateSessionUpdateOneWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateWithoutEvaluationInput = {
@@ -31382,6 +37328,7 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31393,6 +37340,39 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
+    debateSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionCreateManyProposalInput = {
+    id?: string
+    userId: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DebateProposalReactionUpdateWithoutProposalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDebateProposalReactionsNestedInput
+  }
+
+  export type DebateProposalReactionUncheckedUpdateWithoutProposalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DebateProposalReactionUncheckedUpdateManyWithoutProposalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31434,6 +37414,10 @@ export namespace Prisma {
      * @deprecated Use DebateEvaluationCountOutputTypeDefaultArgs instead
      */
     export type DebateEvaluationCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateEvaluationCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DebateProposalCountOutputTypeDefaultArgs instead
+     */
+    export type DebateProposalCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateProposalCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UserDefaultArgs instead
      */
@@ -31499,9 +37483,17 @@ export namespace Prisma {
      */
     export type DebateProposalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateProposalDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use DebateProposalReactionDefaultArgs instead
+     */
+    export type DebateProposalReactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DebateProposalReactionDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use NotificationDefaultArgs instead
      */
     export type NotificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NotificationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CalendarEventDefaultArgs instead
+     */
+    export type CalendarEventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CalendarEventDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

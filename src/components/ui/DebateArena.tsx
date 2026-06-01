@@ -36,7 +36,12 @@ export function DebateArena({ students, sessionId }: DebateArenaProps) {
     formData.append("posture", String(scores.posture));
     formData.append("feedback", feedback);
 
-    await saveDebateEvaluationAction(formData);
+    const result = await saveDebateEvaluationAction(formData);
+    if (!result.success) {
+      setLoading(false);
+      alert(result.error ?? "Não foi possível publicar a avaliação.");
+      return;
+    }
     
     // Reset after save
     setFeedback("");
@@ -59,8 +64,9 @@ export function DebateArena({ students, sessionId }: DebateArenaProps) {
       {!selectedStudent ? (
         <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
           <p className="text-[10px] font-black uppercase text-slate-500 mb-4 tracking-widest">Selecione um orador:</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {students.map((student) => (
+          {students.length > 0 && sessionId ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {students.map((student) => (
               <button
                 key={student.id}
                 onClick={() => setSelectedStudent(student)}
@@ -71,8 +77,14 @@ export function DebateArena({ students, sessionId }: DebateArenaProps) {
                 </div>
                 <span className="text-sm font-bold truncate">{student.name}</span>
               </button>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center">
+              <p className="text-sm font-black text-white">Nenhum debate designado agora.</p>
+              <p className="mt-2 text-xs font-bold text-slate-400">Quando uma sessão for atribuída, os participantes aparecem aqui para avaliação rápida.</p>
+            </div>
+          )}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col animate-in fade-in slide-in-from-right-4 duration-300">
