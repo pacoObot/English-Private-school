@@ -1,6 +1,6 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-06-01 09:42 SAST
+Ultima atualizacao: 2026-06-01 12:20 SAST
 
 ## Resumo atual
 
@@ -31,15 +31,15 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Calendário Académico e Melhorias na Arena de Debates - 2026-06-01 09:42 SAST:
-- **Página de Calendário Académico (Admin/Estudante)**: Adicionado CRUD e listagem visual de eventos na plataforma admin e feed timeline de eventos no estudante.
-- **Melhorias na Arena de Debates**: Adicionados cartões de rendimento dos últimos 10/20 debates, além de detalhes expansíveis do historial (`<details>`).
-- **Navegação**: Ícone de calendário e links acrescentados às barras laterais.
+Preparação para Produção e Vercel (Safe Seed & Configurações Git) - 2026-06-01 12:20 SAST:
+- **Prisma postinstall**: Adicionado `"postinstall": "prisma generate"` ao `package.json` para build sem atritos na Vercel.
+- **Produção Safe Seed**: Atualizado `prisma/seed.ts` para suportar `SEED_ONLY_SUPER_ADMIN=true`. Wipes de banco desativados e criação estrita apenas do Super Admin se ele não existir (sem dados fictícios).
+- **Git & Gitignore**: Atualizado o `.gitignore` para ignorar diretórios temporários, executáveis/binários Prisma de query engine (*.so.node) e uploads de utilizador. Pushed com sucesso para `main` no GitHub.
 
 ## Validacoes desta tarefa
 
-- `npx tsc --noEmit`: ✅ Zero erros de tipagem do compilador TypeScript.
-- `npm run build`: ✅ Build de produção Next.js concluído com sucesso completo.
+- `npm run build`: ✅ Build Next.js de produção concluído com sucesso localmente.
+- `git push origin main`: ✅ Todos os 10 commits locais empurrados com sucesso para o repositório remoto.
 
 ## Pendencias conhecidas
 

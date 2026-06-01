@@ -2,6 +2,19 @@
 
 ---
 
+## 2026-06-01 12:20 SAST - Preparação para Produção e Vercel (Safe Seed & Configurações Git)
+
+Resumo:
+- **Prisma postinstall**: Adicionado `"postinstall": "prisma generate"` ao `package.json` para build automático na Vercel.
+- **Produção Safe Seed**: Atualizado `prisma/seed.ts` para suportar `SEED_ONLY_SUPER_ADMIN=true`. Wipes de banco desativados e criação estrita apenas do Super Admin se ele não existir (sem dados fictícios).
+- **Git & Gitignore**: Atualizado o `.gitignore` para ignorar diretórios temporários, executáveis/binários Prisma de query engine (*.so.node) e uploads de utilizador. Pushed com sucesso para `main` no GitHub.
+
+Validacoes:
+- `npm run build`: ✅ Passou sem erros de tipo localmente.
+- `git push origin main`: ✅ Todos os 10 commits locais empurrados com sucesso para o repositório remoto.
+
+---
+
 ## 2026-06-01 09:42 SAST - Calendário Académico e Melhorias na Arena de Debates
 
 Resumo:
