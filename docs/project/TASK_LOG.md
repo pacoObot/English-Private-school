@@ -2,6 +2,34 @@
 
 ---
 
+## 2026-06-05 13:10 SAST - Geração e Execução de Scripts SQL, Resolução de Conectividade Vercel (Abordagem B)
+
+Resumo:
+- **Configuração de Ambiente na Vercel**: Adicionadas as variáveis `DATABASE_URL` e `AUTH_SECRET` diretamente nas configurações do projeto na Vercel.
+- **Redeploy na Vercel**: Redeploy concluído com sucesso (estado "Ready").
+- **Geração e Execução SQL (Abordagem B)**:
+  - Criados os scripts de união de migrações e geração de seed SQL.
+  - Executados com sucesso os arquivos `supabase_complete_schema.sql` e `supabase_seed.sql` no SQL Editor do Supabase, criando todas as tabelas e inserindo os dados iniciais de teste.
+- **Erro de Conexão na Vercel (?error=db)**: Identificado que a Vercel não consegue conectar ao Supabase usando a Direct Connection string (porta 5432).
+- **Resolução de Conectividade**: Mapeada a necessidade de alterar a `DATABASE_URL` da Vercel para utilizar a URL do Transaction Pooler (porta 6543) com o prefixo do username do projeto (`postgres.oenppoabavsakiiqzndq`) e `pgbouncer=true`.
+
+Validacoes:
+- Execução do SQL no Supabase: ✅ Tabelas criadas e dados povoados.
+- Diagnóstico de falha na Vercel: ✅ Identificado erro de conexão à porta 5432.
+
+---
+
+## 2026-06-03 12:20 SAST - Guia de Conexão Supabase & Deploy Vercel
+
+Resumo:
+- **Documentação de Deploy**: Criado o guia técnico [guide_vercel_supabase.md](file:///home/paco/.gemini/antigravity-ide/brain/cbf66727-5891-4f4c-a59d-1eaced50853d/guide_vercel_supabase.md) para orientar a conexão da aplicação Next.js implantada na Vercel ao banco de dados Supabase.
+- **Instruções de Seed & Migrações**: Detalhamento de como rodar as migrações Prisma (`migrate deploy`) e o script de semente (`prisma db seed`) externamente para popular o banco de dados remoto no Supabase.
+
+Validacoes:
+- Nenhuma alteração no código-fonte da aplicação realizada nesta sessão.
+
+---
+
 ## 2026-06-01 12:20 SAST - Preparação para Produção e Vercel (Safe Seed & Configurações Git)
 
 Resumo:

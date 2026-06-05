@@ -1,6 +1,6 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-06-01 12:20 SAST
+Ultima atualizacao: 2026-06-05 13:00 SAST
 
 ## Resumo atual
 
@@ -31,23 +31,24 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Preparação para Produção e Vercel (Safe Seed & Configurações Git) - 2026-06-01 12:20 SAST:
-- **Prisma postinstall**: Adicionado `"postinstall": "prisma generate"` ao `package.json` para build sem atritos na Vercel.
-- **Produção Safe Seed**: Atualizado `prisma/seed.ts` para suportar `SEED_ONLY_SUPER_ADMIN=true`. Wipes de banco desativados e criação estrita apenas do Super Admin se ele não existir (sem dados fictícios).
-- **Git & Gitignore**: Atualizado o `.gitignore` para ignorar diretórios temporários, executáveis/binários Prisma de query engine (*.so.node) e uploads de utilizador. Pushed com sucesso para `main` no GitHub.
+Execução de Scripts SQL e Resolução de Conectividade Vercel - 2026-06-05 13:10 SAST:
+- **Estrutura e Seed Criados**: Tabelas e dados de teste povoados com sucesso diretamente no editor SQL do Supabase.
+- **Falha de Conexão na Vercel**: Identificado que o ambiente serverless da Vercel não consegue ligar via porta 5432 direta (retornando `?error=db`).
 
 ## Validacoes desta tarefa
 
-- `npm run build`: ✅ Build Next.js de produção concluído com sucesso localmente.
-- `git push origin main`: ✅ Todos os 10 commits locais empurrados com sucesso para o repositório remoto.
+- Estrutura e dados no Supabase: ✅ Sucesso total.
+- Deploy Vercel: ⚠️ Ativo, mas com conexão ao banco pendente de ajuste para a porta 6543.
 
 ## Pendencias conhecidas
 
+- **Ajustar Variáveis na Vercel**: Alterar a variável `DATABASE_URL` no painel da Vercel para a URI do Transaction Pooler (porta 6543) com `pgbouncer=true` e `connection_limit=1`.
 - Presenças automáticas por foto (Fase 7: Ideia Futura) está no backlog para futura implementação.
 - Sincronizacao financeira bidirecional com UNIEXE continua aguardando credenciais de produção.
 - Exportacao CSV/Excel e testes E2E Playwright continuam no backlog.
 
 ## Proxima acao recomendada
 
-1. Executar QA visual da nova Timeline responsiva do Calendário na aba do Estudante (`/student/calendar`).
-2. Validar visualmente as novas métricas de progresso expansíveis na Arena de Debates (`/student/debates`).
+1. Aceder ao painel da Vercel e alterar a variável `DATABASE_URL` para a URL do Pooler com o formato correto.
+2. Efetuar o redeploy do projeto na Vercel para recarregar as variáveis.
+3. Testar o login novamente na URL pública com as credenciais do Super Admin.
