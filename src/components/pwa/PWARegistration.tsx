@@ -19,12 +19,20 @@ function urlBase64ToUint8Array(base64String: string) {
 
 export function PWARegistration({ userId }: PWARegistrationProps) {
   useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      !("serviceWorker" in navigator) ||
-      !("PushManager" in window)
-    ) {
-      return;
+    if (typeof window === "undefined") return;
+
+    const handleInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      (window as any).deferredPrompt = e;
+      window.dispatchEvent(new CustomEvent("pwa-prompt-available"));
+    };
+
+    window.addEventListener("beforeinstallprompt", handleInstallPrompt);
+
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+      return () => {
+        window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
+      };
     }
 
     const registerSWAndSubscribe = async () => {
@@ -79,6 +87,10 @@ export function PWARegistration({ userId }: PWARegistrationProps) {
     };
 
     registerSWAndSubscribe();
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
+    };
   }, [userId]);
 
   return null;

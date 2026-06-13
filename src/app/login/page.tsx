@@ -7,6 +7,7 @@ import { loginAction } from "@/features/auth/actions";
 import { LoginSubmitButton } from "@/components/auth/LoginSubmitButton";
 import { getDictionary } from "@/i18n/locale";
 import { LoginLanguageToggle } from "@/components/layout/LoginLanguageToggle";
+import { PWAInstallButton } from "@/components/pwa/PWAInstallButton";
 
 export default async function LoginPage({ searchParams }: { searchParams?: { error?: string } }) {
   const dict = await getDictionary();
@@ -52,9 +53,12 @@ export default async function LoginPage({ searchParams }: { searchParams?: { err
           </form>
         </section>
 
-        {/* Language Selector */}
+        {/* Language Selector & Install Button */}
         <div className="mt-8 flex flex-col items-center gap-6">
-          <LoginLanguageToggle />
+          <div className="flex items-center justify-center gap-3">
+            <LoginLanguageToggle />
+            <PWAInstallButton />
+          </div>
 
           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em] text-center leading-relaxed">
             © 2026 Delson PS Ecosystem<br />

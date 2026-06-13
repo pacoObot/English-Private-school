@@ -5,6 +5,7 @@ import { Bell, Menu, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { NotificationCenter } from "./NotificationCenter";
 import { LanguageToggle } from "./LanguageToggle";
+import { PWAInstallButton } from "@/components/pwa/PWAInstallButton";
 
 type TopBarProps = {
   title: string;
@@ -47,6 +48,7 @@ export function TopBar({ title, subtitle, onMenuClick, action, showSearch = fals
           </div>
         ) : null}
         {action}
+        <PWAInstallButton />
         <LanguageToggle />
         <a
           href="/logout"
