@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Download, Eye, MessageCircle, Mic2, Wallet, TrendingUp, ArrowRight } from "lucide-react";
+import { BookOpen, Download, Eye, MessageCircle, Mic2, Wallet, TrendingUp, ArrowRight, AlertTriangle, AlertCircle, CheckCircle2, Bell } from "lucide-react";
 import { ActionNotice } from "@/components/ui/ActionNotice";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { BentoCard } from "@/components/ui/BentoCard";
@@ -11,6 +11,7 @@ import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { UpcomingDebatesButton } from "./UpcomingDebatesButton";
+import { DynamicCard } from "./DynamicCard";
 
 export const dynamic = "force-dynamic";
 
@@ -83,14 +84,67 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     writingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
   }
 
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
   const upcomingDebates = await prisma.debateSession.findMany({
     where: { 
-      startsAt: { gte: new Date() },
-      status: "SCHEDULED"
+      startsAt: { gte: todayStart },
+      status: { in: ["SCHEDULED", "ACTIVE"] }
+    },
+    include: {
+      participants: true
     },
     take: 3,
     orderBy: { startsAt: "asc" }
   });
+
+  // Find the closest active or scheduled debate where this student is involved (moderator or participant)
+  let nextDebateSession = student
+    ? await prisma.debateSession.findFirst({
+        where: {
+          startsAt: { gte: todayStart },
+          status: { in: ["SCHEDULED", "ACTIVE"] },
+          OR: [
+            { moderatorId: session?.userId },
+            { participants: { some: { studentId: student.id } } }
+          ]
+        },
+        include: {
+          participants: true
+        },
+        orderBy: { startsAt: "asc" }
+      })
+    : null;
+
+  // If no involved debate, check if there is any upcoming active/scheduled debate they can join
+  if (!nextDebateSession && student) {
+    nextDebateSession = await prisma.debateSession.findFirst({
+      where: {
+        startsAt: { gte: todayStart },
+        status: { in: ["SCHEDULED", "ACTIVE"] }
+      },
+      include: {
+        participants: true
+      },
+      orderBy: { startsAt: "asc" }
+    });
+  }
+
+  let debateData = null;
+  if (nextDebateSession) {
+    const isModerator = nextDebateSession.moderatorId === session?.userId;
+    const isParticipant = nextDebateSession.participants.some(p => p.studentId === student?.id);
+    
+    debateData = {
+      id: nextDebateSession.id,
+      topic: nextDebateSession.topic,
+      startsAt: nextDebateSession.startsAt.toISOString(),
+      capacity: nextDebateSession.capacity,
+      location: nextDebateSession.location,
+      role: isModerator ? ("moderator" as const) : isParticipant ? ("participant" as const) : ("open" as const)
+    };
+  }
 
   // Treasury logic for current month
   const now = new Date();
@@ -111,6 +165,98 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     ? Math.ceil((nextPendingInvoice.dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
     : null;
 
+  const daysRemainingText = daysRemaining !== null && daysRemaining > 0 
+    ? `${daysRemaining} dias para o vencimento` 
+    : daysRemaining !== null && daysRemaining <= 0
+      ? "Pagamento em atraso"
+      : "Sem pagamentos pendentes";
+
+  const highlights: {
+    id: string;
+    type: "warning" | "danger" | "info" | "success";
+    title: string;
+    description: string;
+    link?: string;
+    actionLabel?: string;
+  }[] = [];
+
+  // 1. Unpaid Invoices
+  if (nextPendingInvoice) {
+    const isOverdue = nextPendingInvoice.status === "OVERDUE" || (daysRemaining !== null && daysRemaining <= 0);
+    highlights.push({
+      id: `invoice-${nextPendingInvoice.id}`,
+      type: isOverdue ? "danger" : "warning",
+      title: isOverdue ? "Mensalidade em Atraso" : "Mensalidade Próxima do Vencimento",
+      description: isOverdue 
+        ? `A mensalidade no valor de ${nextPendingInvoice.amountMt.toLocaleString()} MT está vencida.`
+        : `O pagamento de ${nextPendingInvoice.amountMt.toLocaleString()} MT vence em ${daysRemaining} dias.`,
+      link: "/student/treasury",
+      actionLabel: "Pagar Agora"
+    });
+  }
+
+  // 2. Unacknowledged Debate Evaluations
+  const unacknowledgedEvals = student?.debateEvaluations.filter(e => !e.acknowledgedAt) ?? [];
+  if (unacknowledgedEvals.length > 0) {
+    highlights.push({
+      id: "debate-evals",
+      type: "info",
+      title: "Novo Feedback de Debate",
+      description: `Tens ${unacknowledgedEvals.length} nova(s) avaliação(ões) de debate aguardando tua leitura e confirmação.`,
+      link: "/student/debates",
+      actionLabel: "Ver Feedback"
+    });
+  }
+
+  // 3. Debates today
+  const debatesToday = upcomingDebates.filter(d => {
+    const dDate = new Date(d.startsAt);
+    const today = new Date();
+    return dDate.getDate() === today.getDate() && 
+           dDate.getMonth() === today.getMonth() && 
+           dDate.getFullYear() === today.getFullYear();
+  });
+  
+  for (const debate of debatesToday) {
+    const isMod = debate.moderatorId === session?.userId;
+    const isPart = debate.participants?.some(p => p.studentId === student?.id) ?? false;
+    
+    if (isMod || isPart) {
+      highlights.push({
+        id: `debate-today-${debate.id}`,
+        type: "success",
+        title: isMod ? "Apresentas Hoje como Instrutor" : "Debate Hoje",
+        description: `O debate "${debate.topic}" começa às ${debate.startsAt.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}.`,
+        link: "/student/debates",
+        actionLabel: "Ver Detalhes"
+      });
+    }
+  }
+
+  // 4. Unread general notifications
+  const unreadNotifications = session
+    ? await prisma.notification.findMany({
+        where: { userId: session.userId, isRead: false },
+        orderBy: { createdAt: "desc" },
+        take: 3
+      })
+    : [];
+
+  for (const notif of unreadNotifications) {
+    const typeLower = notif.type.toLowerCase();
+    const typeMapped = (typeLower === "danger" || typeLower === "warning" || typeLower === "success" || typeLower === "info") 
+      ? (typeLower as any) 
+      : "info";
+
+    highlights.push({
+      id: `notif-${notif.id}`,
+      type: typeMapped,
+      title: notif.title,
+      description: notif.message,
+      link: notif.debateSessionId ? "/student/debates" : undefined
+    });
+  }
+
   return (
     <DashboardLayout
       navItems={studentNav}
@@ -122,6 +268,66 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     >
       <div className="space-y-6 pb-10">
         <ActionNotice status={searchParams?.status} />
+
+        {/* Highlights / Destaques Section */}
+        {highlights.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Destaques e Avisos</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {highlights.map((item) => {
+                const colors = {
+                  danger: "from-rose-50 to-red-100/50 border-rose-100 text-rose-900",
+                  warning: "from-amber-50 to-orange-100/50 border-amber-100 text-amber-900",
+                  info: "from-blue-50 to-indigo-100/50 border-blue-100 text-blue-900",
+                  success: "from-emerald-50 to-teal-100/50 border-emerald-100 text-emerald-900",
+                }[item.type] || "from-slate-50 to-slate-100 border-slate-200 text-slate-900";
+
+                const iconColor = {
+                  danger: "text-rose-600 bg-rose-100",
+                  warning: "text-amber-600 bg-amber-100",
+                  info: "text-blue-600 bg-blue-100",
+                  success: "text-emerald-600 bg-emerald-100",
+                }[item.type] || "text-slate-600 bg-slate-100";
+
+                return (
+                  <div 
+                    key={item.id}
+                    className={`p-4 rounded-[2rem] border bg-gradient-to-r ${colors} flex items-start justify-between gap-4 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-300`}
+                  >
+                    <div className="flex gap-3 items-start">
+                      <div className={`h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 ${iconColor} font-black`}>
+                        {item.type === "danger" ? (
+                          <AlertTriangle size={18} />
+                        ) : item.type === "warning" ? (
+                          <AlertCircle size={18} />
+                        ) : item.type === "success" ? (
+                          <CheckCircle2 size={18} />
+                        ) : (
+                          <Bell size={18} />
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">{item.title}</h4>
+                        <p className="text-xs font-medium text-slate-600 mt-1 leading-snug">{item.description}</p>
+                      </div>
+                    </div>
+
+                    {item.link && (
+                      <Link href={item.link}>
+                        <PrimaryButton 
+                          tone={item.type === "danger" || item.type === "warning" ? "rose" : "navy"} 
+                          className="py-2 px-4 rounded-xl text-[9px] font-black uppercase shrink-0 min-h-8"
+                        >
+                          {item.actionLabel || "Ver"} <ArrowRight size={10} className="ml-1" />
+                        </PrimaryButton>
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
         
         {/* Main Banner - Mobile First */}
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
@@ -157,37 +363,14 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-navy/5 rounded-full blur-3xl" />
           </BentoCard>
 
-          {/* Treasury Quick View */}
-          <Link href="/student/treasury" className="lg:col-span-4 block group">
-            <BentoCard className="bg-gradient-to-br from-navy to-blue-600 text-white h-full relative overflow-hidden" dark>
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-md mb-6 group-hover:scale-110 transition-transform">
-                <Wallet size={22} />
-              </div>
-              
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">Tesouraria • {monthName}</p>
-                  <h3 className="mt-1 text-3xl font-black">{pendingAmount.toLocaleString()} MT</h3>
-                </div>
-                <StatusBadge tone={currentMonthInvoice?.status === "PAID" ? "success" : "warning"}>
-                  {currentMonthInvoice?.status === "PAID" ? "Pago" : "Pendente"}
-                </StatusBadge>
-              </div>
-
-              <div className="mt-6 flex flex-col gap-1">
-                 <p className="text-[10px] font-black uppercase text-blue-100/60 tracking-widest">
-                    {daysRemaining !== null && daysRemaining > 0 
-                      ? `${daysRemaining} dias para o vencimento` 
-                      : daysRemaining !== null && daysRemaining <= 0
-                        ? "Pagamento em atraso"
-                        : "Sem pagamentos pendentes"}
-                 </p>
-                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white mt-1">
-                    Gerir Pagamentos <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                 </div>
-              </div>
-            </BentoCard>
-          </Link>
+          {/* Treasury Quick View - Dynamic Card */}
+          <DynamicCard
+            monthName={monthName}
+            pendingAmount={pendingAmount}
+            isPaid={currentMonthInvoice?.status === "PAID"}
+            daysRemainingText={daysRemainingText}
+            debate={debateData}
+          />
         </div>
 
         {/* Responsive Metric Grid - 2 cols on mobile, 4 on desktop */}

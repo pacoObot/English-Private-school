@@ -3,7 +3,7 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { getCurrentSession } from "@/features/auth/current-user";
-import { acknowledgeDebateFeedbackAction, submitStudentConcernAction } from "@/features/debate/actions";
+import { acknowledgeDebateFeedbackAction, submitStudentConcernAction, addDebateParticipantAction } from "@/features/debate/actions";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp, Send, AlertTriangle, Zap, Laptop, Lock, Lightbulb, MessageSquare } from "lucide-react";
@@ -45,11 +45,17 @@ export default async function StudentDebatesPage() {
   const total10 = Math.min(evaluations.length, 10);
   const total20 = Math.min(evaluations.length, 20);
   
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
   // Próximos debates (sessões agendadas onde o aluno é participante ou ainda não)
   const upcomingDebates = await prisma.debateSession.findMany({
      where: { 
-       startsAt: { gte: new Date() },
-       status: "SCHEDULED"
+       startsAt: { gte: todayStart },
+       status: { in: ["SCHEDULED", "ACTIVE"] }
+     },
+     include: {
+       participants: true
      },
      orderBy: { startsAt: "asc" }
   });
@@ -141,22 +147,49 @@ export default async function StudentDebatesPage() {
                    <p className="text-sm font-bold text-slate-400 italic">Sem novos debates agendados.</p>
                 </BentoCard>
               ) : (
-                upcomingDebates.map(session => (
-                  <BentoCard key={session.id} className="flex items-center justify-between group">
-                     <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
-                           <Calendar size={20} />
+                upcomingDebates.map(session => {
+                   const isModerator = session.moderatorId === student?.userId;
+                   const isParticipant = session.participants.some(p => p.studentId === student?.id);
+
+                   return (
+                     <BentoCard key={session.id} className="flex items-center justify-between group">
+                        <div className="flex items-center gap-4">
+                           <div className="h-12 w-12 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
+                              <Calendar size={20} />
+                           </div>
+                           <div>
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-black text-slate-900 text-sm">{session.topic}</h4>
+                                {session.status === "ACTIVE" && (
+                                  <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 text-[8px] font-black uppercase tracking-wider animate-pulse">
+                                    Em Curso
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[10px] font-bold text-slate-400 mt-1 flex items-center gap-2 uppercase tracking-tight">
+                                 <Clock size={10} /> {session.startsAt.toLocaleDateString("pt-PT")} às {session.startsAt.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' })}
+                              </p>
+                           </div>
                         </div>
-                        <div>
-                           <h4 className="font-black text-slate-900 text-sm">{session.topic}</h4>
-                           <p className="text-[10px] font-bold text-slate-400 mt-1 flex items-center gap-2 uppercase tracking-tight">
-                              <Clock size={10} /> {session.startsAt.toLocaleDateString("pt-PT")} às {session.startsAt.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' })}
-                           </p>
-                        </div>
-                     </div>
-                     <PrimaryButton tone="light" className="h-9 py-0 px-4 text-[10px]">Reservar</PrimaryButton>
-                  </BentoCard>
-                ))
+                        
+                        {isModerator ? (
+                          <StatusBadge tone="danger">És o Instrutor</StatusBadge>
+                        ) : isParticipant ? (
+                          <StatusBadge tone="success">Inscrito</StatusBadge>
+                        ) : session.participants.length >= session.capacity ? (
+                          <StatusBadge tone="neutral">Esgotado</StatusBadge>
+                        ) : student ? (
+                          <form action={addDebateParticipantAction}>
+                            <input type="hidden" name="sessionId" value={session.id} />
+                            <input type="hidden" name="studentId" value={student.id} />
+                            <PrimaryButton tone="light" type="submit" className="h-9 py-0 px-4 text-[10px]">
+                              Reservar
+                            </PrimaryButton>
+                          </form>
+                        ) : null}
+                     </BentoCard>
+                   );
+                 })
               )}
            </div>
 

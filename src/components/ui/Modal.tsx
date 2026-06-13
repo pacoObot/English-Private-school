@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
@@ -15,11 +16,17 @@ type ModalProps = {
 };
 
 export function Modal({ open, onClose, title, description, children, footer, className }: ModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!open) {
     return null;
   }
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-5">
       <button
         type="button"
@@ -32,7 +39,7 @@ export function Modal({ open, onClose, title, description, children, footer, cla
         aria-modal="true"
         aria-labelledby="modal-title"
         className={cn(
-          "relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-[2.5rem] border border-slate-200 bg-white/95 shadow-xl backdrop-blur-md sm:rounded-[3rem]",
+          "relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-[2.5rem] border border-slate-200 bg-white/95 shadow-xl backdrop-blur-md sm:rounded-[3rem] z-10",
           className
         )}
       >
@@ -57,4 +64,6 @@ export function Modal({ open, onClose, title, description, children, footer, cla
       </section>
     </div>
   );
+
+  return mounted ? createPortal(modalContent, document.body) : null;
 }
