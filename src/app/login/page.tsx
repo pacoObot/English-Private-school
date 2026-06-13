@@ -2,9 +2,9 @@ import { Lock, UserCircle, ChevronRight } from "lucide-react";
 import { AppLogo } from "@/components/layout/AppLogo";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { FormField } from "@/components/ui/FormField";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { PasswordField } from "@/components/ui/PasswordField";
 import { loginAction } from "@/features/auth/actions";
+import { LoginSubmitButton } from "@/components/auth/LoginSubmitButton";
 
 export default function LoginPage({ searchParams }: { searchParams?: { error?: string } }) {
   return (
@@ -43,10 +43,7 @@ export default function LoginPage({ searchParams }: { searchParams?: { error?: s
             ) : null}
             
             <div className="pt-2">
-              <button type="submit" className="w-full btn-gradient text-white font-black text-[11px] uppercase tracking-[0.3em] py-5 rounded-[1.5rem] flex items-center justify-center gap-3">
-                Aceder ao Sistema
-                <ChevronRight size={14} />
-              </button>
+              <LoginSubmitButton />
             </div>
           </form>
         </section>

@@ -1,5 +1,37 @@
 # Historico de Tarefas
 
+
+## 2026-06-12 14:00 SAST - Sprint de Correções e Lançamento Vercel
+
+Resumo:
+- **Infraestrutura**: Configurado `directUrl` no Prisma para migrações em produção e `SKIP_DB_CHECK` no entrypoint do Docker para deploys serverless.
+- **Recibos**: Resolvida a criação automática de `Receipt` na DB na transição de faturas para `PAID` em `updateInvoiceStatusAction`.
+- **Rastreabilidade**: Integradas as flags `isWriting`/`isSpeaking` no lançamento de notas do Docente e tags `[🗣️ Oratória]` e `[✍️ Escrita]` no histórico do Estudante.
+- **Fórmulas Académicas**: Atualizada a média global para ponderada normalizada (base 20) e percentuais de competências com base nas flags de avaliação.
+- **Upload Resiliente**: Integrado upload com Supabase Storage (produção) mantendo fallback local offline (desenvolvimento).
+- **Melhorias Admin**: Erros de CSV detalhados exibidos no popup `ActionNotice` e datas de início/fim configuráveis para turmas.
+- **Feedback Visual**: Implementado o componente `LoginSubmitButton` com spinner animado e estado de carregamento "A processar..." na página de login para dar feedback imediato ao usuário.
+
+Validacoes:
+- Testes Unitários: ✅ 8/8 testes passando.
+- Typecheck e Linting: ✅ TypeScript compilando com sucesso completo (0 erros via `npx tsc --noEmit`) e lint limpo.
+- Banco de Dados: ✅ Migrações Prisma aplicadas localmente e implantadas com sucesso no banco de dados de produção do Supabase em `eu-west-1` (Irlanda).
+
+---
+
+## 2026-06-12 11:05 SAST - Aprimoramento da Arena de Debates (Comentários Privados, Competências Reais e Confirmação de Fecho)
+
+Resumo:
+- **Competências Reais dos Alunos**: Integrada a exibição das competências Speaking e Writing reais de cada participante na listagem da Arena de Debates, calculadas dinamicamente no servidor com base em notas académicas e debates.
+- **Opções de Privacidade de Feedback**: Criada a coluna `isPrivate` no modelo `DebateEvaluation` para permitir feedbacks privados ao instrutor ou públicos para toda a comunidade.
+- **Confirmação ao Encerrar Debate**: Implementado o componente client `DebateStatusControl` com modal de confirmação para evitar encerramento acidental de sessões.
+- **Mensagem Padrão de Designação**: Atualizada a notificação de designação de moderador para um padrão amigável com instruções de acesso à sala.
+
+Validacoes:
+- Testes Unitários: ✅ 8/8 testes passando.
+- Typecheck e Linting: ✅ TypeScript compilando e lint concluído com sucesso.
+- Banco de Dados: ✅ Migração Prisma de visibilidade de feedbacks aplicada localmente.
+
 ---
 
 ## 2026-06-05 13:10 SAST - Geração e Execução de Scripts SQL, Resolução de Conectividade Vercel (Abordagem B)

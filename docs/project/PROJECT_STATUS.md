@@ -1,6 +1,6 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-06-05 13:00 SAST
+Ultima atualizacao: 2026-06-12 11:05 SAST
 
 ## Resumo atual
 
@@ -31,24 +31,29 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Execução de Scripts SQL e Resolução de Conectividade Vercel - 2026-06-05 13:10 SAST:
-- **Estrutura e Seed Criados**: Tabelas e dados de teste povoados com sucesso diretamente no editor SQL do Supabase.
-- **Falha de Conexão na Vercel**: Identificado que o ambiente serverless da Vercel não consegue ligar via porta 5432 direta (retornando `?error=db`).
+Sprint de Correções e Lançamento Vercel - 2026-06-12 14:00 SAST:
+- **Infraestrutura**: Configurado `directUrl` no Prisma para migrações na Vercel e `SKIP_DB_CHECK` no entrypoint do Docker.
+- **Recibos**: Resolvida a criação automática de `Receipt` na DB na transição de faturas para `PAID`.
+- **Rastreabilidade**: Integradas as flags `isWriting`/`isSpeaking` no lançamento de notas do Docente e tags `[🗣️ Oratória]` e `[✍️ Escrita]` no histórico do Estudante.
+- **Fórmulas Académicas**: Atualizada a média global para ponderada normalizada (base 20) e percentuais de competências com base nas flags de avaliação.
+- **Upload Resiliente**: Integrado upload com Supabase Storage (produção) mantendo fallback local offline (desenvolvimento).
+- **Melhorias Admin**: Erros de CSV detalhados exibidos no popup `ActionNotice` e datas de início/fim configuráveis para turmas.
+- **Feedback Visual**: Implementado o componente `LoginSubmitButton` com spinner animado e estado de carregamento "A processar..." na página de login para dar feedback imediato ao usuário.
 
 ## Validacoes desta tarefa
 
-- Estrutura e dados no Supabase: ✅ Sucesso total.
-- Deploy Vercel: ⚠️ Ativo, mas com conexão ao banco pendente de ajuste para a porta 6543.
+- Testes Unitários: ✅ 8/8 testes passando (sucesso total).
+- Typecheck e Linting: ✅ TypeScript compilando com sucesso completo (0 erros via `npx tsc --noEmit`) e lint limpo.
+- Banco de Dados: ✅ Migrações Prisma de visibilidade de feedbacks e flags de competência aplicadas localmente e na base de dados Supabase na Irlanda (eu-west-1).
 
 ## Pendencias conhecidas
 
-- **Ajustar Variáveis na Vercel**: Alterar a variável `DATABASE_URL` no painel da Vercel para a URI do Transaction Pooler (porta 6543) com `pgbouncer=true` e `connection_limit=1`.
-- Presenças automáticas por foto (Fase 7: Ideia Futura) está no backlog para futura implementação.
-- Sincronizacao financeira bidirecional com UNIEXE continua aguardando credenciais de produção.
-- Exportacao CSV/Excel e testes E2E Playwright continuam no backlog.
+- **Configurar Variáveis na Vercel**: Guardar as variáveis de ambiente na Vercel com os valores corretos da região `eu-west-1` (Irlanda).
+- Presenças automáticas por foto (Fase 7: Ideia Futura) no backlog.
+- Sincronizacao financeira bidirecional com UNIEXE.
+- Exportacao CSV/Excel e testes E2E Playwright no backlog.
 
 ## Proxima acao recomendada
 
-1. Aceder ao painel da Vercel e alterar a variável `DATABASE_URL` para a URL do Pooler com o formato correto.
-2. Efetuar o redeploy do projeto na Vercel para recarregar as variáveis.
-3. Testar o login novamente na URL pública com as credenciais do Super Admin.
+1. Concluir a configuração das variáveis na Vercel e efetuar o redeploy.
+2. Validar os fluxos em produção na URL pública da Vercel (turmas com datas, notas com checkboxes, verificação de tags e recibos em PDF).
