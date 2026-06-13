@@ -6,6 +6,7 @@ import { DebateSessionStatus, Role } from "@/generated/prisma";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { routeForRole } from "@/features/auth/session";
 import { prisma } from "@/lib/prisma";
+import { createSystemNotification, createSystemNotifications } from "@/lib/push";
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -131,14 +132,13 @@ export async function createDebateSessionAction(formData: FormData) {
   });
 
   if (instructorId) {
-    await prisma.notification.create({
-      data: {
-        userId: instructorId,
-        title: "Designação de Moderador do Debate",
-        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
-        type: "DEBATE_DESIGNATION",
-        debateSessionId: debate.id
-      }
+    await createSystemNotification({
+      userId: instructorId,
+      title: "Designação de Moderador do Debate",
+      message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
+      type: "DEBATE_DESIGNATION",
+      debateSessionId: debate.id,
+      url: `/debate/${debate.id}`
     });
   }
 
@@ -392,14 +392,13 @@ export async function saveDebateEvaluationAction(formData: FormData) {
         ? `Sem comentário adicional (feedback privado).` 
         : `Feedback: "${feedback || "Sem comentário adicional."}"`;
 
-      await prisma.notification.create({
-        data: {
-          userId: studentProfile.userId,
-          title: "Novo feedback de debate",
-          message: `${teacher?.name ?? "O instrutor"} avaliou a tua participação em "${debate.topic}". Fluência: ${fluency}/10 · Argumentação: ${argumentation}/10 · Postura: ${posture}/10. ${feedbackMessage}`,
-          type: "DEBATE_FEEDBACK",
-          evaluationId: evaluation.id
-        }
+      await createSystemNotification({
+        userId: studentProfile.userId,
+        title: "Novo feedback de debate",
+        message: `${teacher?.name ?? "O instrutor"} avaliou a tua participação em "${debate.topic}". Fluência: ${fluency}/10 · Argumentação: ${argumentation}/10 · Postura: ${posture}/10. ${feedbackMessage}`,
+        type: "DEBATE_FEEDBACK",
+        evaluationId: evaluation.id,
+        url: "/student/debates"
       });
     }
   } catch (e) {
@@ -555,16 +554,17 @@ export async function proposeDebateTopic(formData: FormData) {
   });
 
   if (approvers.length > 0) {
-    await prisma.notification.createMany({
-      data: approvers
+    await createSystemNotifications(
+      approvers
         .filter((user) => user.id !== session.userId)
         .map((user) => ({
           userId: user.id,
           title: "Nova sugestão de debate",
           message: `${session.name} sugeriu "${proposal.topic}" para a Arena de Debates.`,
-          type: "INFO"
+          type: "INFO",
+          url: "/debate"
         }))
-    });
+    );
   }
 
   revalidatePath("/debate");
@@ -610,13 +610,12 @@ export async function toggleDebateProposalSupportAction(formData: FormData) {
     });
 
     if (proposal.proposerId !== session.userId) {
-      await prisma.notification.create({
-        data: {
-          userId: proposal.proposerId,
-          title: "Apoio à tua sugestão",
-          message: `${session.name} apoiou a sugestão "${proposal.topic}".`,
-          type: "SUCCESS"
-        }
+      await createSystemNotification({
+        userId: proposal.proposerId,
+        title: "Apoio à tua sugestão",
+        message: `${session.name} apoiou a sugestão "${proposal.topic}".`,
+        type: "SUCCESS",
+        url: "/student/debates"
       });
     }
   }
@@ -720,25 +719,25 @@ export async function approveDebateProposalAction(formData: FormData) {
   }
 
   if (notifyUserIds.size > 0) {
-    await prisma.notification.createMany({
-      data: Array.from(notifyUserIds).map((userId) => ({
+    await createSystemNotifications(
+      Array.from(notifyUserIds).map((userId) => ({
         userId,
         title: "Sugestão de debate aprovada",
         message: `A sugestão "${debate.topic}" foi aprovada e virou uma sessão da Arena de Debates.`,
-        type: "SUCCESS"
+        type: "SUCCESS",
+        url: "/student/debates"
       }))
-    });
+    );
   }
 
   if (instructorId) {
-    await prisma.notification.create({
-      data: {
-        userId: instructorId,
-        title: "Designação de Moderador do Debate",
-        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
-        type: "DEBATE_DESIGNATION",
-        debateSessionId: debate.id
-      }
+    await createSystemNotification({
+      userId: instructorId,
+      title: "Designação de Moderador do Debate",
+      message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
+      type: "DEBATE_DESIGNATION",
+      debateSessionId: debate.id,
+      url: `/debate/${debate.id}`
     });
   }
 
@@ -765,13 +764,12 @@ export async function rejectDebateProposalAction(formData: FormData) {
   });
 
   if (proposal.proposerId !== session.userId) {
-    await prisma.notification.create({
-      data: {
-        userId: proposal.proposerId,
-        title: "Sugestão de debate revista",
-        message: `A sugestão "${proposal.topic}" foi revista e não será agendada neste momento.`,
-        type: "WARNING"
-      }
+    await createSystemNotification({
+      userId: proposal.proposerId,
+      title: "Sugestão de debate revista",
+      message: `A sugestão "${proposal.topic}" foi revista e não será agendada neste momento.`,
+      type: "WARNING",
+      url: "/student/debates"
     });
   }
 
@@ -893,14 +891,13 @@ export async function assignDebateInstructorAction(formData: FormData) {
   });
 
   if (instructorId) {
-    await prisma.notification.create({
-      data: {
-        userId: instructorId,
-        title: "Designação de Moderador do Debate",
-        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
-        type: "DEBATE_DESIGNATION",
-        debateSessionId: debate.id
-      }
+    await createSystemNotification({
+      userId: instructorId,
+      title: "Designação de Moderador do Debate",
+      message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
+      type: "DEBATE_DESIGNATION",
+      debateSessionId: debate.id,
+      url: `/debate/${debate.id}`
     });
   }
 
@@ -958,14 +955,15 @@ export async function submitStudentConcernAction(formData: FormData) {
   });
 
   if (admins.length > 0) {
-    await prisma.notification.createMany({
-      data: admins.map((admin) => ({
+    await createSystemNotifications(
+      admins.map((admin) => ({
         userId: admin.id,
         title: `Feedback de Estudante: ${catInfo.label}`,
         message: `${session.name} enviou um feedback (${catInfo.label}): "${message}"`,
-        type: catInfo.notificationType
+        type: catInfo.notificationType,
+        url: "/admin/logs"
       }))
-    });
+    );
   }
 
   revalidatePath("/student/debates");

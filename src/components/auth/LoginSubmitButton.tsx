@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { Loader2, ChevronRight } from "lucide-react";
 
-export function LoginSubmitButton() {
+export function LoginSubmitButton({ label, loadingLabel }: { label: string; loadingLabel: string }) {
   const { pending } = useFormStatus();
 
   return (
@@ -15,11 +15,11 @@ export function LoginSubmitButton() {
       {pending ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
-          <span>A processar...</span>
+          <span>{loadingLabel}</span>
         </>
       ) : (
         <>
-          Aceder ao Sistema
+          {label}
           <ChevronRight size={14} />
         </>
       )}

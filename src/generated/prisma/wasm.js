@@ -357,6 +357,16 @@ exports.Prisma.CalendarEventScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -435,7 +445,8 @@ exports.Prisma.ModelName = {
   DebateProposal: 'DebateProposal',
   DebateProposalReaction: 'DebateProposalReaction',
   Notification: 'Notification',
-  CalendarEvent: 'CalendarEvent'
+  CalendarEvent: 'CalendarEvent',
+  PushSubscription: 'PushSubscription'
 };
 
 /**

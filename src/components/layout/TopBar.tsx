@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Bell, Menu, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { NotificationCenter } from "./NotificationCenter";
+import { LanguageToggle } from "./LanguageToggle";
 
 type TopBarProps = {
   title: string;
@@ -46,10 +47,7 @@ export function TopBar({ title, subtitle, onMenuClick, action, showSearch = fals
           </div>
         ) : null}
         {action}
-        <div className="hidden rounded-2xl bg-slate-100 p-1 sm:flex">
-          <span className="rounded-xl px-3 py-1.5 text-[10px] font-black text-slate-400">EN</span>
-          <span className="rounded-xl bg-white px-3 py-1.5 text-[10px] font-black text-slate-800 shadow-sm">PT</span>
-        </div>
+        <LanguageToggle />
         <a
           href="/logout"
           className="hidden min-h-11 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 px-4 text-[10px] font-black uppercase tracking-widest text-slate-500 backdrop-blur-md transition-colors hover:text-crimson sm:flex"
