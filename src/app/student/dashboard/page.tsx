@@ -257,6 +257,37 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     });
   }
 
+  // 5. Absences Alert
+  const currentMonthAbsences = student?.attendances.filter(a => 
+    a.status === "ABSENT" && 
+    a.lessonDate.getMonth() === currentMonth && 
+    a.lessonDate.getFullYear() === currentYear
+  ) ?? [];
+  
+  if (currentMonthAbsences.length > 0) {
+    highlights.push({
+      id: "absences-alert",
+      type: currentMonthAbsences.length >= 3 ? "danger" : "warning",
+      title: "Alerta de Assiduidade",
+      description: `Tens ${currentMonthAbsences.length} falta(s) registada(s) este mês. Mantém a tua assiduidade acima de 85% para aprovação.`,
+      link: "/student/calendar",
+      actionLabel: "Ver Calendário"
+    });
+  }
+
+  // 6. Low Grades Alert
+  const lowGrades = student?.grades.filter(g => (g.score / g.maxScore) * 20 < 10) ?? [];
+  if (lowGrades.length > 0) {
+    highlights.push({
+      id: "low-grades-alert",
+      type: "warning",
+      title: "Alerta Académico",
+      description: `Tens ${lowGrades.length} nota(s) abaixo da média recomendada (10/20). Recomendamos solicitar apoio de um tutor.`,
+      link: "/student/grades",
+      actionLabel: "Ver Notas"
+    });
+  }
+
   return (
     <DashboardLayout
       navItems={studentNav}
@@ -272,7 +303,13 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
         {/* Highlights / Destaques Section */}
         {highlights.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Destaques e Avisos</h3>
+            <div className="flex items-center gap-2 px-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Centro de Destaques</h3>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {highlights.map((item) => {
                 const colors = {

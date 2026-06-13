@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -6,7 +7,7 @@ import { getCurrentSession } from "@/features/auth/current-user";
 import { acknowledgeDebateFeedbackAction, submitStudentConcernAction, addDebateParticipantAction } from "@/features/debate/actions";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
-import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp, Send, AlertTriangle, Zap, Laptop, Lock, Lightbulb, MessageSquare } from "lucide-react";
+import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp, Send, AlertTriangle, Zap, Laptop, Lock, Lightbulb, MessageSquare, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +61,21 @@ export default async function StudentDebatesPage() {
      orderBy: { startsAt: "asc" }
   });
 
+  const now = new Date();
+  const activeModeratingSessions = session
+    ? await prisma.debateSession.findMany({
+        where: {
+          moderatorId: session.userId,
+          status: { in: ["SCHEDULED", "ACTIVE"] },
+          OR: [
+            { moderatorExpiresAt: null },
+            { moderatorExpiresAt: { gt: now } }
+          ]
+        },
+        orderBy: { startsAt: "asc" }
+      })
+    : [];
+
   return (
     <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Debates" }))}
@@ -69,6 +85,41 @@ export default async function StudentDebatesPage() {
       darkSidebar
     >
       <div className="space-y-6">
+        {/* Painel Temporário de Instrutor */}
+        {activeModeratingSessions.map(modSession => {
+          const expiresText = modSession.moderatorExpiresAt 
+            ? `Privilégios expiram em ${modSession.moderatorExpiresAt.toLocaleDateString("pt-PT")} às ${modSession.moderatorExpiresAt.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}`
+            : "Privilégios permanentes para esta sessão";
+            
+          return (
+            <BentoCard key={modSession.id} className="bg-gradient-to-r from-slate-900 to-rose-950 text-white relative overflow-hidden p-6 rounded-[2.5rem]" dark>
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex gap-4 items-start">
+                  <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center text-rose-400 shrink-0">
+                    <Mic2 size={24} />
+                  </div>
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[8px] font-black uppercase tracking-wider">
+                      Painel de Instrutor Temporário
+                    </span>
+                    <h3 className="text-lg font-black mt-1.5 text-slate-100">{modSession.topic}</h3>
+                    <p className="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-wider">
+                      {expiresText}
+                    </p>
+                  </div>
+                </div>
+                
+                <Link href={`/debate/${modSession.id}`} className="shrink-0">
+                  <PrimaryButton tone="rose" className="w-full md:w-auto px-6 py-3 text-[10px] uppercase font-black tracking-widest flex items-center justify-center gap-2">
+                    Aceder Privilégios <ArrowRight size={12} />
+                  </PrimaryButton>
+                </Link>
+              </div>
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+            </BentoCard>
+          );
+        })}
+
         {/* Qualitative Performance Card */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
            <BentoCard className="lg:col-span-2 bg-slate-900 text-white relative overflow-hidden" dark>
