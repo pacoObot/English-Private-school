@@ -131,13 +131,11 @@ export async function createDebateSessionAction(formData: FormData) {
   });
 
   if (instructorId) {
-    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
-    const locationString = debate.location ? ` em ${debate.location}` : "";
     await prisma.notification.create({
       data: {
         userId: instructorId,
         title: "Designação de Moderador do Debate",
-        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
         type: "DEBATE_DESIGNATION",
         debateSessionId: debate.id
       }
@@ -293,6 +291,7 @@ export async function saveDebateEvaluationAction(formData: FormData) {
   const argumentation = parseInt(text(formData, "argumentation"), 10);
   const posture = parseInt(text(formData, "posture"), 10);
   const feedback = text(formData, "feedback");
+  const isPrivate = formData.get("isPrivate") === "true";
 
   if (!sessionId || !studentId || isNaN(fluency) || isNaN(argumentation) || isNaN(posture)) {
     return { success: false };
@@ -324,7 +323,7 @@ export async function saveDebateEvaluationAction(formData: FormData) {
     }
   });
 
-  if (!debate || debate.status === DebateSessionStatus.CLOSED || debate.participants.length === 0) {
+  if (!debate || debate.participants.length === 0) {
     return { success: false };
   }
 
@@ -347,6 +346,7 @@ export async function saveDebateEvaluationAction(formData: FormData) {
       argumentation,
       posture,
       feedback: feedback || null,
+      isPrivate,
       acknowledgedAt: null
     },
     update: {
@@ -355,6 +355,7 @@ export async function saveDebateEvaluationAction(formData: FormData) {
       argumentation,
       posture,
       feedback: feedback || null,
+      isPrivate,
       acknowledgedAt: null,
       evaluatedAt: new Date()
     }
@@ -387,11 +388,15 @@ export async function saveDebateEvaluationAction(formData: FormData) {
     });
 
     if (studentProfile && evaluation) {
+      const feedbackMessage = isPrivate 
+        ? `Sem comentário adicional (feedback privado).` 
+        : `Feedback: "${feedback || "Sem comentário adicional."}"`;
+
       await prisma.notification.create({
         data: {
           userId: studentProfile.userId,
           title: "Novo feedback de debate",
-          message: `${teacher?.name ?? "O instrutor"} avaliou a tua participação em "${debate.topic}". Fluência: ${fluency}/10 · Argumentação: ${argumentation}/10 · Postura: ${posture}/10. Feedback: "${feedback || "Sem comentário adicional."}"`,
+          message: `${teacher?.name ?? "O instrutor"} avaliou a tua participação em "${debate.topic}". Fluência: ${fluency}/10 · Argumentação: ${argumentation}/10 · Postura: ${posture}/10. ${feedbackMessage}`,
           type: "DEBATE_FEEDBACK",
           evaluationId: evaluation.id
         }
@@ -726,13 +731,11 @@ export async function approveDebateProposalAction(formData: FormData) {
   }
 
   if (instructorId) {
-    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
-    const locationString = debate.location ? ` em ${debate.location}` : "";
     await prisma.notification.create({
       data: {
         userId: instructorId,
         title: "Designação de Moderador do Debate",
-        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
         type: "DEBATE_DESIGNATION",
         debateSessionId: debate.id
       }
@@ -890,13 +893,11 @@ export async function assignDebateInstructorAction(formData: FormData) {
   });
 
   if (instructorId) {
-    const timeString = debate.startsAt.toLocaleString("pt-PT", { dateStyle: "short", timeStyle: "short" });
-    const locationString = debate.location ? ` em ${debate.location}` : "";
     await prisma.notification.create({
       data: {
         userId: instructorId,
         title: "Designação de Moderador do Debate",
-        message: `Prezado(a), informamos formalmente que foi designado(a) como administrador(a) da sessão de debate "${debate.topic}", com início agendado para ${timeString}${locationString}. Solicitamos a sua moderação ativa para avaliar a fluência, argumentação e postura dos participantes nesta Arena.`,
+        message: `Você foi designado como instrutor no debate "${debate.topic}". Aceda à sala para pré-personalizar os detalhes, gerir os participantes e avaliar a sessão.`,
         type: "DEBATE_DESIGNATION",
         debateSessionId: debate.id
       }
@@ -916,5 +917,58 @@ export async function assignDebateInstructorAction(formData: FormData) {
   revalidatePath("/debate");
   revalidatePath(`/debate/${id}`);
   redirectBack(returnTo, "updated");
+}
+
+export async function submitStudentConcernAction(formData: FormData) {
+  const session = await getCurrentSession();
+  if (!session || session.role !== Role.STUDENT) {
+    redirect("/login");
+  }
+
+  const category = text(formData, "category");
+  const message = text(formData, "message");
+
+  if (!category || !message) {
+    redirectBack("/student/debates", "error");
+  }
+
+  // 1. Criar o AuditLog
+  await prisma.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "student_feedback_submitted",
+      entity: "StudentProfile",
+      metadata: { category, message }
+    }
+  });
+
+  // 2. Mapear categorias para titulos e tipos de notificacao
+  const categoryMap: Record<string, { label: string; notificationType: string }> = {
+    SYSTEM_DOUBT: { label: "Duvida sobre o Sistema", notificationType: "INFO" },
+    DEBATE_QUESTION: { label: "Questao sobre um Debate", notificationType: "INFO" },
+    PERSONAL_CONCERN: { label: "Preocupacao Pessoal", notificationType: "WARNING" },
+    PRAISE_SUGGESTION: { label: "Elogio ou Sugestao", notificationType: "SUCCESS" }
+  };
+  const catInfo = categoryMap[category] || { label: "Feedback", notificationType: "INFO" };
+
+  // 3. Notificar todos os admins e super-admins
+  const admins = await prisma.user.findMany({
+    where: { role: { in: [Role.SUPER_ADMIN, Role.ADMIN] }, isActive: true },
+    select: { id: true }
+  });
+
+  if (admins.length > 0) {
+    await prisma.notification.createMany({
+      data: admins.map((admin) => ({
+        userId: admin.id,
+        title: `Feedback de Estudante: ${catInfo.label}`,
+        message: `${session.name} enviou um feedback (${catInfo.label}): "${message}"`,
+        type: catInfo.notificationType
+      }))
+    });
+  }
+
+  revalidatePath("/student/debates");
+  redirectBack("/student/debates", "created");
 }
 

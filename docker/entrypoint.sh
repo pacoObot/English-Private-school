@@ -18,22 +18,26 @@ DB_NAME=${POSTGRES_DB:-delson_ps}
 MAX_RETRIES=30
 RETRY_COUNT=0
 
-echo "📡 Aguardando conexão com PostgreSQL em $DB_HOST:$DB_PORT..."
+if [ "$SKIP_DB_CHECK" = "true" ]; then
+  echo "⏭️  Ignorando verificação de conexão TCP com PostgreSQL (SKIP_DB_CHECK=true)"
+else
+  echo "📡 Aguardando conexão com PostgreSQL em $DB_HOST:$DB_PORT..."
 
-# Aguardar disponibilidade do banco de dados
-while ! nc -z $DB_HOST $DB_PORT; do
-  RETRY_COUNT=$((RETRY_COUNT + 1))
-  
-  if [ $RETRY_COUNT -gt $MAX_RETRIES ]; then
-    echo "❌ Falha: PostgreSQL não disponível em $DB_HOST:$DB_PORT após $MAX_RETRIES tentativas"
-    exit 1
-  fi
-  
-  echo "⏳ PostgreSQL indisponível (tentativa $RETRY_COUNT/$MAX_RETRIES). Aguardando 2 segundos..."
-  sleep 2
-done
+  # Aguardar disponibilidade do banco de dados
+  while ! nc -z $DB_HOST $DB_PORT; do
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    
+    if [ $RETRY_COUNT -gt $MAX_RETRIES ]; then
+      echo "❌ Falha: PostgreSQL não disponível em $DB_HOST:$DB_PORT após $MAX_RETRIES tentativas"
+      exit 1
+    fi
+    
+    echo "⏳ PostgreSQL indisponível (tentativa $RETRY_COUNT/$MAX_RETRIES). Aguardando 2 segundos..."
+    sleep 2
+  done
 
-echo "✅ PostgreSQL conectado!"
+  echo "✅ PostgreSQL conectado!"
+fi
 
 # Aplicar migrações
 echo ""

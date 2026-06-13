@@ -211,6 +211,8 @@ exports.Prisma.GradeScalarFieldEnum = {
   score: 'score',
   maxScore: 'maxScore',
   weight: 'weight',
+  isWriting: 'isWriting',
+  isSpeaking: 'isSpeaking',
   gradedAt: 'gradedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -287,6 +289,7 @@ exports.Prisma.DebateEvaluationScalarFieldEnum = {
   argumentation: 'argumentation',
   posture: 'posture',
   feedback: 'feedback',
+  isPrivate: 'isPrivate',
   acknowledgedAt: 'acknowledgedAt',
   evaluatedAt: 'evaluatedAt',
   createdAt: 'createdAt',

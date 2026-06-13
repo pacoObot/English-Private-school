@@ -68,31 +68,43 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
     const debateAvg = (avgFluency + avgArgumentation + avgPosture) / 3;
 
     // Speaking percentage calculation
+    const speakingGrades = s.grades.filter(g => 
+      g.isSpeaking || (!g.isWriting && /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title))
+    );
     let speakingPercentage = 0;
     if (s.debateEvaluations.length > 0) {
-      speakingPercentage = debateAvg * 10;
-    } else {
-      const speakingGrades = s.grades.filter(g => 
-        /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
-      );
+      const debateScore = debateAvg * 10; // Escala 0-100%
       if (speakingGrades.length > 0) {
-        speakingPercentage = (speakingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / speakingGrades.length) * 100;
+        const normalizedGradesSum = speakingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+        const totalWeight = speakingGrades.reduce((sum, g) => sum + g.weight, 0);
+        const gradesScore = totalWeight > 0 ? normalizedGradesSum / totalWeight : 0;
+        speakingPercentage = (debateScore * 0.7) + (gradesScore * 0.3);
+      } else {
+        speakingPercentage = debateScore;
       }
+    } else if (speakingGrades.length > 0) {
+      const normalizedSum = speakingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+      const totalWeight = speakingGrades.reduce((sum, g) => sum + g.weight, 0);
+      speakingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
     }
 
     // Writing percentage calculation
     const writingGrades = s.grades.filter(g => 
-      /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title)
+      g.isWriting || (!g.isSpeaking && /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title))
     );
     let writingPercentage = 0;
     if (writingGrades.length > 0) {
-      writingPercentage = (writingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / writingGrades.length) * 100;
+      const normalizedSum = writingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+      const totalWeight = writingGrades.reduce((sum, g) => sum + g.weight, 0);
+      writingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
     } else if (s.grades.length > 0) {
-      const academicGrades = s.grades.filter(g => 
-        !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+      const nonSpeakingGrades = s.grades.filter(g => 
+        !g.isSpeaking && !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
       );
-      const gradesToUse = academicGrades.length > 0 ? academicGrades : s.grades;
-      writingPercentage = (gradesToUse.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / gradesToUse.length) * 100;
+      const gradesToUse = nonSpeakingGrades.length > 0 ? nonSpeakingGrades : s.grades;
+      const normalizedSum = gradesToUse.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+      const totalWeight = gradesToUse.reduce((sum, g) => sum + g.weight, 0);
+      writingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
     }
 
     const overallSkill = (speakingPercentage + writingPercentage) / 2;

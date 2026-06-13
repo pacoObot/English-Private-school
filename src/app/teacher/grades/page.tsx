@@ -5,6 +5,7 @@ import { saveAllGradesAction } from "@/features/teacher/actions";
 import { Role } from "@/generated/prisma";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { Mic2, PenTool } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -94,6 +95,40 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                   required 
                 />
                 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2 border-b border-slate-100 mb-2">
+                  <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-rose transition bg-white/50 select-none">
+                    <input 
+                      type="checkbox" 
+                      name="isSpeaking" 
+                      value="true"
+                      className="w-4 h-4 rounded text-crimson focus:ring-crimson cursor-pointer border-slate-300"
+                    />
+                    <div>
+                      <span className="font-black text-sm text-navy flex items-center gap-1.5">
+                        <Mic2 size={16} className="text-rose-600 shrink-0" />
+                        Competência Oral (Speaking)
+                      </span>
+                      <span className="block text-xs text-slate-500 mt-0.5">Influencia diretamente as Speaking Skills</span>
+                    </div>
+                  </label>
+                  
+                  <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-rose transition bg-white/50 select-none">
+                    <input 
+                      type="checkbox" 
+                      name="isWriting" 
+                      value="true"
+                      className="w-4 h-4 rounded text-crimson focus:ring-crimson cursor-pointer border-slate-300"
+                    />
+                    <div>
+                      <span className="font-black text-sm text-navy flex items-center gap-1.5">
+                        <PenTool size={16} className="text-navy shrink-0" />
+                        Competência Escrita (Writing)
+                      </span>
+                      <span className="block text-xs text-slate-500 mt-0.5">Influencia diretamente as Writing Skills</span>
+                    </div>
+                  </label>
+                </div>
+
                 <div className="space-y-3">
                   {filteredEnrollments.map((enrollment) => {
                     const studentGrades = enrollment.student.grades.filter(

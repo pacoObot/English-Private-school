@@ -27,26 +27,7 @@ function loadEnv() {
 async function main() {
   const passwordHash = hashPassword("Delson@2026");
 
-  if (process.env.SEED_ONLY_SUPER_ADMIN === "true") {
-    const existingSuper = await prisma.user.findFirst({
-      where: { role: Role.SUPER_ADMIN }
-    });
-    if (existingSuper) {
-      console.log("Super Admin already exists. Skipping seeding.");
-      return;
-    }
-    await prisma.user.create({
-      data: {
-        name: "Direcao Geral",
-        email: "super.admin@delsonps.local",
-        passwordHash,
-        role: Role.SUPER_ADMIN
-      }
-    });
-    console.log("Seeding completed: Created ONLY the Super Admin (production/empty state).");
-    return;
-  }
-
+  console.log("Limpando dados da base de dados...");
   await prisma.notification.deleteMany();
   await prisma.debateProposalReaction.deleteMany();
   await prisma.auditLog.deleteMany();
@@ -65,6 +46,19 @@ async function main() {
   await prisma.studentProfile.deleteMany();
   await prisma.teacherProfile.deleteMany();
   await prisma.user.deleteMany();
+
+  if (process.env.SEED_ONLY_SUPER_ADMIN === "true") {
+    await prisma.user.create({
+      data: {
+        name: "Direcao Geral",
+        email: "super.admin@delsonps.local",
+        passwordHash,
+        role: Role.SUPER_ADMIN
+      }
+    });
+    console.log("Seeding concluido: Criado APENAS o Super Admin (estado de producao vazio).");
+    return;
+  }
 
   const superAdmin = await prisma.user.create({
     data: {

@@ -31,37 +31,56 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
   const activeCourses = student?.enrollments.length ?? 0;
   const pendingAmount = student?.invoices.filter((invoice) => invoice.status === "PENDING").reduce((sum, invoice) => sum + invoice.amountMt, 0) ?? 0;
   const absences = student?.attendances.filter((attendance) => attendance.status === "ABSENT").length ?? 0;
-  const gradeAverage = student?.grades.length ? student.grades.reduce((sum, grade) => sum + grade.score, 0) / student.grades.length : 0;
+  // Média Global Ponderada Normalizada (Base 20)
+  let gradeAverage = 0;
+  if (student?.grades && student.grades.length > 0) {
+    const normalizedSum = student.grades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 20) * g.weight, 0);
+    const totalWeight = student.grades.reduce((sum, g) => sum + g.weight, 0);
+    gradeAverage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
+  }
   
   const debateEvals = student?.debateEvaluations ?? [];
   const debateAvg = debateEvals.length > 0 ? debateEvals.reduce((sum, ev) => sum + ev.fluency + ev.argumentation + ev.posture, 0) / (debateEvals.length * 3) : 0;
 
   // Habilidades reais baseadas em avaliações académicas e debates
   let speakingPercentage = 0;
+  const speakingGrades = student?.grades.filter(g => 
+    g.isSpeaking || (!g.isWriting && /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title))
+  ) ?? [];
+
   if (debateEvals.length > 0) {
-    speakingPercentage = debateAvg * 10;
-  } else {
-    const speakingGrades = student?.grades.filter(g => 
-      /speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
-    ) ?? [];
+    const debateScore = debateAvg * 10; // Escala 0-100%
     if (speakingGrades.length > 0) {
-      speakingPercentage = (speakingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / speakingGrades.length) * 100;
+      const normalizedGradesSum = speakingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+      const totalWeight = speakingGrades.reduce((sum, g) => sum + g.weight, 0);
+      const gradesScore = totalWeight > 0 ? normalizedGradesSum / totalWeight : 0;
+      speakingPercentage = (debateScore * 0.7) + (gradesScore * 0.3);
+    } else {
+      speakingPercentage = debateScore;
     }
+  } else if (speakingGrades.length > 0) {
+    const normalizedSum = speakingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+    const totalWeight = speakingGrades.reduce((sum, g) => sum + g.weight, 0);
+    speakingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
   }
 
   const writingGrades = student?.grades.filter(g => 
-    /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title)
+    g.isWriting || (!g.isSpeaking && /writing|write|redaç|redac|composition|essay|escrit|gramat|grammar|dictation|ditado/i.test(g.title))
   ) ?? [];
   
   let writingPercentage = 0;
   if (writingGrades.length > 0) {
-    writingPercentage = (writingGrades.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / writingGrades.length) * 100;
+    const normalizedSum = writingGrades.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+    const totalWeight = writingGrades.reduce((sum, g) => sum + g.weight, 0);
+    writingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
   } else if (student?.grades && student.grades.length > 0) {
-    const academicGrades = student.grades.filter(g => 
-      !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
+    const nonSpeakingGrades = student.grades.filter(g => 
+      !g.isSpeaking && !/speaking|oral|speech|apresenta|debate|conversac/i.test(g.title)
     );
-    const gradesToUse = academicGrades.length > 0 ? academicGrades : student.grades;
-    writingPercentage = (gradesToUse.reduce((sum, g) => sum + (g.score / g.maxScore), 0) / gradesToUse.length) * 100;
+    const gradesToUse = nonSpeakingGrades.length > 0 ? nonSpeakingGrades : student.grades;
+    const normalizedSum = gradesToUse.reduce((sum, g) => sum + ((g.score / g.maxScore) * 100) * g.weight, 0);
+    const totalWeight = gradesToUse.reduce((sum, g) => sum + g.weight, 0);
+    writingPercentage = totalWeight > 0 ? normalizedSum / totalWeight : 0;
   }
 
   const upcomingDebates = await prisma.debateSession.findMany({

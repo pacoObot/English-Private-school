@@ -10528,6 +10528,8 @@ export namespace Prisma {
     score: number | null
     maxScore: number | null
     weight: number | null
+    isWriting: boolean | null
+    isSpeaking: boolean | null
     gradedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10541,6 +10543,8 @@ export namespace Prisma {
     score: number | null
     maxScore: number | null
     weight: number | null
+    isWriting: boolean | null
+    isSpeaking: boolean | null
     gradedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10554,6 +10558,8 @@ export namespace Prisma {
     score: number
     maxScore: number
     weight: number
+    isWriting: number
+    isSpeaking: number
     gradedAt: number
     createdAt: number
     updatedAt: number
@@ -10581,6 +10587,8 @@ export namespace Prisma {
     score?: true
     maxScore?: true
     weight?: true
+    isWriting?: true
+    isSpeaking?: true
     gradedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -10594,6 +10602,8 @@ export namespace Prisma {
     score?: true
     maxScore?: true
     weight?: true
+    isWriting?: true
+    isSpeaking?: true
     gradedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -10607,6 +10617,8 @@ export namespace Prisma {
     score?: true
     maxScore?: true
     weight?: true
+    isWriting?: true
+    isSpeaking?: true
     gradedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -10707,6 +10719,8 @@ export namespace Prisma {
     score: number
     maxScore: number
     weight: number
+    isWriting: boolean
+    isSpeaking: boolean
     gradedAt: Date
     createdAt: Date
     updatedAt: Date
@@ -10739,6 +10753,8 @@ export namespace Prisma {
     score?: boolean
     maxScore?: boolean
     weight?: boolean
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10754,6 +10770,8 @@ export namespace Prisma {
     score?: boolean
     maxScore?: boolean
     weight?: boolean
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10769,6 +10787,8 @@ export namespace Prisma {
     score?: boolean
     maxScore?: boolean
     weight?: boolean
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10797,6 +10817,8 @@ export namespace Prisma {
       score: number
       maxScore: number
       weight: number
+      isWriting: boolean
+      isSpeaking: boolean
       gradedAt: Date
       createdAt: Date
       updatedAt: Date
@@ -11202,6 +11224,8 @@ export namespace Prisma {
     readonly score: FieldRef<"Grade", 'Float'>
     readonly maxScore: FieldRef<"Grade", 'Float'>
     readonly weight: FieldRef<"Grade", 'Float'>
+    readonly isWriting: FieldRef<"Grade", 'Boolean'>
+    readonly isSpeaking: FieldRef<"Grade", 'Boolean'>
     readonly gradedAt: FieldRef<"Grade", 'DateTime'>
     readonly createdAt: FieldRef<"Grade", 'DateTime'>
     readonly updatedAt: FieldRef<"Grade", 'DateTime'>
@@ -16826,6 +16850,7 @@ export namespace Prisma {
     argumentation: number | null
     posture: number | null
     feedback: string | null
+    isPrivate: boolean | null
     acknowledgedAt: Date | null
     evaluatedAt: Date | null
     createdAt: Date | null
@@ -16841,6 +16866,7 @@ export namespace Prisma {
     argumentation: number | null
     posture: number | null
     feedback: string | null
+    isPrivate: boolean | null
     acknowledgedAt: Date | null
     evaluatedAt: Date | null
     createdAt: Date | null
@@ -16856,6 +16882,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback: number
+    isPrivate: number
     acknowledgedAt: number
     evaluatedAt: number
     createdAt: number
@@ -16885,6 +16912,7 @@ export namespace Prisma {
     argumentation?: true
     posture?: true
     feedback?: true
+    isPrivate?: true
     acknowledgedAt?: true
     evaluatedAt?: true
     createdAt?: true
@@ -16900,6 +16928,7 @@ export namespace Prisma {
     argumentation?: true
     posture?: true
     feedback?: true
+    isPrivate?: true
     acknowledgedAt?: true
     evaluatedAt?: true
     createdAt?: true
@@ -16915,6 +16944,7 @@ export namespace Prisma {
     argumentation?: true
     posture?: true
     feedback?: true
+    isPrivate?: true
     acknowledgedAt?: true
     evaluatedAt?: true
     createdAt?: true
@@ -17017,6 +17047,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback: string | null
+    isPrivate: boolean
     acknowledgedAt: Date | null
     evaluatedAt: Date
     createdAt: Date
@@ -17051,6 +17082,7 @@ export namespace Prisma {
     argumentation?: boolean
     posture?: boolean
     feedback?: boolean
+    isPrivate?: boolean
     acknowledgedAt?: boolean
     evaluatedAt?: boolean
     createdAt?: boolean
@@ -17071,6 +17103,7 @@ export namespace Prisma {
     argumentation?: boolean
     posture?: boolean
     feedback?: boolean
+    isPrivate?: boolean
     acknowledgedAt?: boolean
     evaluatedAt?: boolean
     createdAt?: boolean
@@ -17089,6 +17122,7 @@ export namespace Prisma {
     argumentation?: boolean
     posture?: boolean
     feedback?: boolean
+    isPrivate?: boolean
     acknowledgedAt?: boolean
     evaluatedAt?: boolean
     createdAt?: boolean
@@ -17125,6 +17159,7 @@ export namespace Prisma {
       argumentation: number
       posture: number
       feedback: string | null
+      isPrivate: boolean
       acknowledgedAt: Date | null
       evaluatedAt: Date
       createdAt: Date
@@ -17534,6 +17569,7 @@ export namespace Prisma {
     readonly argumentation: FieldRef<"DebateEvaluation", 'Int'>
     readonly posture: FieldRef<"DebateEvaluation", 'Int'>
     readonly feedback: FieldRef<"DebateEvaluation", 'String'>
+    readonly isPrivate: FieldRef<"DebateEvaluation", 'Boolean'>
     readonly acknowledgedAt: FieldRef<"DebateEvaluation", 'DateTime'>
     readonly evaluatedAt: FieldRef<"DebateEvaluation", 'DateTime'>
     readonly createdAt: FieldRef<"DebateEvaluation", 'DateTime'>
@@ -23058,6 +23094,8 @@ export namespace Prisma {
     score: 'score',
     maxScore: 'maxScore',
     weight: 'weight',
+    isWriting: 'isWriting',
+    isSpeaking: 'isSpeaking',
     gradedAt: 'gradedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -23152,6 +23190,7 @@ export namespace Prisma {
     argumentation: 'argumentation',
     posture: 'posture',
     feedback: 'feedback',
+    isPrivate: 'isPrivate',
     acknowledgedAt: 'acknowledgedAt',
     evaluatedAt: 'evaluatedAt',
     createdAt: 'createdAt',
@@ -24042,6 +24081,8 @@ export namespace Prisma {
     score?: FloatFilter<"Grade"> | number
     maxScore?: FloatFilter<"Grade"> | number
     weight?: FloatFilter<"Grade"> | number
+    isWriting?: BoolFilter<"Grade"> | boolean
+    isSpeaking?: BoolFilter<"Grade"> | boolean
     gradedAt?: DateTimeFilter<"Grade"> | Date | string
     createdAt?: DateTimeFilter<"Grade"> | Date | string
     updatedAt?: DateTimeFilter<"Grade"> | Date | string
@@ -24057,6 +24098,8 @@ export namespace Prisma {
     score?: SortOrder
     maxScore?: SortOrder
     weight?: SortOrder
+    isWriting?: SortOrder
+    isSpeaking?: SortOrder
     gradedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24075,6 +24118,8 @@ export namespace Prisma {
     score?: FloatFilter<"Grade"> | number
     maxScore?: FloatFilter<"Grade"> | number
     weight?: FloatFilter<"Grade"> | number
+    isWriting?: BoolFilter<"Grade"> | boolean
+    isSpeaking?: BoolFilter<"Grade"> | boolean
     gradedAt?: DateTimeFilter<"Grade"> | Date | string
     createdAt?: DateTimeFilter<"Grade"> | Date | string
     updatedAt?: DateTimeFilter<"Grade"> | Date | string
@@ -24090,6 +24135,8 @@ export namespace Prisma {
     score?: SortOrder
     maxScore?: SortOrder
     weight?: SortOrder
+    isWriting?: SortOrder
+    isSpeaking?: SortOrder
     gradedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24111,6 +24158,8 @@ export namespace Prisma {
     score?: FloatWithAggregatesFilter<"Grade"> | number
     maxScore?: FloatWithAggregatesFilter<"Grade"> | number
     weight?: FloatWithAggregatesFilter<"Grade"> | number
+    isWriting?: BoolWithAggregatesFilter<"Grade"> | boolean
+    isSpeaking?: BoolWithAggregatesFilter<"Grade"> | boolean
     gradedAt?: DateTimeWithAggregatesFilter<"Grade"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Grade"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Grade"> | Date | string
@@ -24553,6 +24602,7 @@ export namespace Prisma {
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
     feedback?: StringNullableFilter<"DebateEvaluation"> | string | null
+    isPrivate?: BoolFilter<"DebateEvaluation"> | boolean
     acknowledgedAt?: DateTimeNullableFilter<"DebateEvaluation"> | Date | string | null
     evaluatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
     createdAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
@@ -24572,6 +24622,7 @@ export namespace Prisma {
     argumentation?: SortOrder
     posture?: SortOrder
     feedback?: SortOrderInput | SortOrder
+    isPrivate?: SortOrder
     acknowledgedAt?: SortOrderInput | SortOrder
     evaluatedAt?: SortOrder
     createdAt?: SortOrder
@@ -24595,6 +24646,7 @@ export namespace Prisma {
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
     feedback?: StringNullableFilter<"DebateEvaluation"> | string | null
+    isPrivate?: BoolFilter<"DebateEvaluation"> | boolean
     acknowledgedAt?: DateTimeNullableFilter<"DebateEvaluation"> | Date | string | null
     evaluatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
     createdAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
@@ -24614,6 +24666,7 @@ export namespace Prisma {
     argumentation?: SortOrder
     posture?: SortOrder
     feedback?: SortOrderInput | SortOrder
+    isPrivate?: SortOrder
     acknowledgedAt?: SortOrderInput | SortOrder
     evaluatedAt?: SortOrder
     createdAt?: SortOrder
@@ -24637,6 +24690,7 @@ export namespace Prisma {
     argumentation?: IntWithAggregatesFilter<"DebateEvaluation"> | number
     posture?: IntWithAggregatesFilter<"DebateEvaluation"> | number
     feedback?: StringNullableWithAggregatesFilter<"DebateEvaluation"> | string | null
+    isPrivate?: BoolWithAggregatesFilter<"DebateEvaluation"> | boolean
     acknowledgedAt?: DateTimeNullableWithAggregatesFilter<"DebateEvaluation"> | Date | string | null
     evaluatedAt?: DateTimeWithAggregatesFilter<"DebateEvaluation"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"DebateEvaluation"> | Date | string
@@ -25725,6 +25779,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25740,6 +25796,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25751,6 +25809,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25766,6 +25826,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25779,6 +25841,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25790,6 +25854,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25803,6 +25869,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26252,6 +26320,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -26271,6 +26340,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -26284,6 +26354,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26303,6 +26374,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26319,6 +26391,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -26331,6 +26404,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26346,6 +26420,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27405,6 +27480,8 @@ export namespace Prisma {
     score?: SortOrder
     maxScore?: SortOrder
     weight?: SortOrder
+    isWriting?: SortOrder
+    isSpeaking?: SortOrder
     gradedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27424,6 +27501,8 @@ export namespace Prisma {
     score?: SortOrder
     maxScore?: SortOrder
     weight?: SortOrder
+    isWriting?: SortOrder
+    isSpeaking?: SortOrder
     gradedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27437,6 +27516,8 @@ export namespace Prisma {
     score?: SortOrder
     maxScore?: SortOrder
     weight?: SortOrder
+    isWriting?: SortOrder
+    isSpeaking?: SortOrder
     gradedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27789,6 +27870,7 @@ export namespace Prisma {
     argumentation?: SortOrder
     posture?: SortOrder
     feedback?: SortOrder
+    isPrivate?: SortOrder
     acknowledgedAt?: SortOrder
     evaluatedAt?: SortOrder
     createdAt?: SortOrder
@@ -27810,6 +27892,7 @@ export namespace Prisma {
     argumentation?: SortOrder
     posture?: SortOrder
     feedback?: SortOrder
+    isPrivate?: SortOrder
     acknowledgedAt?: SortOrder
     evaluatedAt?: SortOrder
     createdAt?: SortOrder
@@ -27825,6 +27908,7 @@ export namespace Prisma {
     argumentation?: SortOrder
     posture?: SortOrder
     feedback?: SortOrder
+    isPrivate?: SortOrder
     acknowledgedAt?: SortOrder
     evaluatedAt?: SortOrder
     createdAt?: SortOrder
@@ -30682,6 +30766,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -30699,6 +30784,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -31051,6 +31137,7 @@ export namespace Prisma {
     argumentation?: IntFilter<"DebateEvaluation"> | number
     posture?: IntFilter<"DebateEvaluation"> | number
     feedback?: StringNullableFilter<"DebateEvaluation"> | string | null
+    isPrivate?: BoolFilter<"DebateEvaluation"> | boolean
     acknowledgedAt?: DateTimeNullableFilter<"DebateEvaluation"> | Date | string | null
     evaluatedAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
     createdAt?: DateTimeFilter<"DebateEvaluation"> | Date | string
@@ -31252,6 +31339,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31265,6 +31354,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31354,6 +31445,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -31371,6 +31463,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -31594,6 +31687,8 @@ export namespace Prisma {
     score?: FloatFilter<"Grade"> | number
     maxScore?: FloatFilter<"Grade"> | number
     weight?: FloatFilter<"Grade"> | number
+    isWriting?: BoolFilter<"Grade"> | boolean
+    isSpeaking?: BoolFilter<"Grade"> | boolean
     gradedAt?: DateTimeFilter<"Grade"> | Date | string
     createdAt?: DateTimeFilter<"Grade"> | Date | string
     updatedAt?: DateTimeFilter<"Grade"> | Date | string
@@ -32245,6 +32340,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32258,6 +32355,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33843,6 +33942,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -33860,6 +33960,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -35574,6 +35675,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -35592,6 +35694,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -35720,6 +35823,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35738,6 +35842,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35859,6 +35964,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -36087,6 +36193,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36104,6 +36211,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36119,6 +36227,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36268,6 +36377,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36304,6 +36415,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -36398,6 +36510,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36411,6 +36525,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36423,6 +36539,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36505,6 +36623,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36522,6 +36641,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36537,6 +36657,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36880,6 +37001,8 @@ export namespace Prisma {
     score: number
     maxScore?: number
     weight?: number
+    isWriting?: boolean
+    isSpeaking?: boolean
     gradedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36984,6 +37107,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36997,6 +37122,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37009,6 +37136,8 @@ export namespace Prisma {
     score?: FloatFieldUpdateOperationsInput | number
     maxScore?: FloatFieldUpdateOperationsInput | number
     weight?: FloatFieldUpdateOperationsInput | number
+    isWriting?: BoolFieldUpdateOperationsInput | boolean
+    isSpeaking?: BoolFieldUpdateOperationsInput | boolean
     gradedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37175,6 +37304,7 @@ export namespace Prisma {
     argumentation: number
     posture: number
     feedback?: string | null
+    isPrivate?: boolean
     acknowledgedAt?: Date | string | null
     evaluatedAt?: Date | string
     createdAt?: Date | string
@@ -37205,6 +37335,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37222,6 +37353,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37237,6 +37369,7 @@ export namespace Prisma {
     argumentation?: IntFieldUpdateOperationsInput | number
     posture?: IntFieldUpdateOperationsInput | number
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     acknowledgedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     evaluatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

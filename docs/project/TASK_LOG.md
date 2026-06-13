@@ -1,6 +1,28 @@
 # Historico de Tarefas
 
 
+## 2026-06-13 04:30 SAST - Sprint Otimização da Arena de Debates, Responsividade e Fluxos de Avaliação
+
+Resumo:
+- **UX & Responsividade (Evitar Scroll)**: Removidos os formulários de edição e inscrição rápida da barra lateral da página de detalhes do debate (`/debate/[id]/page.tsx`). Desenvolvido o modal `DebateSettingsModal.tsx` acionável através de um botão ⚙️ no cabeçalho.
+- **Wizard de Avaliação Sequencial**: Ajustada a Server Action `saveDebateEvaluationAction` em `actions.ts` para autorizar a gravação de avaliações em debates finalizados (`CLOSED`). Atualizados os componentes `EvaluationModal.tsx` e `DebateParticipantList.tsx` de forma a permitir ao instrutor encadear as avaliações consecutivamente usando o botão "Iniciar Avaliações".
+- **Banco de Alunos**: Implementado o modal `DebateStudentsModal.tsx` no cabeçalho do debate, com pesquisa rápida em tempo real e cálculo da média de debates dos alunos no servidor para adição imediata à sessão.
+- **Histórico & Feedbacks**: Adicionado historial dos últimos 5 debates passados com a respetiva nota média do grupo na barra lateral do debate. No portal do estudante (`/student/debates`), o feedback agora reflete as nuances da postura física (tímido, equilibrado, dominante) com base no registo das notas, e foi criado o card "Canal de Apoio & Preocupações" que permite reportar dúvidas ou preocupações diretamente à secretaria, disparando notificações aos administradores.
+
+Validacoes:
+- Testes Unitários: ✅ 8/8 testes passando.
+- Typecheck e Linting: ✅ TypeScript compilando sem erros (`npx tsc --noEmit`) e ESLint limpo.
+- Next.js Build: ✅ Build de produção gerado com sucesso completo (38/38 rotas).
+
+---
+
+## 2026-06-13 04:15 SAST - Sprint Otimização da Arena de Debates, Responsividade e Fluxos de Avaliação (Planeamento)
+
+Resumo:
+- **Início do Planeamento**: Plano de implementação detalhado e checklist de tarefas criados e aprovados para melhorias de responsividade (mobile-first), modal de configurações do debate, banco de alunos geral, histórico de debates, e fluxo sequencial de avaliação (Wizard).
+
+---
+
 ## 2026-06-12 14:00 SAST - Sprint de Correções e Lançamento Vercel
 
 Resumo:

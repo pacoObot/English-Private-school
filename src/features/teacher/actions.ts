@@ -61,6 +61,8 @@ export async function saveGradeAction(formData: FormData) {
   const title = text(formData, "title") || "Avaliacao";
   const score = Number.parseFloat(text(formData, "score"));
   const maxScore = Number.parseFloat(text(formData, "maxScore") || "20");
+  const isWriting = formData.get("isWriting") === "true" || formData.get("isWriting") === "on";
+  const isSpeaking = formData.get("isSpeaking") === "true" || formData.get("isSpeaking") === "on";
 
   if (!studentId || !classGroupId || !Number.isFinite(score) || score < 0 || !Number.isFinite(maxScore) || maxScore <= 0 || score > maxScore) {
     redirectBack("error");
@@ -73,7 +75,9 @@ export async function saveGradeAction(formData: FormData) {
       classGroupId,
       title,
       score,
-      maxScore
+      maxScore,
+      isWriting,
+      isSpeaking
     }
   });
 
@@ -83,7 +87,7 @@ export async function saveGradeAction(formData: FormData) {
       action: "grade_created",
       entity: "Grade",
       entityId: grade.id,
-      metadata: { studentId, classGroupId, score, maxScore }
+      metadata: { studentId, classGroupId, score, maxScore, isWriting, isSpeaking }
     }
   });
 
@@ -146,6 +150,8 @@ export async function saveAllGradesAction(formData: FormData) {
   const title = text(formData, "title") || "Avaliacao Geral";
   const studentIds = formData.getAll("studentId") as string[];
   const scores = formData.getAll("score") as string[];
+  const isWriting = formData.get("isWriting") === "true" || formData.get("isWriting") === "on";
+  const isSpeaking = formData.get("isSpeaking") === "true" || formData.get("isSpeaking") === "on";
 
   if (!classGroupId || studentIds.length === 0 || studentIds.length !== scores.length) {
     redirectBack("error");
@@ -173,7 +179,9 @@ export async function saveAllGradesAction(formData: FormData) {
           classGroupId,
           title,
           score,
-          maxScore: 20
+          maxScore: 20,
+          isWriting,
+          isSpeaking
         }
       });
     })
@@ -227,6 +235,52 @@ export async function saveAllAttendanceAction(formData: FormData) {
   redirectBack("saved");
 }
 
+async function handleFileUpload(file: File, buffer: Buffer): Promise<string | null> {
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const cleanUrl = supabaseUrl.replace(/\/$/, "");
+      const uploadUrl = `${cleanUrl}/storage/v1/object/materials/${filename}`;
+
+      console.log(`📤 Enviando arquivo para o Supabase Storage: ${uploadUrl}`);
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${supabaseKey}`,
+          "Content-Type": file.type || "application/octet-stream",
+          "x-upsert": "true"
+        },
+        body: new Uint8Array(buffer)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Erro no upload para o Supabase Storage:", response.statusText, errorText);
+        throw new Error(`Supabase Storage: ${response.statusText}`);
+      }
+
+      return `${cleanUrl}/storage/v1/object/public/materials/${filename}`;
+    } catch (err) {
+      console.error("Falha no upload para o Supabase Storage, tentando fallback local...", err);
+    }
+  }
+
+  try {
+    const uploadDir = join(process.cwd(), "public/uploads/materials");
+    await mkdir(uploadDir, { recursive: true });
+    await writeFile(join(uploadDir, filename), buffer);
+    return `/uploads/materials/${filename}`;
+  } catch (err) {
+    console.error("Erro no upload local (fallback):", err);
+    return null;
+  }
+}
+
 export async function createStudyMaterialAction(formData: FormData) {
   const session = await requireTeacherOrAdmin();
   let teacherProfile: { id: string; classGroups: Array<{ courseId: string }> } | null = null;
@@ -261,14 +315,7 @@ export async function createStudyMaterialAction(formData: FormData) {
     try {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      
-      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-      const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-      const uploadDir = join(process.cwd(), "public/uploads/materials");
-      
-      await mkdir(uploadDir, { recursive: true });
-      await writeFile(join(uploadDir, filename), buffer);
-      fileUrl = `/uploads/materials/${filename}`;
+      fileUrl = await handleFileUpload(file, buffer);
     } catch (e) {
       console.error("Erro no upload do ficheiro", e);
     }
@@ -346,14 +393,7 @@ export async function updateStudyMaterialAction(formData: FormData) {
     try {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      
-      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-      const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-      const uploadDir = join(process.cwd(), "public/uploads/materials");
-      
-      await mkdir(uploadDir, { recursive: true });
-      await writeFile(join(uploadDir, filename), buffer);
-      fileUrl = `/uploads/materials/${filename}`;
+      fileUrl = await handleFileUpload(file, buffer);
     } catch (e) {
       console.error("Erro no upload do ficheiro", e);
     }

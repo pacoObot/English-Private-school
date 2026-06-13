@@ -31,29 +31,25 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Sprint de Correções e Lançamento Vercel - 2026-06-12 14:00 SAST:
-- **Infraestrutura**: Configurado `directUrl` no Prisma para migrações na Vercel e `SKIP_DB_CHECK` no entrypoint do Docker.
-- **Recibos**: Resolvida a criação automática de `Receipt` na DB na transição de faturas para `PAID`.
-- **Rastreabilidade**: Integradas as flags `isWriting`/`isSpeaking` no lançamento de notas do Docente e tags `[🗣️ Oratória]` e `[✍️ Escrita]` no histórico do Estudante.
-- **Fórmulas Académicas**: Atualizada a média global para ponderada normalizada (base 20) e percentuais de competências com base nas flags de avaliação.
-- **Upload Resiliente**: Integrado upload com Supabase Storage (produção) mantendo fallback local offline (desenvolvimento).
-- **Melhorias Admin**: Erros de CSV detalhados exibidos no popup `ActionNotice` e datas de início/fim configuráveis para turmas.
-- **Feedback Visual**: Implementado o componente `LoginSubmitButton` com spinner animado e estado de carregamento "A processar..." na página de login para dar feedback imediato ao usuário.
+Sprint Otimização da Arena de Debates, Responsividade e Fluxos de Avaliação - 2026-06-13 04:30 SAST:
+- **UX & Responsividade (Evitar Scroll)**: Removido o formulário de edição e inscrição rápida da barra lateral de `/debate/[id]`. Criado o modal `DebateSettingsModal` (acessível pelo botão ⚙️) para reduzir rolagem horizontal/vertical.
+- **Wizard de Avaliação Sequencial**: Ajustado `saveDebateEvaluationAction` para permitir avaliações em debates `CLOSED`. Atualizado o `EvaluationModal` e `DebateParticipantList` para suportar o fluxo Wizard de avaliação ("Iniciar Avaliações") de forma contínua.
+- **Banco de Alunos**: Criado o modal responsivo `DebateStudentsModal` no cabeçalho do debate para pesquisa rápida e adição direta de alunos participantes.
+- **Historial e Feedbacks**: Adicionado histórico de debates passados (`CLOSED`) com notas médias no painel lateral. Enriquecido o feedback do estudante em `/student/debates` com visualização detalhada de postura de desempenho (tímido, equilibrado, dominante) e observações, e integrado o formulário do "Canal de Apoio & Preocupações" enviando alertas automáticos à secretaria.
 
 ## Validacoes desta tarefa
 
 - Testes Unitários: ✅ 8/8 testes passando (sucesso total).
-- Typecheck e Linting: ✅ TypeScript compilando com sucesso completo (0 erros via `npx tsc --noEmit`) e lint limpo.
-- Banco de Dados: ✅ Migrações Prisma de visibilidade de feedbacks e flags de competência aplicadas localmente e na base de dados Supabase na Irlanda (eu-west-1).
+- Typecheck e Linting: ✅ TypeScript compilando com sucesso completo (0 erros via `npx tsc --noEmit`) e ESLint limpo.
+- Next.js Build: ✅ Build de produção concluído com sucesso completo (38/38 rotas geradas).
 
 ## Pendencias conhecidas
 
-- **Configurar Variáveis na Vercel**: Guardar as variáveis de ambiente na Vercel com os valores corretos da região `eu-west-1` (Irlanda).
 - Presenças automáticas por foto (Fase 7: Ideia Futura) no backlog.
 - Sincronizacao financeira bidirecional com UNIEXE.
 - Exportacao CSV/Excel e testes E2E Playwright no backlog.
 
 ## Proxima acao recomendada
 
-1. Concluir a configuração das variáveis na Vercel e efetuar o redeploy.
-2. Validar os fluxos em produção na URL pública da Vercel (turmas com datas, notas com checkboxes, verificação de tags e recibos em PDF).
+1. Realizar ensaio UAT visual nos browsers mobile e desktop autenticado para validar os modais de debate.
+2. Monitorizar o envio de notificações de preocupações de estudantes à secretaria e o fluxo de avaliações.

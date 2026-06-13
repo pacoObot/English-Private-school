@@ -15,7 +15,8 @@ import {
   Sparkles, 
   X,
   FileSpreadsheet,
-  Copy
+  Copy,
+  RefreshCw
 } from "lucide-react";
 import { PrimaryButton } from "./PrimaryButton";
 
@@ -30,33 +31,64 @@ type ActionNoticeProps = {
   missing?: string;
   invalid?: string;
   duplicate?: string;
+  csvErrors?: string;
 };
 
-const messages: Record<string, { title: string; text: string; tone: "success" | "error" | "warning" | "info" }> = {
-  created: { title: "Estudante Registado com Sucesso!", text: "O perfil de estudante foi guardado na base de dados com as novas credenciais de acesso.", tone: "success" },
-  updated: { title: "Dados Guardados!", text: "As alterações foram registadas no sistema com sucesso.", tone: "success" },
+// Mensagens fixas (nao dependem da rota)
+const fixedMessages: Record<string, { title: string; text: string; tone: "success" | "error" | "warning" | "info" }> = {
   deactivated: { title: "Registo Desativado", text: "O perfil selecionado foi desativado temporariamente.", tone: "warning" },
-  activated: { title: "Perfil Ativado", text: "O perfil selecionado foi reativado e já está operacional.", tone: "success" },
-  enrolled: { title: "Estudante Inscrito na Turma com Sucesso!", text: "A inscrição e matrícula foram guardadas na base de dados com sucesso. O aluno já se encontra vinculado à turma.", tone: "success" },
+  activated: { title: "Perfil Ativado", text: "O perfil selecionado foi reativado e ja esta operacional.", tone: "success" },
+  enrolled: { title: "Estudante Inscrito na Turma com Sucesso!", text: "A inscricao e matricula foram guardadas na base de dados com sucesso. O aluno ja se encontra vinculado a turma.", tone: "success" },
   paid: { title: "Pagamento Confirmado!", text: "A fatura correspondente foi marcada como paga no sistema.", tone: "success" },
-  cancelled: { title: "Fatura Cancelada", text: "O documento de cobrança foi anulado no sistema.", tone: "info" },
-  saved: { title: "Gravação Efetuada", text: "Informações guardadas com sucesso.", tone: "success" },
-  error: { title: "Falha na Operação", text: "Não foi possível concluir a ação. Verifique os dados inseridos e tente novamente.", tone: "error" },
-  validation_error: { title: "Erro de Validação", text: "Existem campos obrigatórios em falta ou com dados incorretos. Por favor, corrija as seguintes causas:", tone: "error" },
-  duplicate_email: { title: "Conflito de E-mail", text: "Este endereço de e-mail já está associado a outro utilizador.", tone: "error" },
-  duplicate_student_number: { title: "Número de Aluno Duplicado", text: "O número de estudante informado já existe no sistema.", tone: "error" },
-  duplicate_student_code: { title: "Conflito de Código", text: "O código gerado automaticamente já existe. Tente novamente.", tone: "error" },
-  duplicate_staff_number: { title: "Número de Funcionário Existente", text: "Este número de staff já está associado a outro registo.", tone: "error" },
-  duplicate_enrollment: { title: "Inscrição Duplicada", text: "O estudante selecionado já se encontra matriculado nesta turma.", tone: "error" },
-  duplicate_attendance: { title: "Presença Duplicada", text: "Já foi feito o registo de presença deste aluno para a data indicada.", tone: "error" },
-  duplicate_evaluation: { title: "Avaliação Duplicada", text: "Este participante já possui uma nota de debate lançada para esta sessão.", tone: "error" },
-  invalid_email: { title: "E-mail Inválido", text: "O formato do e-mail introduzido é inválido. Por favor, introduza um e-mail correto ou deixe vazio.", tone: "error" },
-  forbidden: { title: "Acesso Não Autorizado", text: "A sua conta não dispõe de permissões para realizar esta ação no sistema.", tone: "error" },
-  evaluated: { title: "Avaliação Registada", text: "A nota do debate foi publicada e o participante foi notificado.", tone: "success" },
-  participant_added: { title: "Inscrição no Debate", text: "Participante adicionado com sucesso à sessão de debate.", tone: "success" },
-  participant_removed: { title: "Participante Removido", text: "O aluno foi removido da lista de participantes do debate.", tone: "warning" },
+  cancelled: { title: "Fatura Cancelada", text: "O documento de cobranca foi anulado no sistema.", tone: "info" },
+  saved: { title: "Gravacao Efetuada", text: "Informacoes guardadas com sucesso.", tone: "success" },
+  error: { title: "Falha na Operacao", text: "Nao foi possivel concluir a acao. Verifique os dados inseridos e tente novamente.", tone: "error" },
+  validation_error: { title: "Erro de Validacao", text: "Existem campos obrigatorios em falta ou com dados incorretos. Por favor, corrija as seguintes causas:", tone: "error" },
+  duplicate_email: { title: "Conflito de E-mail", text: "Este endereco de e-mail ja esta associado a outro utilizador.", tone: "error" },
+  duplicate_student_number: { title: "Numero de Aluno Duplicado", text: "O numero de estudante informado ja existe no sistema.", tone: "error" },
+  duplicate_student_code: { title: "Conflito de Codigo", text: "O codigo gerado automaticamente ja existe. Tente novamente.", tone: "error" },
+  duplicate_staff_number: { title: "Numero de Funcionario Existente", text: "Este numero de staff ja esta associado a outro registo.", tone: "error" },
+  duplicate_enrollment: { title: "Inscricao Duplicada", text: "O estudante selecionado ja se encontra matriculado nesta turma.", tone: "error" },
+  duplicate_attendance: { title: "Presenca Duplicada", text: "Ja foi feito o registo de presenca deste aluno para a data indicada.", tone: "error" },
+  duplicate_evaluation: { title: "Avaliacao Duplicada", text: "Este participante ja possui uma nota de debate lancada para esta sessao.", tone: "error" },
+  invalid_email: { title: "E-mail Invalido", text: "O formato do e-mail introduzido e invalido. Por favor, introduza um e-mail correto ou deixe vazio.", tone: "error" },
+  forbidden: { title: "Acesso Nao Autorizado", text: "A sua conta nao dispoe de permissoes para realizar esta acao no sistema.", tone: "error" },
+  evaluated: { title: "Avaliacao Registada", text: "A nota do debate foi publicada e o participante foi notificado.", tone: "success" },
+  participant_added: { title: "Aluno Inscrito no Debate", text: "O aluno foi adicionado com sucesso a sessao de debate.", tone: "success" },
+  participant_removed: { title: "Aluno Removido do Debate", text: "O aluno foi removido da lista de participantes da sessao.", tone: "warning" },
   deleted: { title: "Registo Eliminado", text: "O item selecionado foi removido do sistema com sucesso.", tone: "warning" }
 };
+
+// Mensagens contextuais que mudam conforme a pagina onde o utilizador esta
+function getContextualMessage(statusKey: string, currentPath: string): { title: string; text: string; tone: "success" | "error" | "warning" | "info" } | undefined {
+  // Verificar primeiro as mensagens fixas
+  if (fixedMessages[statusKey]) return fixedMessages[statusKey];
+
+  // Mensagens contextuais por rota para "created" e "updated"
+  if (statusKey === "created") {
+    if (currentPath.includes("/debate")) return { title: "Sessao de Debate Criada!", text: "A nova sessao de debate foi agendada com sucesso na Arena.", tone: "success" };
+    if (currentPath.includes("/admin/classes")) return { title: "Turma Criada com Sucesso!", text: "A nova turma foi registada e esta pronta para receber matriculas.", tone: "success" };
+    if (currentPath.includes("/admin/staff")) return { title: "Funcionario Registado!", text: "O novo membro do staff foi adicionado ao sistema com credenciais de acesso.", tone: "success" };
+    if (currentPath.includes("/admin/students")) return { title: "Estudante Registado com Sucesso!", text: "O perfil de estudante foi guardado na base de dados com as novas credenciais de acesso.", tone: "success" };
+    if (currentPath.includes("/admin/courses")) return { title: "Curso Criado com Sucesso!", text: "O novo curso foi adicionado ao catalogo academico.", tone: "success" };
+    if (currentPath.includes("/admin/calendar")) return { title: "Evento Criado!", text: "O evento foi adicionado ao calendario academico.", tone: "success" };
+    if (currentPath.includes("/student/debates")) return { title: "Mensagem Enviada!", text: "A sua mensagem foi enviada a secretaria com sucesso.", tone: "success" };
+    return { title: "Operacao Concluida!", text: "O novo registo foi criado com sucesso no sistema.", tone: "success" };
+  }
+
+  if (statusKey === "updated") {
+    if (currentPath.includes("/debate")) return { title: "Sessao Atualizada!", text: "As configuracoes da sessao de debate foram guardadas.", tone: "success" };
+    if (currentPath.includes("/admin/classes")) return { title: "Turma Atualizada!", text: "Os dados da turma foram atualizados com sucesso.", tone: "success" };
+    if (currentPath.includes("/admin/staff")) return { title: "Dados do Staff Atualizados!", text: "As informacoes do funcionario foram guardadas.", tone: "success" };
+    if (currentPath.includes("/admin/students")) return { title: "Dados do Estudante Atualizados!", text: "As informacoes do aluno foram guardadas com sucesso.", tone: "success" };
+    if (currentPath.includes("/admin/courses")) return { title: "Curso Atualizado!", text: "Os dados do curso foram guardados com sucesso.", tone: "success" };
+    if (currentPath.includes("/teacher/grades")) return { title: "Notas Lancadas!", text: "As notas foram registadas com sucesso para os alunos selecionados.", tone: "success" };
+    if (currentPath.includes("/teacher/attendance")) return { title: "Presencas Registadas!", text: "O registo de presencas foi guardado com sucesso.", tone: "success" };
+    return { title: "Dados Guardados!", text: "As alteracoes foram registadas no sistema com sucesso.", tone: "success" };
+  }
+
+  return undefined;
+}
 
 const DEFAULT_PASSWORD = "Delson@2026";
 
@@ -129,7 +161,8 @@ export function ActionNotice({
   errorCount: propErrorCount,
   missing: propMissing,
   invalid: propInvalid,
-  duplicate: propDuplicate
+  duplicate: propDuplicate,
+  csvErrors: propCsvErrors
 }: ActionNoticeProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -146,6 +179,7 @@ export function ActionNotice({
   const [missing, setMissing] = useState<string | undefined>(propMissing);
   const [invalid, setInvalid] = useState<string | undefined>(propInvalid);
   const [duplicate, setDuplicate] = useState<string | undefined>(propDuplicate);
+  const [csvErrors, setCsvErrors] = useState<string | undefined>(propCsvErrors);
   const [copied, setCopied] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedPass, setCopiedPass] = useState(false);
@@ -165,6 +199,7 @@ export function ActionNotice({
     setMissing(propMissing);
     setInvalid(propInvalid);
     setDuplicate(propDuplicate);
+    setCsvErrors(propCsvErrors);
 
     if (propStatus) {
       setShow(true);
@@ -183,13 +218,14 @@ export function ActionNotice({
           setMissing(params.get("missing") || undefined);
           setInvalid(params.get("invalid") || undefined);
           setDuplicate(params.get("duplicate") || undefined);
+          setCsvErrors(params.get("csvErrors") || undefined);
           setShow(true);
         } else {
           setShow(false);
         }
       }
     }
-  }, [propStatus, propNewCode, propNewName, propStudentId, propImportStatus, propErrorCount, propMissing, propInvalid, propDuplicate]);
+  }, [propStatus, propNewCode, propNewName, propStudentId, propImportStatus, propErrorCount, propMissing, propInvalid, propDuplicate, propCsvErrors]);
 
   // Define se o feedback exige um Popup Modal Centralizado Estratégico ou um Toast fluido de Canto
   // Modais Estratégicos: Criar alunos (mostra credenciais críticas), Matricular alunos ou erros de validação graves
@@ -208,6 +244,7 @@ export function ActionNotice({
       params.delete("missing");
       params.delete("invalid");
       params.delete("duplicate");
+      params.delete("csvErrors");
       
       const query = params.toString();
       const cleanUrl = window.location.pathname + (query ? `?${query}` : "");
@@ -255,9 +292,9 @@ export function ActionNotice({
 
   if (!mounted || !status || !show) return null;
 
-  const message = messages[status] || {
-    title: "Notificação",
-    text: additionalText || "Ação processada no sistema.",
+  const message = getContextualMessage(status, pathname) || {
+    title: "Notificacao",
+    text: additionalText || "Acao processada no sistema.",
     tone: "info" as const
   };
 
@@ -523,8 +560,9 @@ export function ActionNotice({
                       };
                       return (
                         <li key={field} className="bg-white/70 dark:bg-slate-900/60 rounded-xl p-3 border border-rose-100/30 space-y-1">
-                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide">
-                            ⚠️ {details.label}
+                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide flex items-center gap-1.5">
+                            <AlertTriangle size={12} className="text-amber-500 shrink-0" />
+                            {details.label}
                           </p>
                           <p className="text-rose-700 dark:text-rose-350 font-semibold leading-relaxed">{details.cause}</p>
                           <p className="text-slate-500 dark:text-slate-400 text-[10px] font-medium italic border-t border-rose-100/20 pt-1 mt-1">
@@ -550,8 +588,9 @@ export function ActionNotice({
                       };
                       return (
                         <li key={field} className="bg-white/70 dark:bg-slate-900/60 rounded-xl p-3 border border-rose-100/30 space-y-1">
-                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide">
-                            ❌ {details.label}
+                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide flex items-center gap-1.5">
+                            <XCircle size={12} className="text-rose-500 shrink-0" />
+                            {details.label}
                           </p>
                           <p className="text-rose-700 dark:text-rose-350 font-semibold leading-relaxed">{details.cause}</p>
                           <p className="text-slate-500 dark:text-slate-400 text-[10px] font-medium italic border-t border-rose-100/20 pt-1 mt-1">
@@ -577,8 +616,9 @@ export function ActionNotice({
                       };
                       return (
                         <li key={field} className="bg-white/70 dark:bg-slate-900/60 rounded-xl p-3 border border-rose-100/30 space-y-1">
-                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide">
-                            🔄 {details.label}
+                          <p className="font-black text-rose-900 dark:text-rose-200 text-[10px] uppercase tracking-wide flex items-center gap-1.5">
+                            <RefreshCw size={12} className="text-blue-500 shrink-0" />
+                            {details.label}
                           </p>
                           <p className="text-rose-700 dark:text-rose-350 font-semibold leading-relaxed">{details.cause}</p>
                           <p className="text-slate-500 dark:text-slate-400 text-[10px] font-medium italic border-t border-rose-100/20 pt-1 mt-1">
@@ -596,21 +636,35 @@ export function ActionNotice({
 
         {/* Conteúdo específico: Importação de CSV */}
         {isCSVImport ? (
-          <div className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4 mb-6 space-y-3">
-            <div className="flex items-center gap-2 text-navy dark:text-rose-400">
-              <FileSpreadsheet size={16} />
-              <p className="font-black uppercase tracking-widest text-[9px]">Relatório de Importação CSV</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4 text-center">
-              <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800 shadow-sm">
-                <p className="text-2xl font-black text-emerald-600">{csvSuccessCount}</p>
-                <p className="text-[10px] font-bold text-slate-400 mt-0.5">Sucessos</p>
+          <div className="space-y-4 mb-6">
+            <div className="rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4 space-y-3">
+              <div className="flex items-center gap-2 text-navy dark:text-rose-400">
+                <FileSpreadsheet size={16} />
+                <p className="font-black uppercase tracking-widest text-[9px]">Relatório de Importação CSV</p>
               </div>
-              <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800 shadow-sm">
-                <p className="text-2xl font-black text-rose-500">{errorCount ?? 0}</p>
-                <p className="text-[10px] font-bold text-slate-400 mt-0.5">Falhas / Erros</p>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800 shadow-sm">
+                  <p className="text-2xl font-black text-emerald-600">{csvSuccessCount}</p>
+                  <p className="text-[10px] font-bold text-slate-400 mt-0.5">Sucessos</p>
+                </div>
+                <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800 shadow-sm">
+                  <p className="text-2xl font-black text-rose-500">{errorCount ?? 0}</p>
+                  <p className="text-[10px] font-bold text-slate-400 mt-0.5">Falhas / Erros</p>
+                </div>
               </div>
             </div>
+            {csvErrors && (
+              <div className="rounded-[1.5rem] bg-rose-50/50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40 p-4 text-left">
+                <p className="text-[9px] font-black text-rose-800 dark:text-rose-400 uppercase tracking-widest mb-2 border-b border-rose-100/50 dark:border-rose-900/30 pb-1.5 flex items-center gap-1">
+                  <AlertTriangle size={11} className="text-rose-500" /> Detalhes dos Erros de Importação:
+                </p>
+                <ul className="space-y-1.5 text-[11px] font-semibold text-rose-700 dark:text-rose-350 list-disc pl-4 leading-normal">
+                  {csvErrors.split("|").map((err, idx) => (
+                    <li key={idx}>{err}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         ) : null}
 

@@ -3,10 +3,10 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { getCurrentSession } from "@/features/auth/current-user";
-import { acknowledgeDebateFeedbackAction } from "@/features/debate/actions";
+import { acknowledgeDebateFeedbackAction, submitStudentConcernAction } from "@/features/debate/actions";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
-import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp } from "lucide-react";
+import { Calendar, Mic2, Clock, CheckCircle2, TrendingUp, Send, AlertTriangle, Zap, Laptop, Lock, Lightbulb, MessageSquare } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -199,15 +199,38 @@ export default async function StudentDebatesPage() {
                            <MiniStat label="Argum." value={ev.argumentation} />
                            <MiniStat label="Postura" value={ev.posture} />
                          </div>
-                         <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                           <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Feedback do Instrutor</p>
-                           <p className="mt-2 text-sm font-bold leading-relaxed text-slate-600">
-                             {ev.feedback || "Sem comentário adicional."}
-                           </p>
-                           <p className="mt-2 text-[10px] font-bold text-slate-400">
-                             Instrutor: {ev.evaluator?.name ?? "Não identificado"}
-                           </p>
-                         </div>
+                          <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 space-y-3">
+                            <div>
+                              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Perfil de Desempenho (Postura)</p>
+                              <p className="mt-1 text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                {ev.posture <= 4 ? (
+                                  <>
+                                    <AlertTriangle size={14} className="text-amber-500 shrink-0" />
+                                    <span>Postura: Tímido/Reservado</span>
+                                  </>
+                                ) : ev.posture >= 9 ? (
+                                  <>
+                                    <Zap size={14} className="text-rose-500 shrink-0" />
+                                    <span>Postura: Dominante/Competitivo</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                                    <span>Postura: Equilibrado/Participativo</span>
+                                  </>
+                                )}
+                              </p>
+                            </div>
+                            <div className="border-t border-slate-100 pt-2">
+                              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Observações do Instrutor</p>
+                              <p className="mt-1 text-xs font-bold leading-relaxed text-slate-600 italic">
+                                &quot;{ev.feedback || "Sem comentário adicional."}&quot;
+                              </p>
+                            </div>
+                            <p className="mt-1 text-[8px] font-bold text-slate-400">
+                              Avaliado por: {ev.evaluator?.name ?? "Não identificado"}
+                            </p>
+                          </div>
                        </div>
                      </details>
 
@@ -235,6 +258,61 @@ export default async function StudentDebatesPage() {
               )}
            </div>
         </div>
+
+        {/* Enviar Feedback */}
+        <div className="grid grid-cols-1 gap-6">
+           <BentoCard>
+             <div className="flex items-center gap-3 mb-4">
+               <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600">
+                 <Send size={18} />
+               </div>
+               <div>
+                 <h3 className="text-sm font-extrabold text-slate-900">Enviar Feedback</h3>
+                 <p className="text-[10px] font-bold text-slate-400 mt-0.5">
+                   Partilha a tua opiniao ou envia uma mensagem a secretaria
+                 </p>
+               </div>
+             </div>
+             
+             <form action={submitStudentConcernAction} className="space-y-4">
+               <div>
+                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Tipo de Feedback</label>
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                   {[
+                     { value: "SYSTEM_DOUBT", label: "Sobre o Sistema", icon: Laptop },
+                     { value: "DEBATE_QUESTION", label: "Sobre um Debate", icon: Mic2 },
+                     { value: "PERSONAL_CONCERN", label: "Preocupacao Pessoal", icon: Lock },
+                     { value: "PRAISE_SUGGESTION", label: "Elogio ou Sugestao", icon: Lightbulb }
+                   ].map((opt) => {
+                     const Icon = opt.icon;
+                     return (
+                       <label key={opt.value} className="cursor-pointer">
+                         <input type="radio" name="category" value={opt.value} defaultChecked={opt.value === "SYSTEM_DOUBT"} className="peer sr-only" />
+                         <div className="p-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center peer-checked:border-rose-500 peer-checked:bg-rose-50 text-slate-500 peer-checked:text-rose-600 transition-all hover:border-slate-200 flex flex-col items-center justify-center min-h-[85px]">
+                           <Icon size={20} className="mb-2 transition-colors" />
+                           <span className="text-[9px] font-black uppercase tracking-widest transition-colors">{opt.label}</span>
+                         </div>
+                       </label>
+                     );
+                   })}
+                 </div>
+               </div>
+               <div>
+                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">A tua mensagem</label>
+                 <textarea 
+                   name="message" 
+                   placeholder="Escreve aqui o teu comentario, duvida ou sugestao..." 
+                   required 
+                   rows={3}
+                   className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm font-medium outline-none focus:border-rose-500 transition-all resize-none"
+                 />
+               </div>
+               <PrimaryButton tone="rose" type="submit" className="w-full md:w-auto px-8 py-3 text-[10px] uppercase font-black tracking-widest flex items-center justify-center gap-2">
+                 <Send size={14} /> Enviar Feedback
+               </PrimaryButton>
+             </form>
+           </BentoCard>
+         </div>
       </div>
     </DashboardLayout>
   );

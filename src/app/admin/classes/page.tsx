@@ -36,6 +36,10 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
               <FormField name="room" label="Sala" placeholder="Sala 04" />
               <SelectField name="courseId" label="Curso" required options={courses.map((course) => ({ label: `${course.title} · ${course.level}`, value: course.id }))} />
               <SelectField name="teacherId" label="Docente" options={teacherOptions} />
+              <div className="grid grid-cols-2 gap-3">
+                <FormField name="startsAt" label="Início" type="date" />
+                <FormField name="endsAt" label="Término" type="date" />
+              </div>
               <PrimaryButton className="w-full" tone="rose" type="submit">
                 <Users size={16} /> Criar Turma
               </PrimaryButton>
@@ -66,6 +70,16 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
                       <option key={teacher.value} value={teacher.value}>{teacher.label}</option>
                     ))}
                   </select>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-bold text-slate-450 block">Início:</span>
+                      <input name="startsAt" type="date" defaultValue={classGroup.startsAt ? new Date(classGroup.startsAt).toISOString().split('T')[0] : ""} className="rounded-xl border border-slate-200 px-2 py-1.5 text-xs w-full" />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-bold text-slate-455 block">Fim:</span>
+                      <input name="endsAt" type="date" defaultValue={classGroup.endsAt ? new Date(classGroup.endsAt).toISOString().split('T')[0] : ""} className="rounded-xl border border-slate-200 px-2 py-1.5 text-xs w-full" />
+                    </div>
+                  </div>
                   <PrimaryButton tone="navy" className="px-3 min-h-10 py-2 text-[10px]" type="submit">Guardar</PrimaryButton>
                 </form>,
                 `${classGroup.course.title} · ${classGroup.schedule}`,

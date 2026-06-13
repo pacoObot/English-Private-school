@@ -7,7 +7,7 @@ import { getCurrentSession } from "@/features/auth/current-user";
 import { routeForRole } from "@/features/auth/session";
 import { hashPassword } from "@/features/auth/password";
 import { prisma } from "@/lib/prisma";
-import { generateStudentCode } from "@/lib/id-generators";
+import { generateStudentCode, generateReceiptNumber } from "@/lib/id-generators";
 import { readFileSync } from "fs";
 import { join } from "path";
 
@@ -252,7 +252,15 @@ export async function bulkImportStudentsAction(formData: FormData) {
   await audit(session.userId, "students_bulk_import", "StudentProfile", undefined, { successCount, errorCount });
 
   const status = successCount > 0 ? "created" : "error";
-  redirectBack(`/admin/students?importStatus=success:${successCount}&errorCount=${errorCount}`, status);
+  let csvErrorsParam = "";
+  if (errors.length > 0) {
+    const limitedErrors = errors.slice(0, 5);
+    if (errors.length > 5) {
+      limitedErrors.push(`E mais ${errors.length - 5} erro(s) não listados...`);
+    }
+    csvErrorsParam = `&csvErrors=${encodeURIComponent(limitedErrors.join("|"))}`;
+  }
+  redirectBack(`/admin/students?importStatus=success:${successCount}&errorCount=${errorCount}${csvErrorsParam}`, status);
 }
 
 export async function updateStudentAction(formData: FormData) {
@@ -521,12 +529,27 @@ export async function createClassGroupAction(formData: FormData) {
   const room = text(formData, "room");
   const courseId = text(formData, "courseId");
   const teacherId = text(formData, "teacherId");
+  const startsAtValue = text(formData, "startsAt");
+  const endsAtValue = text(formData, "endsAt");
+
+  const startsAt = startsAtValue ? new Date(startsAtValue) : null;
+  const endsAt = endsAtValue ? new Date(endsAtValue) : null;
 
   if (!name || !schedule || !courseId) {
     redirectBack("/admin/classes", "error");
   }
 
-  const classGroup = await prisma.classGroup.create({ data: { name, schedule, room, courseId, teacherId: teacherId || null } });
+  const classGroup = await prisma.classGroup.create({
+    data: {
+      name,
+      schedule,
+      room,
+      courseId,
+      teacherId: teacherId || null,
+      startsAt,
+      endsAt
+    }
+  });
   await audit(session.userId, "class_group_created", "ClassGroup", classGroup.id, { name, courseId, teacherId: teacherId || null });
   revalidatePath("/admin/classes");
   revalidatePath("/admin/dashboard");
@@ -541,13 +564,29 @@ export async function updateClassGroupAction(formData: FormData) {
   const room = text(formData, "room");
   const courseId = text(formData, "courseId");
   const teacherId = text(formData, "teacherId");
+  const startsAtValue = text(formData, "startsAt");
+  const endsAtValue = text(formData, "endsAt");
+
+  const startsAt = startsAtValue ? new Date(startsAtValue) : null;
+  const endsAt = endsAtValue ? new Date(endsAtValue) : null;
 
   if (!id || !name || !schedule || !courseId) {
     redirectBack("/admin/classes", "error");
   }
 
   await prisma.$transaction([
-    prisma.classGroup.update({ where: { id }, data: { name, schedule, room, courseId, teacherId: teacherId || null } }),
+    prisma.classGroup.update({
+      where: { id },
+      data: {
+        name,
+        schedule,
+        room,
+        courseId,
+        teacherId: teacherId || null,
+        startsAt,
+        endsAt
+      }
+    }),
     prisma.auditLog.create({ data: { actorId: session.userId, action: "class_group_updated", entity: "ClassGroup", entityId: id } })
   ]);
 
@@ -713,16 +752,69 @@ export async function updateInvoiceStatusAction(formData: FormData) {
     redirectBack("/admin/dashboard", "error");
   }
 
-  await prisma.$transaction([
-    prisma.invoice.update({
-      where: { id },
-      data: {
-        status,
-        paidAt: status === InvoiceStatus.PAID ? new Date() : null
-      }
-    }),
-    prisma.auditLog.create({ data: { actorId: session.userId, action: "invoice_status_updated", entity: "Invoice", entityId: id, metadata: { status } } })
-  ]);
+  if (status === InvoiceStatus.PAID) {
+    const invoice = await prisma.invoice.findUnique({
+      where: { id }
+    });
+
+    if (!invoice) {
+      redirectBack("/admin/dashboard", "error");
+      return;
+    }
+
+    const existingReceipt = await prisma.receipt.findUnique({
+      where: { invoiceId: id }
+    });
+
+    if (!existingReceipt) {
+      const receiptNumber = await generateReceiptNumber();
+      await prisma.$transaction([
+        prisma.invoice.update({
+          where: { id },
+          data: {
+            status,
+            paidAt: new Date()
+          }
+        }),
+        prisma.receipt.create({
+          data: {
+            invoiceId: id,
+            studentId: invoice!.studentId,
+            amountMt: invoice!.amountMt,
+            issuedBy: session.userId,
+            receiptNumber
+          }
+        }),
+        prisma.auditLog.create({ data: { actorId: session.userId, action: "invoice_status_updated", entity: "Invoice", entityId: id, metadata: { status } } }),
+        prisma.auditLog.create({ data: { actorId: session.userId, action: "receipt_created", entity: "Receipt", metadata: { receiptNumber, invoiceId: id } } })
+      ]);
+    } else {
+      await prisma.$transaction([
+        prisma.invoice.update({
+          where: { id },
+          data: {
+            status,
+            paidAt: new Date()
+          }
+        }),
+        prisma.auditLog.create({ data: { actorId: session.userId, action: "invoice_status_updated", entity: "Invoice", entityId: id, metadata: { status } } })
+      ]);
+    }
+  } else {
+    await prisma.$transaction([
+      prisma.invoice.update({
+        where: { id },
+        data: {
+          status,
+          paidAt: null
+        }
+      }),
+      prisma.receipt.deleteMany({
+        where: { invoiceId: id }
+      }),
+      prisma.auditLog.create({ data: { actorId: session.userId, action: "invoice_status_updated", entity: "Invoice", entityId: id, metadata: { status } } })
+    ]);
+  }
 
   revalidatePath("/admin/dashboard");
   revalidatePath("/student/dashboard");
