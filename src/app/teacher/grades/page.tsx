@@ -6,6 +6,7 @@ import { Role } from "@/generated/prisma";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { Mic2, PenTool } from "lucide-react";
+import { getDictionary } from "@/i18n/locale";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ type GradesPageProps = {
 
 export default async function GradesPage({ searchParams }: GradesPageProps) {
   const session = await getCurrentSession();
+  const dict = await getDictionary();
   const isTeacher = session?.role === Role.TEACHER;
 
   const [allClassGroups, allEnrollments] = await Promise.all([
@@ -45,29 +47,29 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
   const selectedClass = allClassGroups.find((cg) => cg.id === selectedClassId);
 
   return (
-    <DashboardLayout navItems={teacherNav} title="Lancar Notas" subtitle="Avaliacao de estudantes" context="Portal Docente" darkSidebar>
+    <DashboardLayout navItems={teacherNav} title={dict.navPostGrades} subtitle={dict.gradesPostSubtitle} context="Teacher Portal" darkSidebar>
       <div className="space-y-5">
         <ActionNotice status={searchParams?.status} />
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
           
           {/* Selection Panel */}
           <BentoCard className="xl:col-span-4">
-            <h3 className="mb-6 text-lg font-black text-slate-900">Selecionar Turma</h3>
+            <h3 className="mb-6 text-lg font-black text-slate-900">{dict.selectClassTitle}</h3>
             <form action="/teacher/grades" className="space-y-4" method="get">
               <SelectField 
                 name="classGroupId" 
-                label="Turma" 
+                label={dict.classFieldLabel} 
                 options={classGroupOptions}
                 value={selectedClassId || ""}
               />
               <PrimaryButton tone="rose" type="submit" className="w-full">
-                Abrir Turma
+                {dict.openClassButton}
               </PrimaryButton>
             </form>
 
             {selectedClassId && (
               <div className="mt-6 pt-6 border-t border-slate-100">
-                <h4 className="mb-3 text-sm font-bold text-slate-600">Turma Selecionada</h4>
+                <h4 className="mb-3 text-sm font-bold text-slate-600">{dict.selectedClassTitleLabel}</h4>
                 <p className="text-lg font-black text-navy">{selectedClass?.name}</p>
                 <p className="text-xs text-slate-500">{selectedClass?.course.title}</p>
               </div>
@@ -78,10 +80,10 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
           <BentoCard className="p-0 xl:col-span-8">
             <div className="flex items-center justify-between p-6">
               <h3 className="font-black text-slate-900">
-                {selectedClassId ? "Estudantes da Turma" : "Selecione uma turma"}
+                {selectedClassId ? dict.classStudentsTitle : dict.selectClassPlaceholder}
               </h3>
               <StatusBadge tone="navy">
-                {selectedClassId ? `${filteredEnrollments.length} alunos` : "0 alunos"}
+                {selectedClassId ? dict.studentCountDetail.replace("{count}", String(filteredEnrollments.length)) : dict.studentCountDetail.replace("{count}", "0")}
               </StatusBadge>
             </div>
 
@@ -90,8 +92,8 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                 <input type="hidden" name="classGroupId" value={selectedClassId} />
                 <FormField 
                   name="title" 
-                  label="Título da Avaliação" 
-                  placeholder="Ex: Speaking Checkpoint Unit 5"
+                  label={dict.evaluationTitleLabel} 
+                  placeholder={dict.evaluationTitlePlaceholder}
                   required 
                 />
                 
@@ -106,9 +108,9 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                     <div>
                       <span className="font-black text-sm text-navy flex items-center gap-1.5">
                         <Mic2 size={16} className="text-rose-600 shrink-0" />
-                        Competência Oral (Speaking)
+                        {dict.oralCompetencyLabel}
                       </span>
-                      <span className="block text-xs text-slate-500 mt-0.5">Influencia diretamente as Speaking Skills</span>
+                      <span className="block text-xs text-slate-500 mt-0.5">{dict.oralCompetencyDetail}</span>
                     </div>
                   </label>
                   
@@ -122,9 +124,9 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                     <div>
                       <span className="font-black text-sm text-navy flex items-center gap-1.5">
                         <PenTool size={16} className="text-navy shrink-0" />
-                        Competência Escrita (Writing)
+                        {dict.writtenCompetencyLabel}
                       </span>
-                      <span className="block text-xs text-slate-500 mt-0.5">Influencia diretamente as Writing Skills</span>
+                      <span className="block text-xs text-slate-500 mt-0.5">{dict.writtenCompetencyDetail}</span>
                     </div>
                   </label>
                 </div>
@@ -148,7 +150,7 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="text-xs text-slate-500">
-                            Média: {average}
+                            {dict.averageLabel} {average}
                           </span>
                           <input 
                             name="score" 
@@ -166,16 +168,16 @@ export default async function GradesPage({ searchParams }: GradesPageProps) {
                 </div>
 
                 <PrimaryButton tone="rose" type="submit" className="w-full">
-                  Guardar Notas
+                  {dict.saveGradesButton}
                 </PrimaryButton>
               </form>
             ) : selectedClassId ? (
               <div className="p-6 text-center text-slate-500">
-                Nenhum estudante encontrado nesta turma.
+                {dict.noStudentsFound}
               </div>
             ) : (
               <div className="p-6 text-center text-slate-500">
-                Selecione uma turma no painel ao lado.
+                {dict.selectClassPrompt}
               </div>
             )}
           </BentoCard>

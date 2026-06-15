@@ -3,6 +3,7 @@ import { ActionNotice, BentoCard, PrimaryButton, SelectField, StatusBadge } from
 import { generateTeacherReportAction } from "@/features/teacher/actions";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getDictionary } from "@/i18n/locale";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ type ReportsPageProps = {
 };
 
 export default async function ReportsPage({ searchParams }: ReportsPageProps) {
+  const dict = await getDictionary();
   const [studentsCount, classCount, materialCount, gradeCount] = await Promise.all([
     prisma.studentProfile.count(),
     prisma.classGroup.count(),
@@ -19,44 +21,44 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   ]);
 
   return (
-    <DashboardLayout navItems={teacherNav} title="Relatorios" subtitle="Metrics e analytics" context="Portal Docente" darkSidebar>
+    <DashboardLayout navItems={teacherNav} title={dict.navReports} subtitle={dict.reportsSubtitle} context="Teacher Portal" darkSidebar>
       <div className="space-y-5">
         <ActionNotice status={searchParams?.status} />
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
           <BentoCard className="xl:col-span-4">
-            <h3 className="mb-6 text-lg font-black text-slate-900">Gerar Relatorio</h3>
+            <h3 className="mb-6 text-lg font-black text-slate-900">{dict.generateReportTitle}</h3>
             <form action={generateTeacherReportAction} className="space-y-4">
-              <SelectField name="reportType" label="Tipo de Relatorio" options={[
-                { label: "Frequencia Geral", value: "attendance" },
-                { label: "Desempenho por Notas", value: "grades" },
-                { label: "Uso de Materiais", value: "material_usage" }
+              <SelectField name="reportType" label={dict.reportTypeLabel} options={[
+                { label: dict.optionAttendance, value: "attendance" },
+                { label: dict.optionGrades, value: "grades" },
+                { label: dict.optionMaterialUsage, value: "material_usage" }
               ]} />
-              <PrimaryButton className="w-full" tone="navy" type="submit">Gerar Relatorio</PrimaryButton>
+              <PrimaryButton className="w-full" tone="navy" type="submit">{dict.generateReportTitle}</PrimaryButton>
             </form>
           </BentoCard>
 
           <BentoCard className="p-0 xl:col-span-8">
             <div className="flex items-center justify-between p-6">
-              <h3 className="font-black text-slate-900">Resumo da Turma</h3>
-              <StatusBadge tone="navy">Semana Atual</StatusBadge>
+              <h3 className="font-black text-slate-900">{dict.classSummaryTitle}</h3>
+              <StatusBadge tone="navy">{dict.currentWeekBadge}</StatusBadge>
             </div>
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="text-center">
                   <p className="text-2xl font-black text-navy">{studentsCount}</p>
-                  <p className="text-xs text-slate-500">Total Alunos</p>
+                  <p className="text-xs text-slate-500">{dict.totalStudentsLabel}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl font-black text-navy">{classCount}</p>
-                  <p className="text-xs text-slate-500">Turmas Ativas</p>
+                  <p className="text-xs text-slate-500">{dict.activeClassesLabel}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl font-black text-navy">{materialCount}</p>
-                  <p className="text-xs text-slate-500">Fichas Disponiveis</p>
+                  <p className="text-xs text-slate-500">{dict.availableWorksheetsLabel}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl font-black text-navy">{gradeCount}</p>
-                  <p className="text-xs text-slate-500">Notas Lançadas</p>
+                  <p className="text-xs text-slate-500">{dict.gradesPostedLabel}</p>
                 </div>
               </div>
             </div>

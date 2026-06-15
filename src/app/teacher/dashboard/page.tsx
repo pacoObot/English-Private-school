@@ -12,6 +12,7 @@ import { saveAllGradesAction } from "@/features/teacher/actions";
 import { DebateArena } from "@/components/ui/DebateArena";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getDictionary } from "@/i18n/locale";
 
 type TeacherDashboardPageProps = {
   searchParams?: { status?: string };
@@ -21,6 +22,8 @@ export const dynamic = "force-dynamic";
 
 export default async function TeacherDashboardPage({ searchParams }: TeacherDashboardPageProps) {
   const session = await getCurrentSession();
+  const dict = await getDictionary();
+
   const teacher = session
     ? await prisma.teacherProfile.findFirst({
         where: { userId: session.userId },
@@ -70,19 +73,20 @@ export default async function TeacherDashboardPage({ searchParams }: TeacherDash
   return (
     <DashboardLayout
       navItems={teacherNav}
-      title={`Olá, ${session?.name.split(" ")[0] ?? "Docente"}`}
-      subtitle="Turmas, avaliação, presença, materiais e feedback."
-      context="Portal Docente"
-      sidebarFooter={<NextClass className={currentClass?.name} schedule={currentClass?.schedule} />}
+      title={`${dict.hello}, ${session?.name.split(" ")[0] ?? dict.teacherRoleLabel}`}
+      subtitle={dict.teacherDashboardSubtitle}
+      context="Teacher Portal"
+      sidebarFooter={<NextClass className={currentClass?.name} schedule={currentClass?.schedule} dict={dict} />}
+      darkSidebar
     >
       <div className="space-y-6">
         <ActionNotice status={searchParams?.status} />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-          <QuickAction href={currentClass ? `/teacher/attendance?classGroupId=${currentClass.id}` : "/teacher/attendance"} icon={<CalendarCheck size={18} />} title="Chamada" detail={currentClass?.name ?? "Selecionar turma"} tone="rose" />
-          <QuickAction href={currentClass ? `/teacher/grades?classGroupId=${currentClass.id}` : "/teacher/grades"} icon={<ClipboardList size={18} />} title="Notas" detail={`${studentCount} alunos`} tone="navy" />
-          <QuickAction href="/teacher/materials" icon={<FileUp size={18} />} title="Fichas" detail="Enviar material" tone="dark" />
-          <QuickAction href={activeDebate ? `/debate/${activeDebate.id}` : "/debate"} icon={<Mic size={18} />} title="Debate" detail={activeDebate ? `${Math.max(pendingDebateEvaluations, 0)} por avaliar` : "Sem sessão"} tone="light" />
+          <QuickAction href={currentClass ? `/teacher/attendance?classGroupId=${currentClass.id}` : "/teacher/attendance"} icon={<CalendarCheck size={18} />} title={dict.quickAttendance} detail={currentClass?.name ?? dict.quickSelectClass} tone="rose" />
+          <QuickAction href={currentClass ? `/teacher/grades?classGroupId=${currentClass.id}` : "/teacher/grades"} icon={<ClipboardList size={18} />} title={dict.quickGrades} detail={dict.studentCountDetail.replace("{count}", String(studentCount))} tone="navy" />
+          <QuickAction href="/teacher/materials" icon={<FileUp size={18} />} title={dict.quickMaterials} detail={dict.quickSendMaterial} tone="dark" />
+          <QuickAction href={activeDebate ? `/debate/${activeDebate.id}` : "/debate"} icon={<Mic size={18} />} title={dict.quickDebate} detail={activeDebate ? dict.pendingEvalDetail.replace("{count}", String(Math.max(pendingDebateEvaluations, 0))) : dict.noSession} tone="light" />
         </div>
         
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -93,19 +97,19 @@ export default async function TeacherDashboardPage({ searchParams }: TeacherDash
               <BentoCard className="overflow-hidden p-0 h-full border-slate-200">
                 <div className="flex flex-col gap-4 border-b border-slate-100 bg-slate-50/60 p-6 sm:flex-row sm:items-center sm:justify-between lg:p-8">
                   <div>
-                    <h3 className="text-xl font-black text-slate-900">Lançamento de Notas</h3>
+                    <h3 className="text-xl font-black text-slate-900">{dict.postGradesTitle}</h3>
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">
-                      Turma: {currentClass?.name ?? "Sem turma"}
+                      {dict.classLabel} {currentClass?.name ?? dict.noClass}
                     </p>
                   </div>
                   <PrimaryButton tone="rose" type="submit" disabled={!currentClass || roster.length === 0}>
-                    <Save size={15} /> Salvar Notas
+                    <Save size={15} /> {dict.saveGradesButton}
                   </PrimaryButton>
                 </div>
                 
                 <div className="p-2">
                   <DataTable
-                    headers={["Estudante", "Média", "Nota (0-20)"]}
+                    headers={[dict.tableStudent, dict.tableAverage, dict.tableScoreInput]}
                     rows={roster.map((student) => [
                       <div key={student.name} className="flex items-center gap-3">
                         <input type="hidden" name="studentId" value={student.id} />
@@ -138,26 +142,26 @@ export default async function TeacherDashboardPage({ searchParams }: TeacherDash
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           <BentoCard>
             <div className="mb-7 flex items-center justify-between">
-              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-800">Resumo da Turma</h3>
-              <StatusBadge tone="navy">{classCount} turmas</StatusBadge>
+              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-800">{dict.classSummaryTitle}</h3>
+              <StatusBadge tone="navy">{dict.classCountBadge.replace("{count}", String(classCount))}</StatusBadge>
             </div>
             <div className="grid gap-3">
-              <Activity icon={<Users size={18} />} title="Turma em foco" detail={currentClass?.name ?? "Nenhuma turma atribuída"} />
-              <Activity icon={<BookOpenCheck size={18} />} title="Curso" detail={currentClass?.courseId ? "Material e avaliação alinhados à turma" : "Aguardando atribuição"} />
-              <Activity icon={<Mic size={18} />} title="Debate designado" detail={activeDebate?.topic ?? "Nenhum debate agendado"} />
+              <Activity icon={<Users size={18} />} title={dict.focusedClassTitle} detail={currentClass?.name ?? dict.noClassAssigned} />
+              <Activity icon={<BookOpenCheck size={18} />} title={dict.focusedCourseTitle} detail={currentClass?.courseId ? dict.courseAlignedDetail : dict.awaitingAssignment} />
+              <Activity icon={<Mic size={18} />} title={dict.assignedDebateTitle} detail={activeDebate?.topic ?? dict.noDebatesScheduled} />
             </div>
           </BentoCard>
           
           <BentoCard className="lg:col-span-2 bg-slate-900 text-white" dark>
              <div className="flex flex-col h-full justify-between">
                 <div>
-                   <h3 className="text-xl font-black">Fluxo rápido do professor</h3>
-                   <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1">Escolha a ação, conclua e volte ao painel</p>
+                   <h3 className="text-xl font-black">{dict.teacherQuickFlowTitle}</h3>
+                   <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1">{dict.teacherQuickFlowSubtitle}</p>
                 </div>
                 <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                   <Link href={currentClass ? `/teacher/attendance?classGroupId=${currentClass.id}` : "/teacher/attendance"}><PrimaryButton tone="light" className="w-full">Presença</PrimaryButton></Link>
-                   <Link href={currentClass ? `/teacher/grades?classGroupId=${currentClass.id}` : "/teacher/grades"}><PrimaryButton tone="light" className="w-full">Notas</PrimaryButton></Link>
-                   <Link href="/teacher/materials"><PrimaryButton tone="light" className="w-full">Fichas</PrimaryButton></Link>
+                   <Link href={currentClass ? `/teacher/attendance?classGroupId=${currentClass.id}` : "/teacher/attendance"}><PrimaryButton tone="light" className="w-full">{dict.attendanceButton}</PrimaryButton></Link>
+                   <Link href={currentClass ? `/teacher/grades?classGroupId=${currentClass.id}` : "/teacher/grades"}><PrimaryButton tone="light" className="w-full">{dict.gradesButton}</PrimaryButton></Link>
+                   <Link href="/teacher/materials"><PrimaryButton tone="light" className="w-full">{dict.worksheetsButton}</PrimaryButton></Link>
                 </div>
              </div>
           </BentoCard>
@@ -198,12 +202,12 @@ function Activity({ icon, title, detail }: { icon: ReactNode; title: string; det
   );
 }
 
-function NextClass({ className, schedule }: { className?: string; schedule?: string }) {
+function NextClass({ className, schedule, dict }: { className?: string; schedule?: string; dict: any }) {
   return (
     <div className="rounded-[1.5rem] bg-slate-900 p-4 text-white">
-      <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Turma em foco</p>
-      <p className="mt-2 text-xs font-bold">{className ?? "Nenhuma turma atribuída"}</p>
-      <p className="mt-1 text-[10px] font-bold text-rose-400">{schedule ?? "Aguardando horário"}</p>
+      <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">{dict.focusedClassTitle}</p>
+      <p className="mt-2 text-xs font-bold">{className ?? dict.noClassAssigned}</p>
+      <p className="mt-1 text-[10px] font-bold text-rose-400">{schedule ?? dict.awaitingSchedule}</p>
     </div>
   );
 }

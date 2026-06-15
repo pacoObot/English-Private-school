@@ -6,6 +6,7 @@ import { Role } from "@/generated/prisma";
 import { teacherNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { AttendanceStatus } from "@/generated/prisma";
+import { getDictionary } from "@/i18n/locale";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ type AttendancePageProps = {
 
 export default async function AttendancePage({ searchParams }: AttendancePageProps) {
   const session = await getCurrentSession();
+  const dict = await getDictionary();
   const isTeacher = session?.role === Role.TEACHER;
   const today = new Date().toISOString().split("T")[0];
 
@@ -48,29 +50,29 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
   const selectedClass = allClassGroups.find((cg) => cg.id === selectedClassId);
 
   return (
-    <DashboardLayout navItems={teacherNav} title="Controle de Presenca" subtitle="Registro de frequencia" context="Portal Docente" darkSidebar>
+    <DashboardLayout navItems={teacherNav} title={dict.attendanceTitle} subtitle={dict.attendanceSubtitle} context="Teacher Portal" darkSidebar>
       <div className="space-y-5">
         <ActionNotice status={searchParams?.status} />
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
           
           {/* Selection Panel */}
           <BentoCard className="xl:col-span-4">
-            <h3 className="mb-6 text-lg font-black text-slate-900">Chamada Rápida</h3>
+            <h3 className="mb-6 text-lg font-black text-slate-900">{dict.quickAttendanceTitle}</h3>
             <form action="/teacher/attendance" className="space-y-4" method="get">
               <SelectField 
                 name="classGroupId" 
-                label="Turma" 
+                label={dict.classFieldLabel} 
                 options={classGroupOptions}
                 value={selectedClassId || ""}
               />
               <PrimaryButton tone="rose" type="submit" className="w-full">
-                Abrir Turma
+                {dict.openClassButton}
               </PrimaryButton>
             </form>
 
             {selectedClassId && (
               <div className="mt-6 pt-6 border-t border-slate-100">
-                <h4 className="mb-3 text-sm font-bold text-slate-600">Turma Selecionada</h4>
+                <h4 className="mb-3 text-sm font-bold text-slate-600">{dict.selectedClassTitleLabel}</h4>
                 <p className="text-lg font-black text-navy">{selectedClass?.name}</p>
                 <p className="text-xs text-slate-500">{selectedClass?.course.title}</p>
               </div>
@@ -81,10 +83,10 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
           <BentoCard className="p-0 xl:col-span-8">
             <div className="flex items-center justify-between p-6">
               <h3 className="font-black text-slate-900">
-                {selectedClassId ? "Registro de Presença" : "Selecione uma turma"}
+                {selectedClassId ? dict.attendanceLogTitle : dict.selectClassPlaceholder}
               </h3>
               <StatusBadge tone="navy">
-                {selectedClassId ? `${filteredEnrollments.length} alunos` : "0 alunos"}
+                {selectedClassId ? dict.studentCountDetail.replace("{count}", String(filteredEnrollments.length)) : dict.studentCountDetail.replace("{count}", "0")}
               </StatusBadge>
             </div>
 
@@ -93,7 +95,7 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
                 <input type="hidden" name="classGroupId" value={selectedClassId} />
                 <FormField 
                   name="lessonDate" 
-                  label="Data da Aula" 
+                  label={dict.lessonDateLabel} 
                   type="date" 
                   defaultValue={today}
                   required 
@@ -142,16 +144,16 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
                 </div>
 
                 <PrimaryButton tone="rose" type="submit" className="w-full">
-                  Guardar Presença
+                  {dict.saveAttendanceButton}
                 </PrimaryButton>
               </form>
             ) : selectedClassId ? (
               <div className="p-6 text-center text-slate-500">
-                Nenhum estudante encontrado nesta turma.
+                {dict.noStudentsFound}
               </div>
             ) : (
               <div className="p-6 text-center text-slate-500">
-                Selecione uma turma no painel ao lado.
+                {dict.selectClassPrompt}
               </div>
             )}
           </BentoCard>
