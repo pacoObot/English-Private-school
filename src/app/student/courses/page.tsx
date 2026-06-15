@@ -1,15 +1,15 @@
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { BentoCard } from "@/components/ui/BentoCard";
-import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 import { Book, Clock, MapPin, User } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentCoursesPage() {
   const session = await getCurrentSession();
+  const locale = await getLocale();
+  const dict = await getDictionary();
   const student = session
     ? await prisma.studentProfile.findFirst({
         where: { userId: session.userId },
@@ -29,8 +29,8 @@ export default async function StudentCoursesPage() {
   return (
     <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Cursos" }))}
-      title="Meus Cursos"
-      subtitle="Sua jornada académica"
+      title={dict.coursesTitle}
+      subtitle={dict.coursesSub}
       context="Student Portal"
       darkSidebar
     >
@@ -38,8 +38,14 @@ export default async function StudentCoursesPage() {
         {enrollments.length === 0 ? (
           <BentoCard className="md:col-span-2 text-center py-20">
             <Book size={48} className="mx-auto text-slate-300 mb-4" />
-            <h3 className="text-xl font-black text-slate-900">Nenhum curso ativo</h3>
-            <p className="text-slate-500 max-w-xs mx-auto mt-2">Você ainda não está matriculado em nenhum curso este semestre.</p>
+            <h3 className="text-xl font-black text-slate-900">
+              {locale === "en-US" ? "No active courses" : "Nenhum curso ativo"}
+            </h3>
+            <p className="text-slate-500 max-w-xs mx-auto mt-2">
+              {locale === "en-US" 
+                ? "You are not enrolled in any course this semester." 
+                : "Você ainda não está matriculado em nenhum curso este semestre."}
+            </p>
           </BentoCard>
         ) : (
           enrollments.map((enr) => (
@@ -54,15 +60,17 @@ export default async function StudentCoursesPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-slate-900 leading-tight">{enr.course.title}</h3>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Nível {enr.course.level}</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                      {locale === "en-US" ? "Level" : "Nível"} {enr.course.level}
+                    </p>
                   </div>
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                  <CourseDetail icon={User} label="Professor" value={enr.classGroup.teacher?.user.name || "A definir"} />
-                  <CourseDetail icon={MapPin} label="Sala / Turma" value={enr.classGroup.name || enr.classGroup.room || "Remoto"} />
-                  <CourseDetail icon={Clock} label="Horário" value={enr.classGroup.schedule} />
-                  <CourseDetail icon={Book} label="Duração" value={enr.course.duration || "N/A"} />
+                  <CourseDetail icon={User} label={locale === "en-US" ? "Teacher" : "Professor"} value={enr.classGroup.teacher?.user.name || (locale === "en-US" ? "To define" : "A definir")} />
+                  <CourseDetail icon={MapPin} label={locale === "en-US" ? "Class / Room" : "Sala / Turma"} value={enr.classGroup.name || enr.classGroup.room || (locale === "en-US" ? "Remote" : "Remoto")} />
+                  <CourseDetail icon={Clock} label={locale === "en-US" ? "Schedule" : "Horário"} value={enr.classGroup.schedule} />
+                  <CourseDetail icon={Book} label={locale === "en-US" ? "Duration" : "Duração"} value={enr.course.duration || "N/A"} />
                </div>
             </BentoCard>
           ))

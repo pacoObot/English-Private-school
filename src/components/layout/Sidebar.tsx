@@ -22,6 +22,9 @@ import {
 import { cn } from "@/lib/cn";
 import { BrandMark } from "./BrandMark";
 
+import { useState, useEffect } from "react";
+import { dictionaries, type Locale } from "@/i18n/config";
+
 const iconMap = {
   book: BookOpen,
   calendar: CalendarCheck,
@@ -58,7 +61,63 @@ type SidebarProps = {
   footer?: React.ReactNode;
 };
 
+const navLabelKeys: Record<string, string> = {
+  "Dashboard": "navDashboard",
+  "Inscrições": "navEnrollments",
+  "Cursos": "navCourses",
+  "Fichas de Estudo": "navStudyMaterials",
+  "Notas e Faltas": "navGradesAndAbsences",
+  "Tesouraria": "navTreasury",
+  "Debates": "navDebates",
+  "Calendário": "navCalendar",
+  
+  "Minhas Turmas": "navMyClasses",
+  "Lançar Notas": "navPostGrades",
+  "Enviar Fichas": "navSendMaterials",
+  "Arena de Debates": "navArenaOfDebates",
+  "Relatórios": "navReports",
+  
+  "Dashboard Central": "navCentralDashboard",
+  "Registo de Alunos": "navRegisterStudents",
+  "Gestao de Turmas": "navManageClasses",
+  "Gestao de Staff": "navManageStaff",
+  "Calendário Académico": "navAcademicCalendar",
+  "Financeiro MT": "navFinanceMt",
+  "Logs de Auditoria": "navAuditLogs",
+
+  "Sessoes de Debate": "navDebateSessions",
+  "Banco de Alunos": "navStudentBank",
+  "Historico": "navHistory",
+  "Feedback": "navFeedback",
+};
+
+const contextKeys: Record<string, string> = {
+  "Student Portal": "Portal do Estudante",
+  "Teacher Portal": "Portal do Professor",
+  "Admin Portal": "Portal do Administrador"
+};
+
+const contextKeysEn: Record<string, string> = {
+  "Student Portal": "Student Portal",
+  "Teacher Portal": "Teacher Portal",
+  "Admin Portal": "Admin Portal"
+};
+
 export function Sidebar({ items, context, dark = false, open, onClose, footer }: SidebarProps) {
+  const [locale, setLocale] = useState<Locale>("pt-PT");
+
+  useEffect(() => {
+    const match = document.cookie.match(/locale=([^;]+)/);
+    if (match && (match[1] === "en-US" || match[1] === "pt-PT")) {
+      setLocale(match[1] as Locale);
+    }
+  }, []);
+
+  const dict = dictionaries[locale];
+  const translatedContext = locale === "en-US" 
+    ? (contextKeysEn[context] || context) 
+    : (contextKeys[context] || context);
+
   return (
     <>
       <button
@@ -75,7 +134,7 @@ export function Sidebar({ items, context, dark = false, open, onClose, footer }:
         )}
       >
         <div className="flex items-center justify-between p-6">
-          <BrandMark context={context} dark={dark} />
+          <BrandMark context={translatedContext} dark={dark} />
           <button className="rounded-xl p-2 text-slate-400 lg:hidden" onClick={onClose} aria-label="Fechar menu" type="button">
             <X size={21} />
           </button>
@@ -83,6 +142,8 @@ export function Sidebar({ items, context, dark = false, open, onClose, footer }:
         <nav className="flex-1 space-y-2 overflow-y-auto px-4 pb-6">
           {items.map((item) => {
             const Icon = iconMap[item.icon];
+            const translationKey = navLabelKeys[item.label];
+            const translatedLabel = translationKey && dict[translationKey] ? dict[translationKey] : item.label;
 
             return (
               <Link
@@ -101,7 +162,7 @@ export function Sidebar({ items, context, dark = false, open, onClose, footer }:
                 onClick={onClose}
               >
                 <Icon size={18} />
-                {item.label}
+                {translatedLabel}
               </Link>
             );
           })}

@@ -5,12 +5,15 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 import { Calendar, CheckCircle2, UserPlus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentEnrollmentsPage() {
   const session = await getCurrentSession();
+  const locale = await getLocale();
+  const dict = await getDictionary();
   const student = session
     ? await prisma.studentProfile.findFirst({
         where: { userId: session.userId },
@@ -25,8 +28,8 @@ export default async function StudentEnrollmentsPage() {
   return (
     <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Inscrições" }))}
-      title="Minhas Inscrições"
-      subtitle="Histórico de matrículas e status"
+      title={dict.enrollmentTitle}
+      subtitle={dict.enrollmentSub}
       context="Student Portal"
       darkSidebar
     >
@@ -37,17 +40,25 @@ export default async function StudentEnrollmentsPage() {
                  <UserPlus size={32} />
               </div>
               <div>
-                 <h2 className="text-2xl font-black text-slate-900">Período de Inscrição Ativo</h2>
-                 <p className="text-slate-500 font-bold text-sm">Semestre 2026.1 - Matrículas abertas até 30 de Maio</p>
+                 <h2 className="text-2xl font-black text-slate-900">
+                   {locale === "en-US" ? "Active Enrollment Period" : "Período de Inscrição Ativo"}
+                 </h2>
+                 <p className="text-slate-500 font-bold text-sm">
+                   {locale === "en-US" 
+                     ? "Semester 2026.1 - Registration open until May 30" 
+                     : "Semestre 2026.1 - Matrículas abertas até 30 de Maio"}
+                 </p>
               </div>
            </div>
            <PrimaryButton tone="dark" className="px-8 py-4 h-auto rounded-2xl">
-              Nova Inscrição
+              {locale === "en-US" ? "New Registration" : "Nova Inscrição"}
            </PrimaryButton>
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-           <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4">Histórico Recente</h3>
+           <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4">
+             {locale === "en-US" ? "Recent History" : "Histórico Recente"}
+           </h3>
            {enrollments.map((enr) => (
              <BentoCard key={enr.id} className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex items-center gap-5">
@@ -57,7 +68,7 @@ export default async function StudentEnrollmentsPage() {
                    <div>
                       <h4 className="font-black text-slate-800 text-lg leading-none">{enr.course.title}</h4>
                       <p className="text-xs font-bold text-slate-400 mt-2 flex items-center gap-2">
-                         <Calendar size={12} /> Inscrito em {enr.enrolledAt.toLocaleDateString("pt-PT")}
+                         <Calendar size={12} /> {locale === "en-US" ? "Enrolled on" : "Inscrito em"} {enr.enrolledAt.toLocaleDateString(locale)}
                       </p>
                    </div>
                 </div>
@@ -70,7 +81,7 @@ export default async function StudentEnrollmentsPage() {
                       {enr.status}
                    </StatusBadge>
                    <PrimaryButton tone="light" className="h-10 py-0 px-4 text-[10px] ml-auto md:ml-0">
-                      Detalhes
+                      {locale === "en-US" ? "Details" : "Detalhes"}
                    </PrimaryButton>
                 </div>
              </BentoCard>

@@ -10,6 +10,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 import { UpcomingDebatesButton } from "./UpcomingDebatesButton";
 import { DynamicCard } from "./DynamicCard";
 
@@ -17,6 +18,8 @@ export const dynamic = "force-dynamic";
 
 export default async function StudentDashboardPage({ searchParams }: { searchParams?: { status?: string } }) {
   const session = await getCurrentSession();
+  const locale = await getLocale();
+  const dict = await getDictionary();
   const student = session
     ? await prisma.studentProfile.findFirst({
         where: { userId: session.userId },
@@ -147,10 +150,11 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
   }
 
   // Treasury logic for current month
+  // Treasury logic for current month
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
-  const monthName = new Intl.DateTimeFormat("pt-PT", { month: "long" }).format(now);
+  const monthName = new Intl.DateTimeFormat(locale, { month: "long" }).format(now);
   
   const currentMonthInvoice = student?.invoices.find(inv => 
     inv.createdAt.getMonth() === currentMonth && 
@@ -166,10 +170,10 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     : null;
 
   const daysRemainingText = daysRemaining !== null && daysRemaining > 0 
-    ? `${daysRemaining} dias para o vencimento` 
+    ? `${daysRemaining} ${locale === "en-US" ? "days remaining until due" : "dias para o vencimento"}` 
     : daysRemaining !== null && daysRemaining <= 0
-      ? "Pagamento em atraso"
-      : "Sem pagamentos pendentes";
+      ? (locale === "en-US" ? "Overdue payment" : "Pagamento em atraso")
+      : (locale === "en-US" ? "No pending payments" : "Sem pagamentos pendentes");
 
   const highlights: {
     id: string;
@@ -186,12 +190,14 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     highlights.push({
       id: `invoice-${nextPendingInvoice.id}`,
       type: isOverdue ? "danger" : "warning",
-      title: isOverdue ? "Mensalidade em Atraso" : "Mensalidade Próxima do Vencimento",
+      title: isOverdue 
+        ? (locale === "en-US" ? "Overdue Invoice" : "Mensalidade em Atraso")
+        : (locale === "en-US" ? "Invoice Due Soon" : "Mensalidade Próxima do Vencimento"),
       description: isOverdue 
-        ? `A mensalidade no valor de ${nextPendingInvoice.amountMt.toLocaleString()} MT está vencida.`
-        : `O pagamento de ${nextPendingInvoice.amountMt.toLocaleString()} MT vence em ${daysRemaining} dias.`,
+        ? (locale === "en-US" ? `The invoice of ${nextPendingInvoice.amountMt.toLocaleString()} MT is overdue.` : `A mensalidade no valor de ${nextPendingInvoice.amountMt.toLocaleString()} MT está vencida.`)
+        : (locale === "en-US" ? `Payment of ${nextPendingInvoice.amountMt.toLocaleString()} MT is due in ${daysRemaining} days.` : `O pagamento de ${nextPendingInvoice.amountMt.toLocaleString()} MT vence em ${daysRemaining} dias.`),
       link: "/student/treasury",
-      actionLabel: "Pagar Agora"
+      actionLabel: dict.payNow
     });
   }
 
@@ -201,10 +207,12 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     highlights.push({
       id: "debate-evals",
       type: "info",
-      title: "Novo Feedback de Debate",
-      description: `Tens ${unacknowledgedEvals.length} nova(s) avaliação(ões) de debate aguardando tua leitura e confirmação.`,
+      title: locale === "en-US" ? "New Debate Feedback" : "Novo Feedback de Debate",
+      description: locale === "en-US"
+        ? `You have ${unacknowledgedEvals.length} new debate evaluation(s) awaiting your review.`
+        : `Tens ${unacknowledgedEvals.length} nova(s) avaliação(ões) de debate aguardando tua leitura e confirmação.`,
       link: "/student/debates",
-      actionLabel: "Ver Feedback"
+      actionLabel: locale === "en-US" ? "View Feedback" : "Ver Feedback"
     });
   }
 
@@ -225,10 +233,14 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
       highlights.push({
         id: `debate-today-${debate.id}`,
         type: "success",
-        title: isMod ? "Apresentas Hoje como Instrutor" : "Debate Hoje",
-        description: `O debate "${debate.topic}" começa às ${debate.startsAt.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}.`,
+        title: isMod 
+          ? (locale === "en-US" ? "Presenting Today as Instructor" : "Apresentas Hoje como Instrutor")
+          : (locale === "en-US" ? "Debate Today" : "Debate Hoje"),
+        description: locale === "en-US"
+          ? `The debate "${debate.topic}" starts at ${debate.startsAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}.`
+          : `O debate "${debate.topic}" começa às ${debate.startsAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}.`,
         link: "/student/debates",
-        actionLabel: "Ver Detalhes"
+        actionLabel: locale === "en-US" ? "View Details" : "Ver Detalhes"
       });
     }
   }
@@ -268,10 +280,12 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     highlights.push({
       id: "absences-alert",
       type: currentMonthAbsences.length >= 3 ? "danger" : "warning",
-      title: "Alerta de Assiduidade",
-      description: `Tens ${currentMonthAbsences.length} falta(s) registada(s) este mês. Mantém a tua assiduidade acima de 85% para aprovação.`,
+      title: locale === "en-US" ? "Attendance Alert" : "Alerta de Assiduidade",
+      description: locale === "en-US"
+        ? `You have ${currentMonthAbsences.length} absence(s) recorded this month. Keep attendance above 85% to pass.`
+        : `Tens ${currentMonthAbsences.length} falta(s) registada(s) este mês. Mantém a tua assiduidade acima de 85% para aprovação.`,
       link: "/student/calendar",
-      actionLabel: "Ver Calendário"
+      actionLabel: locale === "en-US" ? "View Calendar" : "Ver Calendário"
     });
   }
 
@@ -281,20 +295,22 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
     highlights.push({
       id: "low-grades-alert",
       type: "warning",
-      title: "Alerta Académico",
-      description: `Tens ${lowGrades.length} nota(s) abaixo da média recomendada (10/20). Recomendamos solicitar apoio de um tutor.`,
+      title: locale === "en-US" ? "Academic Alert" : "Alerta Académico",
+      description: locale === "en-US"
+        ? `You have ${lowGrades.length} grade(s) below the recommended average (10/20). We recommend requesting tutor support.`
+        : `Tens ${lowGrades.length} nota(s) abaixo da média recomendada (10/20). Recomendamos solicitar apoio de um tutor.`,
       link: "/student/grades",
-      actionLabel: "Ver Notas"
+      actionLabel: locale === "en-US" ? "View Grades" : "Ver Notas"
     });
   }
 
   return (
     <DashboardLayout
       navItems={studentNav}
-      title={`Olá, ${session?.name.split(" ")[0] ?? "Estudante"}!`}
+      title={`${dict.hello}, ${session?.name.split(" ")[0] ?? (locale === "en-US" ? "Student" : "Estudante")}!`}
       subtitle={`ID: ${student?.studentCode ?? "---"}`}
-      context="Language Academy"
-      sidebarFooter={<QuickSupport />}
+      context="Student Portal"
+      sidebarFooter={<QuickSupport dict={dict} />}
       darkSidebar
     >
       <div className="space-y-6 pb-10">
@@ -308,7 +324,7 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
               </span>
-              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Centro de Destaques</h3>
+              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{dict.highlightsCenter}</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {highlights.map((item) => {
@@ -355,7 +371,7 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
                           tone={item.type === "danger" || item.type === "warning" ? "rose" : "navy"} 
                           className="py-2 px-4 rounded-xl text-[9px] font-black uppercase shrink-0 min-h-8"
                         >
-                          {item.actionLabel || "Ver"} <ArrowRight size={10} className="ml-1" />
+                          {item.actionLabel || (locale === "en-US" ? "View" : "Ver")} <ArrowRight size={10} className="ml-1" />
                         </PrimaryButton>
                       </Link>
                     )}
@@ -371,33 +387,37 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
           <BentoCard className="lg:col-span-8 overflow-hidden relative">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-4">
-                <StatusBadge tone="navy">Status Académico</StatusBadge>
+                <StatusBadge tone="navy">{dict.academicStatus}</StatusBadge>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{student?.level}</span>
               </div>
               <h3 className="text-2xl font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
-                Seu progresso de <span className="italic text-rose-600">Fluência</span> está evoluindo.
+                {locale === "en-US" ? (
+                  <>Your <span className="italic text-rose-600">Fluency</span> progress is evolving.</>
+                ) : (
+                  <>Seu progresso de <span className="italic text-rose-600">Fluência</span> está evoluindo.</>
+                )}
               </h3>
               <div className="mt-6 space-y-4 max-w-md">
-                <Progress label="Speaking Skills" value={`${speakingPercentage.toFixed(0)}%`} tone="bg-navy" />
-                <Progress label="Writing Mastery" value={`${writingPercentage.toFixed(0)}%`} tone="bg-rose-600" />
+                <Progress label={dict.speakingSkills} value={`${speakingPercentage.toFixed(0)}%`} tone="bg-navy" />
+                <Progress label={dict.writingMastery} value={`${writingPercentage.toFixed(0)}%`} tone="bg-rose-600" />
               </div>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Link href="/student/grades">
                   <PrimaryButton tone="dark" className="w-full">
-                    <Eye size={16} /> Ver Desempenho
+                    <Eye size={16} /> {dict.viewPerformance}
                   </PrimaryButton>
                 </Link>
                 <Link href="/student/materials" className="w-full">
                   <PrimaryButton tone="light" className="w-full">
-                    <Download size={16} /> Materiais de Estudo
+                    <Download size={16} /> {dict.studyMaterials}
                   </PrimaryButton>
                 </Link>
                 <UpcomingDebatesButton debates={upcomingDebates} />
               </div>
             </div>
             {/* Abstract Decorative Element */}
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-navy/5 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-navy/5 rounded-full blur-xl" />
           </BentoCard>
 
           {/* Treasury Quick View - Dynamic Card */}
@@ -412,10 +432,10 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
 
         {/* Responsive Metric Grid - 2 cols on mobile, 4 on desktop */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <MetricCard label="Cursos" value={String(activeCourses)} hint="Ativos" icon={BookOpen} tone="navy" />
-          <MetricCard label="Média" value={gradeAverage > 0 ? gradeAverage.toFixed(1) : "---"} hint="Escala 20" icon={TrendingUp} tone="rose" />
-          <MetricCard label="Faltas" value={String(absences)} hint="Este mês" icon={Eye} tone="light" />
-          <MetricCard label="Debates" value={`${debateAvg.toFixed(1)}`} hint="Score" icon={Mic2} tone="dark" />
+          <MetricCard label={dict.courses} value={String(activeCourses)} hint={dict.active} icon={BookOpen} tone="navy" />
+          <MetricCard label={dict.average} value={gradeAverage > 0 ? gradeAverage.toFixed(1) : "---"} hint={dict.scale20} icon={TrendingUp} tone="rose" />
+          <MetricCard label={dict.absences} value={String(absences)} hint={dict.thisMonth} icon={Eye} tone="light" />
+          <MetricCard label={dict.debates} value={`${debateAvg.toFixed(1)}`} hint={locale === "en-US" ? "Score" : "Score Geral"} icon={Mic2} tone="dark" />
         </div>
 
         {/* Quick Access Sections */}
@@ -423,12 +443,12 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
            {/* Recent Grades Summary */}
            <BentoCard className="p-0">
               <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                 <h3 className="font-black text-slate-800">Notas Recentes</h3>
-                 <Link href="/student/grades" className="text-[10px] font-black uppercase text-rose-600 underline">Ver todas</Link>
+                 <h3 className="font-black text-slate-800">{dict.recentGrades}</h3>
+                 <Link href="/student/grades" className="text-[10px] font-black uppercase text-rose-600 underline">{dict.viewAll}</Link>
               </div>
               <DataTable
-                emptyMessage="Sem notas lançadas."
-                headers={["Matéria", "Nota"]}
+                emptyMessage={dict.emptyGrades}
+                headers={[locale === "en-US" ? "Course" : "Matéria", dict.gradeScore]}
                 rows={(student?.grades.slice(0, 3) ?? []).map(g => [
                   g.title,
                   <span key={g.id} className="font-black text-rose-600">{g.score}</span>
@@ -439,12 +459,12 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
            {/* Next Classes Summary */}
            <BentoCard className="p-0">
               <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                 <h3 className="font-black text-slate-800">Meus Horários</h3>
-                 <Link href="/student/courses" className="text-[10px] font-black uppercase text-navy underline">Ver cursos</Link>
+                 <h3 className="font-black text-slate-800">{dict.mySchedules}</h3>
+                 <Link href="/student/courses" className="text-[10px] font-black uppercase text-navy underline">{dict.viewCourses}</Link>
               </div>
               <DataTable
-                emptyMessage="Sem aulas agendadas."
-                headers={["Turma", "Horário"]}
+                emptyMessage={dict.emptySchedules}
+                headers={[locale === "en-US" ? "Class" : "Turma", locale === "en-US" ? "Schedule" : "Horário"]}
                 rows={(student?.enrollments ?? []).map(enr => [
                   enr.classGroup.name,
                   enr.classGroup.schedule
@@ -471,14 +491,14 @@ function Progress({ label, value, tone }: { label: string; value: string; tone: 
   );
 }
 
-function QuickSupport() {
+function QuickSupport({ dict }: { dict: any }) {
   return (
     <div className="rounded-[1.5rem] bg-slate-900 p-4 text-white">
-      <p className="text-xs font-black italic text-rose-400">Duvidas?</p>
-      <p className="mt-1 text-[11px] font-medium text-slate-300">Fale diretamente com o tutor via WhatsApp.</p>
+      <p className="text-xs font-black italic text-rose-400">{dict.quickSupportQuestions}</p>
+      <p className="mt-1 text-[11px] font-medium text-slate-300">{dict.quickSupportCallText}</p>
       <Link href="https://wa.me/258840000000" target="_blank" className="block mt-4">
         <PrimaryButton className="w-full min-h-10 py-2" tone="light">
-          Suporte Rapido
+          {dict.support}
         </PrimaryButton>
       </Link>
     </div>

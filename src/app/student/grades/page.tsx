@@ -6,12 +6,15 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 import { Award, BookOpen, Calendar, TrendingUp, Mic2, PenTool } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentGradesPage({ searchParams }: { searchParams?: { status?: string } }) {
   const session = await getCurrentSession();
+  const locale = await getLocale();
+  const dict = await getDictionary();
   const student = session
     ? await prisma.studentProfile.findFirst({
         where: { userId: session.userId },
@@ -81,8 +84,8 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
   return (
     <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Notas e Faltas" }))}
-      title="Desempenho Académico"
-      subtitle="Notas, Faltas e Médias"
+      title={dict.academicGradesTitle}
+      subtitle={dict.academicGradesSub}
       context="Student Portal"
       darkSidebar
     >
@@ -90,37 +93,51 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
         <ActionNotice status={searchParams?.status} />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-           <QuickStat label="Média Global" value={avgGrade.toFixed(1)} icon={TrendingUp} tone="navy" />
-           <QuickStat label="Avaliações" value={String(student?.grades.length ?? 0)} icon={Award} tone="rose" />
-           <QuickStat label="Faltas" value={String(totalAbsences)} icon={Calendar} tone="dark" />
-           <QuickStat label="Cursos" value={String(student?.enrollments.length ?? 0)} icon={BookOpen} tone="light" />
+           <QuickStat label={locale === "en-US" ? "Global Average" : "Média Global"} value={avgGrade.toFixed(1)} icon={TrendingUp} tone="navy" />
+           <QuickStat label={locale === "en-US" ? "Evaluations" : "Avaliações"} value={String(student?.grades.length ?? 0)} icon={Award} tone="rose" />
+           <QuickStat label={dict.absences} value={String(totalAbsences)} icon={Calendar} tone="dark" />
+           <QuickStat label={dict.courses} value={String(student?.enrollments.length ?? 0)} icon={BookOpen} tone="light" />
         </div>
 
         <BentoCard className="p-6">
           <div className="mb-4">
-            <h3 className="text-lg font-black text-slate-900">Desenvolvimento de Habilidades</h3>
-            <p className="text-xs font-semibold text-slate-400">Progresso calculado em tempo real com base em debates e avaliações escritas.</p>
+            <h3 className="text-lg font-black text-slate-900">
+              {locale === "en-US" ? "Skills Development" : "Desenvolvimento de Habilidades"}
+            </h3>
+            <p className="text-xs font-semibold text-slate-400">
+              {locale === "en-US" 
+                ? "Progress calculated in real time based on debates and written evaluations." 
+                : "Progresso calculado em tempo real com base em debates e avaliações escritas."}
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-bold uppercase text-slate-400">
-                <span>Speaking Skills (Oratória)</span>
+                <span>{locale === "en-US" ? "Speaking Skills" : "Speaking Skills (Oratória)"}</span>
                 <span className="text-navy font-black">{speakingPercentage.toFixed(0)}%</span>
               </div>
               <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div className="h-full bg-navy rounded-full transition-all duration-1000" style={{ width: `${speakingPercentage}%` }}></div>
               </div>
-              <p className="text-[10px] text-slate-400 font-semibold">Calculado a partir de debates na Arena e avaliações de oratória.</p>
+              <p className="text-[10px] text-slate-400 font-semibold">
+                {locale === "en-US" 
+                  ? "Calculated from debates in the Arena and speaking evaluations." 
+                  : "Calculado a partir de debates na Arena e avaliações de oratória."}
+              </p>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-bold uppercase text-slate-400">
-                <span>Writing Mastery (Escrita & Gramática)</span>
+                <span>{locale === "en-US" ? "Writing Mastery" : "Writing Mastery (Escrita & Gramática)"}</span>
                 <span className="text-rose-600 font-black">{writingPercentage.toFixed(0)}%</span>
               </div>
               <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div className="h-full bg-rose-600 rounded-full transition-all duration-1000" style={{ width: `${writingPercentage}%` }}></div>
               </div>
-              <p className="text-[10px] text-slate-400 font-semibold">Calculado a partir de redações, fichas de exercícios e avaliações escritas.</p>
+              <p className="text-[10px] text-slate-400 font-semibold">
+                {locale === "en-US" 
+                  ? "Calculated from essays, worksheets and written evaluations." 
+                  : "Calculado a partir de redações, fichas de exercícios e avaliações escritas."}
+              </p>
             </div>
           </div>
         </BentoCard>
@@ -128,48 +145,69 @@ export default async function StudentGradesPage({ searchParams }: { searchParams
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
            <BentoCard className="p-0">
              <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                <h3 className="text-lg font-black text-slate-900">Histórico de Notas</h3>
+                <h3 className="text-lg font-black text-slate-900">
+                  {locale === "en-US" ? "Grades History" : "Histórico de Notas"}
+                </h3>
              </div>
              <DataTable
-               emptyMessage="Nenhuma nota lançada."
-               headers={["Avaliação", "Nota", "Máximo", "Data"]}
-                rows={(student?.grades ?? []).map(grade => [
-                  <div key={grade.id} className="flex flex-col gap-1">
-                    <span className="font-bold text-slate-700">{grade.title}</span>
-                    <div className="flex gap-1.5">
-                      {grade.isSpeaking && (
-                        <span className="inline-flex items-center gap-1 rounded bg-navy/10 px-1.5 py-0.5 text-[10px] font-black text-navy">
-                          <Mic2 size={10} /> Oratória
-                        </span>
-                      )}
-                      {grade.isWriting && (
-                        <span className="inline-flex items-center gap-1 rounded bg-rose-600/10 px-1.5 py-0.5 text-[10px] font-black text-rose-600">
-                          <PenTool size={10} /> Escrita
-                        </span>
-                      )}
-                    </div>
-                  </div>,
-                  <span key={`score-${grade.id}`} className="font-black text-rose-600 text-lg">{grade.score}</span>,
-                  grade.maxScore,
-                  grade.createdAt.toLocaleDateString("pt-PT")
-                ])}
+               emptyMessage={dict.emptyGrades}
+               headers={[
+                 locale === "en-US" ? "Evaluation" : "Avaliação", 
+                 dict.gradeScore, 
+                 dict.maxScore, 
+                 dict.date
+               ]}
+               rows={(student?.grades ?? []).map(grade => [
+                 <div key={grade.id} className="flex flex-col gap-1">
+                   <span className="font-bold text-slate-700">{grade.title}</span>
+                   <div className="flex gap-1.5">
+                     {grade.isSpeaking && (
+                       <span className="inline-flex items-center gap-1 rounded bg-navy/10 px-1.5 py-0.5 text-[10px] font-black text-navy">
+                         <Mic2 size={10} /> {locale === "en-US" ? "Speaking" : "Oratória"}
+                       </span>
+                     )}
+                     {grade.isWriting && (
+                       <span className="inline-flex items-center gap-1 rounded bg-rose-600/10 px-1.5 py-0.5 text-[10px] font-black text-rose-600">
+                         <PenTool size={10} /> {locale === "en-US" ? "Writing" : "Escrita"}
+                       </span>
+                     )}
+                   </div>
+                 </div>,
+                 <span key={`score-${grade.id}`} className="font-black text-rose-600 text-lg">{grade.score}</span>,
+                 grade.maxScore,
+                 grade.createdAt.toLocaleDateString(locale)
+               ])}
              />
            </BentoCard>
 
            <BentoCard className="p-0">
              <div className="p-6 border-b border-slate-100">
-                <h3 className="text-lg font-black text-slate-900">Registro de Presenças</h3>
+                <h3 className="text-lg font-black text-slate-900">
+                  {locale === "en-US" ? "Attendance Record" : "Registro de Presenças"}
+                </h3>
              </div>
              <DataTable
-               emptyMessage="Nenhum registro de presença."
-               headers={["Data", "Estado", "Observações"]}
-               rows={(student?.attendances ?? []).map(att => [
-                 att.lessonDate.toLocaleDateString("pt-PT"),
-                 <StatusBadge key={att.id} tone={att.status === "PRESENT" ? "success" : att.status === "ABSENT" ? "danger" : "warning"}>
-                   {att.status}
-                 </StatusBadge>,
-                 att.notes || "-"
-               ])}
+               emptyMessage={locale === "en-US" ? "No attendance record." : "Nenhum registro de presença."}
+               headers={[
+                 dict.date, 
+                 dict.status, 
+                 locale === "en-US" ? "Observations" : "Observações"
+               ]}
+               rows={(student?.attendances ?? []).map(att => {
+                 const statusLabel = att.status === "PRESENT" 
+                   ? dict.present 
+                   : att.status === "ABSENT" 
+                     ? dict.absent 
+                     : dict.justified;
+
+                 return [
+                   att.lessonDate.toLocaleDateString(locale),
+                   <StatusBadge key={att.id} tone={att.status === "PRESENT" ? "success" : att.status === "ABSENT" ? "danger" : "warning"}>
+                     {statusLabel}
+                   </StatusBadge>,
+                   att.notes || "-"
+                 ];
+               })}
              />
            </BentoCard>
         </div>

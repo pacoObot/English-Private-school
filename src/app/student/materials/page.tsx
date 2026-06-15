@@ -1,15 +1,15 @@
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { BentoCard } from "@/components/ui/BentoCard";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { getCurrentSession } from "@/features/auth/current-user";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 import { Download, FileText, Search } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentMaterialsPage() {
   const session = await getCurrentSession();
+  const locale = await getLocale();
+  const dict = await getDictionary();
   const student = session
     ? await prisma.studentProfile.findFirst({
         where: { userId: session.userId },
@@ -29,8 +29,8 @@ export default async function StudentMaterialsPage() {
   return (
     <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Fichas de Estudo" }))}
-      title="Fichas de Estudo"
-      subtitle="Recursos para o seu aprendizado"
+      title={dict.studyMaterialsTitle}
+      subtitle={dict.studyMaterialsSub}
       context="Student Portal"
       darkSidebar
     >
@@ -39,7 +39,7 @@ export default async function StudentMaterialsPage() {
            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
            <input 
              type="text" 
-             placeholder="Pesquisar por título ou unidade..." 
+             placeholder={locale === "en-US" ? "Search by title or unit..." : "Pesquisar por título ou unidade..."} 
              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-slate-100 focus:outline-none focus:ring-2 focus:ring-navy/5 transition-all text-sm font-bold text-slate-700 shadow-sm"
            />
         </div>
@@ -48,8 +48,14 @@ export default async function StudentMaterialsPage() {
           {materials.length === 0 ? (
             <BentoCard className="sm:col-span-2 lg:col-span-3 text-center py-20">
               <FileText size={48} className="mx-auto text-slate-300 mb-4" />
-              <h3 className="text-xl font-black text-slate-900">Sem fichas disponíveis</h3>
-              <p className="text-slate-500 max-w-xs mx-auto mt-2">Nenhum material de estudo foi compartilhado para os seus cursos até ao momento.</p>
+              <h3 className="text-xl font-black text-slate-900">
+                {locale === "en-US" ? "No materials available" : "Sem fichas disponíveis"}
+              </h3>
+              <p className="text-slate-500 max-w-xs mx-auto mt-2">
+                {locale === "en-US" 
+                  ? "No study materials have been shared for your courses so far." 
+                  : "Nenhum material de estudo foi compartilhado para os seus cursos até ao momento."}
+              </p>
             </BentoCard>
           ) : (
             materials.map((mat) => (
@@ -76,12 +82,12 @@ export default async function StudentMaterialsPage() {
                    {mat.fileUrl ? (
                      <a href={mat.fileUrl} target="_blank" rel="noreferrer">
                        <PrimaryButton tone="dark" type="button" className="h-9 py-0 px-4 text-[10px]">
-                          <Download size={14} /> Baixar
+                          <Download size={14} /> {locale === "en-US" ? "Download" : "Baixar"}
                        </PrimaryButton>
                      </a>
                    ) : (
                      <PrimaryButton tone="dark" className="h-9 py-0 px-4 text-[10px] opacity-50 cursor-not-allowed" disabled>
-                        <Download size={14} /> Indisponível
+                        <Download size={14} /> {locale === "en-US" ? "Unavailable" : "Indisponível"}
                      </PrimaryButton>
                    )}
                 </div>

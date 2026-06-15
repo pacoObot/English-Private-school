@@ -2,10 +2,12 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CalendarTimeline } from "@/components/calendar/CalendarTimeline";
 import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
+import { getLocale, getDictionary } from "@/i18n/locale";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentCalendarPage() {
+  const dict = await getDictionary();
   const events = await prisma.calendarEvent.findMany({
     where: { startsAt: { gte: new Date() } },
     orderBy: { startsAt: "asc" },
@@ -26,8 +28,8 @@ export default async function StudentCalendarPage() {
   return (
     <DashboardLayout
       navItems={studentNav.map((item) => ({ ...item, active: item.label === "Calendário" }))}
-      title="Calendário Académico"
-      subtitle="Eventos e datas importantes da escola"
+      title={dict.academicCalendarTitle}
+      subtitle={dict.academicCalendarSub}
       context="Student Portal"
       darkSidebar
     >

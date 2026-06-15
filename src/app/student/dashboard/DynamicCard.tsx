@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Wallet, Mic2, ArrowRight, Calendar, Users, ShieldAlert, CheckCircle2, AlertCircle } from "lucide-react";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { dictionaries, type Locale } from "@/i18n/config";
 
 type DebateData = {
   id: string;
@@ -31,6 +32,16 @@ export function DynamicCard({
   debate,
 }: DynamicCardProps) {
   const [activeSlide, setActiveSlide] = useState<"treasury" | "debate">("treasury");
+  const [locale, setLocale] = useState<Locale>("pt-PT");
+
+  useEffect(() => {
+    const match = document.cookie.match(/locale=([^;]+)/);
+    if (match && (match[1] === "en-US" || match[1] === "pt-PT")) {
+      setLocale(match[1] as Locale);
+    }
+  }, []);
+
+  const dict = dictionaries[locale];
 
   useEffect(() => {
     // Only auto-rotate if there is a debate to show, otherwise stay on treasury
@@ -63,11 +74,11 @@ export function DynamicCard({
               
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">Tesouraria • {monthName}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">{dict.treasury} • {monthName}</p>
                   <h3 className="mt-1 text-2xl font-black">{pendingAmount.toLocaleString()} MT</h3>
                 </div>
                 <StatusBadge tone={isPaid ? "success" : "warning"}>
-                  {isPaid ? "Pago" : "Pendente"}
+                  {isPaid ? dict.paid : dict.pending}
                 </StatusBadge>
               </div>
             </div>
@@ -77,7 +88,7 @@ export function DynamicCard({
                   <AlertCircle size={10} /> {daysRemainingText}
                </p>
                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white mt-0.5">
-                  Gerir Pagamentos <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                  {dict.managePayments} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                </div>
             </div>
             {/* Background Decorative Element */}
@@ -104,16 +115,16 @@ export function DynamicCard({
                   </div>
                   
                   {debate.role === "moderator" ? (
-                    <StatusBadge tone="danger">És o Instrutor</StatusBadge>
+                    <StatusBadge tone="danger">{dict.moderatorBadge}</StatusBadge>
                   ) : debate.role === "participant" ? (
-                    <StatusBadge tone="success">Inscrito</StatusBadge>
+                    <StatusBadge tone="success">{dict.enrolledBadge}</StatusBadge>
                   ) : (
-                    <StatusBadge tone="navy">Disponível</StatusBadge>
+                    <StatusBadge tone="navy">{dict.available}</StatusBadge>
                   )}
                 </div>
                 
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-300/80">Arena de Oratória • Debate</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-300/80">{dict.debateArenaCardLabel}</p>
                   <h3 className="mt-1 text-sm font-extrabold line-clamp-2 leading-snug group-hover:text-rose-300 transition-colors">
                     {debate.topic}
                   </h3>
@@ -122,13 +133,13 @@ export function DynamicCard({
 
               <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[8px] font-black text-rose-300/50 uppercase">Data & Hora</span>
+                  <span className="text-[8px] font-black text-rose-300/50 uppercase">{dict.dateAndTime}</span>
                   <span className="text-[10px] font-bold text-slate-200">
-                    {new Date(debate.startsAt).toLocaleDateString("pt-PT")} às {new Date(debate.startsAt).toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}
+                    {new Date(debate.startsAt).toLocaleDateString(locale)} {locale === "en-US" ? "at" : "às"} {new Date(debate.startsAt).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-rose-400 shrink-0">
-                  Participar <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                  {dict.participate} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
               
