@@ -3,6 +3,8 @@ import { studentNav } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 import { getLocale, getDictionary } from "@/i18n/locale";
 import { Book, Clock, MapPin, User } from "lucide-react";
+import { DashboardLayout } from "@/components/layout";
+import { BentoCard, StatusBadge } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 

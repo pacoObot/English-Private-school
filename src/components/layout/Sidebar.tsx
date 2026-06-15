@@ -113,7 +113,7 @@ export function Sidebar({ items, context, dark = false, open, onClose, footer }:
     }
   }, []);
 
-  const dict = dictionaries[locale];
+  const dict = dictionaries[locale] as any;
   const translatedContext = locale === "en-US" 
     ? (contextKeysEn[context] || context) 
     : (contextKeys[context] || context);

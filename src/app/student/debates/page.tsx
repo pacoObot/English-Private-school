@@ -79,7 +79,8 @@ export default async function StudentDebatesPage() {
       })
     : [];
 
-  retu    <DashboardLayout
+  return (
+    <DashboardLayout
       navItems={studentNav.map(item => ({ ...item, active: item.label === "Debates" }))}
       title={dict.debateScoreTitle}
       subtitle={dict.debateScoreSub}
