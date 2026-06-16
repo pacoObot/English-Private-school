@@ -1,6 +1,21 @@
 # Historico de Tarefas
 
 
+## 2026-06-16 23:36 SAST - Correção de Ícones PWA, Instalação em Dispositivos Móveis e Responsividade
+
+Resumo:
+- **Ícones PWA Sem Bordas**: Recriados os ícones PWA (`icon-512x512.png` e `icon-192x192.png`) com fundo vermelho sólido (`#e11d48`) cobrindo toda a imagem, eliminando bordas brancas e desalinhamentos no iOS e Android.
+- **Instalação PWA (sw.js & Metadata)**: Adicionado event listener de `fetch` pass-through no Service Worker (`sw.js`) e expandida a metadata do layout raiz (`layout.tsx`) com links de manifest e propriedades do iOS (`appleWebApp`, `apple` touch icon), resolvendo o problema de download/instalação da app no Android e iOS.
+- **Popup de Sucesso com Identidade Visual**: Atualizado o componente `ActionNotice` para exibir o logotipo com a identidade visual da escola (squircles vermelho e azul sobrepostos) nas ações de criação e matrícula de alunos.
+- **Responsividade na Tela de Matrícula**: Ajustado o formulário de transferência em `students/page.tsx` para empilhar select e botão verticalmente no mobile, garantindo melhor legibilidade e facilidade de toque.
+
+Validacoes:
+- Testes Unitários: ✅ 8/8 testes passando.
+- Typecheck e Linting: ✅ TypeScript compilando sem erros (`npx tsc --noEmit`) e ESLint limpo.
+- Next.js Build: ✅ Build de produção gerado com sucesso completo (40/40 rotas).
+
+---
+
 ## 2026-06-16 16:25 SAST - Ajuste na Autenticação de Alunos Sem Email (Login via Código)
 
 Resumo:

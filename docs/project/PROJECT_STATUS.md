@@ -1,6 +1,6 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-06-16 16:25 SAST
+Ultima atualizacao: 2026-06-16 23:36 SAST
 
 ## Resumo atual
 
@@ -31,9 +31,11 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Ajuste na Autenticação de Alunos Sem Email (Login via Código) - 2026-06-16 16:25 SAST:
-- **Autenticação Case-Insensitive**: Corrigida a Server Action de autenticação (`loginAction`) em `src/features/auth/actions.ts` para realizar buscas insensíveis a maiúsculas/minúsculas (`mode: "insensitive"`) no Prisma ao validar o identificador do estudante contra `studentCode` e `studentNumber`.
-- **Compatibilidade Sem Email**: Garante que alunos criados sem e-mail (usando código no formato `DPS-2026-...` ou similar e a senha padrão `Delson@2026`) conseguem iniciar sessão corretamente sem falhas de case-sensitivity no PostgreSQL/Prisma.
+Correção de Ícones PWA, Instalação em Dispositivos Móveis e Responsividade - 2026-06-16 23:36 SAST:
+- **Ícones PWA Sem Bordas**: Recriados os ícones PWA (`icon-512x512.png` e `icon-192x192.png`) com fundo vermelho sólido (`#e11d48`) cobrindo toda a imagem, eliminando bordas brancas e desalinhamentos no iOS e Android.
+- **Instalação PWA (sw.js & Metadata)**: Adicionado event listener de `fetch` pass-through no Service Worker (`sw.js`) e expandida a metadata do layout raiz (`layout.tsx`) com links de manifest e propriedades do iOS (`appleWebApp`, `apple` touch icon), resolvendo o problema de download/instalação da app no Android e iOS.
+- **Popup de Sucesso com Identidade Visual**: Atualizado o componente `ActionNotice` para exibir o logotipo com a identidade visual da escola (squircles vermelho e azul sobrepostos) nas ações de criação e matrícula de alunos.
+- **Responsividade na Tela de Matrícula**: Ajustado o formulário de transferência em `students/page.tsx` para empilhar select e botão verticalmente no mobile, garantindo melhor legibilidade e facilidade de toque.
 
 ## Validacoes desta tarefa
 

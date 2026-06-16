@@ -5,7 +5,16 @@ import { PWARegistration } from "@/components/pwa/PWARegistration";
 
 export const metadata: Metadata = {
   title: "Delson PS Academic",
-  description: "Sistema de gestao academica da Delson Private School"
+  description: "Sistema de gestao academica da Delson Private School",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "DelsonPS",
+  },
+  icons: {
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -15,7 +15,9 @@ import {
   X,
   FileSpreadsheet,
   Copy,
-  RefreshCw
+  RefreshCw,
+  Languages,
+  MessageCircle
 } from "lucide-react";
 import { PrimaryButton } from "./PrimaryButton";
 import { type Locale } from "@/i18n/config";
@@ -619,9 +621,22 @@ export function ActionNotice({
         </button>
 
         <div className="text-center space-y-4 mb-6">
-          <div className={`h-16 w-16 rounded-full flex items-center justify-center mx-auto ${config.iconBg}`}>
-            {config.icon}
-          </div>
+          {status === "created" || status === "enrolled" ? (
+            <div className="flex justify-center mb-2 animate-float">
+              <div className="relative h-20 w-20">
+                <div className="flex h-full w-full items-center justify-center rounded-[1.8rem] bg-crimson text-white shadow-xl shadow-rose-900/20">
+                  <Languages size={36} />
+                </div>
+                <div className="absolute -bottom-1 -right-1 flex h-10 w-10 items-center justify-center rounded-xl border-4 border-white bg-navy text-white animate-float-reverse">
+                  <MessageCircle size={16} />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className={`h-16 w-16 rounded-full flex items-center justify-center mx-auto ${config.iconBg}`}>
+              {config.icon}
+            </div>
+          )}
           <div className="space-y-1">
             <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               {message.title}

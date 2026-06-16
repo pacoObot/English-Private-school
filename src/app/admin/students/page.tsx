@@ -410,14 +410,14 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
                       "use server";
                       const { changeEnrollmentClassAction } = await import("@/features/admin/actions");
                       await changeEnrollmentClassAction(formData);
-                    }} className="flex gap-2 min-w-48">
+                    }} className="flex flex-col sm:flex-row gap-2 w-full sm:min-w-48">
                       <input type="hidden" name="enrollmentId" value={enrollment.id} />
-                      <select name="classGroupId" defaultValue={enrollment.classGroupId} className="flex-1 rounded-xl border border-slate-200 px-3 text-xs font-bold outline-none focus:border-navy">
+                      <select name="classGroupId" defaultValue={enrollment.classGroupId} className="flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:py-0 text-xs font-bold outline-none focus:border-navy min-h-10">
                         {classes.filter(c => c.courseId === enrollment.courseId).map((cl) => (
                           <option key={cl.id} value={cl.id}>{cl.name}</option>
                         ))}
                       </select>
-                      <PrimaryButton tone="navy" className="min-h-9 px-3 py-1.5 text-[10px]" type="submit">Mover</PrimaryButton>
+                      <PrimaryButton tone="navy" className="min-h-10 px-3 py-1.5 text-[10px] w-full sm:w-auto" type="submit">Mover</PrimaryButton>
                     </form>
                   ];
                 })}

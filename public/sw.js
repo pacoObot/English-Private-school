@@ -41,3 +41,13 @@ self.addEventListener("notificationclick", function (event) {
     })
   );
 });
+
+// Pass-through fetch event listener to satisfy PWA installability criteria
+self.addEventListener("fetch", function (event) {
+  event.respondWith(
+    fetch(event.request).catch(function () {
+      // Fallback or offline behavior if needed
+      return new Response("Offline");
+    })
+  );
+});
