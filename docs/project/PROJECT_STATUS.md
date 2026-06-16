@@ -1,6 +1,6 @@
 # Estado do Projeto
 
-Ultima atualizacao: 2026-06-12 11:05 SAST
+Ultima atualizacao: 2026-06-16 16:25 SAST
 
 ## Resumo atual
 
@@ -31,17 +31,15 @@ O projeto Delson PS Academic está funcional, compilável e com feedback de util
 
 ## Ultima tarefa concluida
 
-Sprint Otimização da Arena de Debates, Responsividade e Fluxos de Avaliação - 2026-06-13 04:30 SAST:
-- **UX & Responsividade (Evitar Scroll)**: Removido o formulário de edição e inscrição rápida da barra lateral de `/debate/[id]`. Criado o modal `DebateSettingsModal` (acessível pelo botão ⚙️) para reduzir rolagem horizontal/vertical.
-- **Wizard de Avaliação Sequencial**: Ajustado `saveDebateEvaluationAction` para permitir avaliações em debates `CLOSED`. Atualizado o `EvaluationModal` e `DebateParticipantList` para suportar o fluxo Wizard de avaliação ("Iniciar Avaliações") de forma contínua.
-- **Banco de Alunos**: Criado o modal responsivo `DebateStudentsModal` no cabeçalho do debate para pesquisa rápida e adição direta de alunos participantes.
-- **Historial e Feedbacks**: Adicionado histórico de debates passados (`CLOSED`) com notas médias no painel lateral. Enriquecido o feedback do estudante em `/student/debates` com visualização detalhada de postura de desempenho (tímido, equilibrado, dominante) e observações, e integrado o formulário do "Canal de Apoio & Preocupações" enviando alertas automáticos à secretaria.
+Ajuste na Autenticação de Alunos Sem Email (Login via Código) - 2026-06-16 16:25 SAST:
+- **Autenticação Case-Insensitive**: Corrigida a Server Action de autenticação (`loginAction`) em `src/features/auth/actions.ts` para realizar buscas insensíveis a maiúsculas/minúsculas (`mode: "insensitive"`) no Prisma ao validar o identificador do estudante contra `studentCode` e `studentNumber`.
+- **Compatibilidade Sem Email**: Garante que alunos criados sem e-mail (usando código no formato `DPS-2026-...` ou similar e a senha padrão `Delson@2026`) conseguem iniciar sessão corretamente sem falhas de case-sensitivity no PostgreSQL/Prisma.
 
 ## Validacoes desta tarefa
 
 - Testes Unitários: ✅ 8/8 testes passando (sucesso total).
 - Typecheck e Linting: ✅ TypeScript compilando com sucesso completo (0 erros via `npx tsc --noEmit`) e ESLint limpo.
-- Next.js Build: ✅ Build de produção concluído com sucesso completo (38/38 rotas geradas).
+- Next.js Build: ✅ Build de produção concluído com sucesso completo (40/40 rotas geradas).
 
 ## Pendencias conhecidas
 

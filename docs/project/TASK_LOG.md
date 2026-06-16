@@ -1,6 +1,19 @@
 # Historico de Tarefas
 
 
+## 2026-06-16 16:25 SAST - Ajuste na Autenticação de Alunos Sem Email (Login via Código)
+
+Resumo:
+- **Autenticação Case-Insensitive**: Corrigida a Server Action de autenticação (`loginAction`) em `src/features/auth/actions.ts` para realizar buscas insensíveis a maiúsculas/minúsculas (`mode: "insensitive"`) no Prisma ao validar o identificador do estudante contra `studentCode` e `studentNumber`.
+- **Compatibilidade Sem Email**: Garante que alunos criados sem e-mail (usando código no formato `DPS-2026-...` ou similar e a senha padrão `Delson@2026`) conseguem iniciar sessão corretamente sem falhas de case-sensitivity no PostgreSQL/Prisma.
+
+Validacoes:
+- Testes Unitários: ✅ 8/8 testes passando.
+- Typecheck e Linting: ✅ TypeScript compilando sem erros (`npx tsc --noEmit`) e ESLint limpo.
+- Next.js Build: ✅ Build de produção gerado com sucesso completo (40/40 rotas).
+
+---
+
 ## 2026-06-13 04:30 SAST - Sprint Otimização da Arena de Debates, Responsividade e Fluxos de Avaliação
 
 Resumo:

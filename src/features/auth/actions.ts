@@ -19,10 +19,10 @@ export async function loginAction(formData: FormData) {
     user = await prisma.user.findFirst({
       where: {
         OR: [
-          { email: identifier || undefined },
-          { studentProfile: { studentCode: identifier } },
-          { studentProfile: { studentNumber: identifier } },
-          { teacherProfile: { staffNumber: identifier } }
+          { email: { equals: identifier, mode: "insensitive" } },
+          { studentProfile: { studentCode: { equals: identifier, mode: "insensitive" } } },
+          { studentProfile: { studentNumber: { equals: identifier, mode: "insensitive" } } },
+          { teacherProfile: { staffNumber: { equals: identifier, mode: "insensitive" } } }
         ]
       }
     });
