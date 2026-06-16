@@ -1,10 +1,10 @@
 # Historico de Tarefas
 
 
-## 2026-06-16 23:36 SAST - Correção de Ícones PWA, Instalação em Dispositivos Móveis e Responsividade
+## 2026-06-17 00:15 SAST - Correção e Ajuste Fino dos Ícones PWA, Instalação em Dispositivos Móveis e Responsividade
 
 Resumo:
-- **Ícones PWA Sem Bordas**: Recriados os ícones PWA (`icon-512x512.png` e `icon-192x192.png`) com fundo vermelho sólido (`#e11d48`) cobrindo toda a imagem, eliminando bordas brancas e desalinhamentos no iOS e Android.
+- **Ícones PWA Sem Bordas & Ajuste Fino**: Recriados os ícones PWA (`icon-512x512.png` e `icon-192x192.png`) com fundo vermelho sólido (`#e11d48`) cobrindo toda a imagem. Implementado um algoritmo de distanciamento radial local e filtro de opacidade para isolar o balão azul de conversa e a sua respectiva sombra suave nativa. Isto removeu por completo a sombra branca/cinzenta projetada (drop shadow) do squircle vermelho original que causava recortes bruscos ('branco meio quebrado') nas extremidades inferiores, garantindo uma transição perfeita e suave no gradiente para o fundo vermelho sólido no iOS e Android.
 - **Instalação PWA (sw.js & Metadata)**: Adicionado event listener de `fetch` pass-through no Service Worker (`sw.js`) e expandida a metadata do layout raiz (`layout.tsx`) com links de manifest e propriedades do iOS (`appleWebApp`, `apple` touch icon), resolvendo o problema de download/instalação da app no Android e iOS.
 - **Popup de Sucesso com Identidade Visual**: Atualizado o componente `ActionNotice` para exibir o logotipo com a identidade visual da escola (squircles vermelho e azul sobrepostos) nas ações de criação e matrícula de alunos.
 - **Responsividade na Tela de Matrícula**: Ajustado o formulário de transferência em `students/page.tsx` para empilhar select e botão verticalmente no mobile, garantindo melhor legibilidade e facilidade de toque.
